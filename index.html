@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Nhành — Gói trọn bản sắc, nở rộ yêu thương</title>
+<meta name="description" content="Nhành — thương hiệu nước hoa & chăm sóc cơ thể thuần Việt. Body Mist, Bath Bomb, Body Lotion, Tẩy tế bào chết & Gift Set. Thuần chay, không thử nghiệm trên động vật, đạt chuẩn IFRA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="assets/css/style.css?v=68">
+<link rel="stylesheet" href="assets/css/home.css?v=68">
+</head>
+<body>
+
+<!-- SCROLL HERO: sản phẩm to → thu nhỏ khi lướt -->
+<section class="scrollhero" id="scrollhero">
+  <div class="sh-stage">
+    <div class="sh-watermark">Nhành</div>
+
+    <!-- Ảnh cut-out: bàn tay+sản phẩm → chỉ sản phẩm, bay ra xa khi lướt -->
+    <div class="sh-product" id="shProduct">
+      <img class="sh-layer sh-hand" id="shHand" src="public/products/tay+sanpham.png" alt="Sản phẩm Nhành trên tay">
+      <img class="sh-layer sh-only" id="shOnly" src="public/products/sanpham_homepage.png" alt="Body Mist Nhành">
+    </div>
+
+    <div class="sh-panels">
+      <!-- Panel 0: slogan -->
+      <div class="sh-panel shp0 active" data-panel="0">
+        <div class="wrap">
+          <div class="p0-grid">
+            <div class="p0-left">
+              <h1>Gói trọn bản sắc,<br>nở rộ yêu thương</h1>
+              <div class="rating"><span class="stars">★★★★★</span><span>Được <strong>2.000+</strong> khách hàng yêu thương</span></div>
+              <div class="hero2-cta">
+                <a class="btn btn-gold" href="pages/products.html">Khám phá ngay</a>
+                <a class="btn btn-outline" href="pages/collections.html">Việt Nam trong Hương</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 1: ký ức Việt -->
+      <div class="sh-panel shp2" data-panel="1">
+        <div class="wrap">
+          <div class="p2-left">
+            <span class="p2-num">01</span>
+            <h2>Mỗi mùi hương là<br>một mảnh ký ức Việt</h2>
+            <p>Nhành chắt lọc tinh hoa thiên nhiên trên dải đất hình chữ S — từ Đà Lạt, Tây Hồ đến Đắk Lắk, Nha Trang, Bến Tre — để bạn sống chậm và chữa lành mỗi ngày.</p>
+            <a class="link-underline mt-3" href="pages/collections.html">Khám phá bộ sưu tập →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: thành phần -->
+      <div class="sh-panel shp2" data-panel="2">
+        <div class="wrap">
+          <div class="p2-left">
+            <span class="p2-num">02</span>
+            <h2>Thành phần thuần Việt<br>&amp; lành tính</h2>
+            <p>Tinh dầu thiên nhiên, sen Tây Hồ, dừa Bến Tre, cà phê Đắk Lắk — thuần chay, không thử nghiệm trên động vật và đạt chuẩn IFRA quốc tế.</p>
+            <a class="link-underline mt-3" href="pages/products.html">Xem sản phẩm →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: triết lý -->
+      <div class="sh-panel shp2" data-panel="3">
+        <div class="wrap">
+          <div class="p2-left">
+            <span class="p2-num">03</span>
+            <h2>Triết lý thương hiệu Nhành</h2>
+            <p>Nhành ra đời từ niềm tin rằng thiên nhiên Việt Nam đủ giàu có để chăm sóc và chữa lành cho chính con người Việt. Mỗi sản phẩm là một mảnh ký ức gói ghém bằng hương thơm thuần khiết.</p>
+            <a class="link-underline mt-3" href="pages/about.html">Tìm hiểu câu chuyện →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sh-hint" id="shHint">Cuộn xuống</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee"><div class="marquee-track" id="marquee"></div></div>
+
+<!-- TRIẾT LÝ 01-04 -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="deco-line">Triết lý của Nhành</span>
+      <h2 class="mt-1">Vì sao chọn Nhành</h2>
+    </div>
+    <div class="philo-grid reveal" id="philoGrid"></div>
+  </div>
+</section>
+
+<!-- BEST-SELLER (kiểu Cocoon: tiêu đề trái + carousel phải) -->
+<section class="section bg-cream">
+  <div class="wrap bs-layout">
+    <div class="bs-intro reveal">
+      <span class="deco-line">Được yêu thích nhất</span>
+      <h2 class="bs-title">Sản phẩm<br>bán chạy</h2>
+      <p>Những mùi hương được khách hàng của Nhành chọn nhiều nhất — gói trọn bản sắc, nở rộ yêu thương.</p>
+      <a class="link-underline bs-all" href="pages/products.html">Xem tất cả →</a>
+    </div>
+    <div class="bs-track-wrap">
+      <button class="bs-arrow bs-arrow-prev" id="bsPrev" aria-label="Sản phẩm trước"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button class="bs-arrow bs-arrow-next" id="bsNext" aria-label="Sản phẩm sau"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg></button>
+      <div class="carousel-track" id="bestseller"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BỘ SƯU TẬP "VIỆT NAM TRONG HƯƠNG" — gallery 5 vùng đất -->
+<section class="section collection-feature">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="deco-line">Bộ sưu tập đặc biệt</span>
+      <h2 class="mt-1">Việt Nam trong Hương</h2>
+      <p class="lead mt-1" style="margin-inline:auto">Năm vùng đất, năm mảnh ký ức — mỗi chai thủy tinh khắc tên một vùng đất, gói trọn một câu chuyện hương riêng của dải đất hình chữ S.</p>
+    </div>
+    <div class="vn-grid reveal" id="vnGrid"></div>
+    <div class="center mt-3"><a class="btn btn-gold" href="pages/collections.html">Khám phá bộ sưu tập</a></div>
+  </div>
+</section>
+
+<!-- NGHI THỨC 4 BƯỚC — cuộn để chuyển bước (kiểu Radiance) -->
+<section class="deck-scroll" id="deckScroll">
+  <div class="deck-stage">
+    <div class="wrap deck-layout">
+      <div class="deck-intro">
+        <span class="deco-line">Nghi thức chăm sóc</span>
+        <h2>Quy trình chăm sóc cơ thể<br>vô cùng đơn giản &amp; trọn vẹn</h2>
+        <p class="lead mt-1">Bốn bước cùng một concept mùi hương — cuộn xuống để khám phá từng bước.</p>
+        <div class="deck-counter"><b id="deckNum">01</b> / 04</div>
+      </div>
+      <div class="deck" id="deck"></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDITORIAL xen kẽ -->
+<section class="section bg-cream">
+  <div class="wrap">
+    <div class="edi-row reveal">
+      <div class="edi-text">
+        <span class="deco-line">Triết lý tối giản</span>
+        <h2>Ít hơn, nhưng tinh tế hơn</h2>
+        <p>Nhành không chạy theo bảng thành phần dài dằng dặc. Chúng tôi chắt lọc những nguyên liệu thuần Việt thật sự lành tính — đủ để chăm sóc, đủ để chữa lành, không làm làn da quá tải.</p>
+      </div>
+      <div class="edi-media"><img src="public/products/TBC_Cà Phê Đắk Lắk_3.jpg" alt="Kết cấu sản phẩm Nhành"></div>
+    </div>
+    <div class="edi-row reverse reveal">
+      <div class="edi-media"><img src="public/logo/vietnam_homepage.png" alt="Nguyên liệu thuần Việt"></div>
+      <div class="edi-text">
+        <span class="deco-line">Minh bạch</span>
+        <h2>100% nguyên liệu<br>nguồn gốc rõ ràng</h2>
+        <p>Thuần chay, không thử nghiệm trên động vật và đạt chuẩn IFRA quốc tế. Mỗi thành phần đều có thể truy xuất nguồn gốc — vì làn da và niềm tin của bạn.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÂU CHUYỆN NGUYÊN LIỆU (Cocoon style) -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="deco-line">Tinh hoa Việt Nam</span>
+      <h2 class="mt-1">Bản sắc Việt trong từng chai</h2>
+      <p class="lead mt-1">Mỗi nguyên liệu là một chuyến đi qua các vùng đất Việt Nam — được chắt lọc thuần khiết nhất.</p>
+    </div>
+    <div class="ingredient-grid" id="ingredientGrid"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section stats-section">
+  <div class="wrap">
+    <div class="stats-grid" id="statsGrid"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS CAROUSEL -->
+<section class="section testi-section">
+  <div class="testi-bgword">Yêu thương</div>
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="deco-line">Khách hàng nói gì</span>
+      <h2 class="mt-1">Những lời yêu thương</h2>
+    </div>
+    <div class="testi" id="testi"></div>
+    <div class="testi-dots" id="testiDots"></div>
+  </div>
+</section>
+
+<!-- GIFT SET SPLIT -->
+<section class="section bg-cream">
+  <div class="wrap split reverse">
+    <div class="split-media gift-media reveal">
+      <img src="public/products/giftset_949k.png" alt="Gift Set Nhành">
+      <div class="gift-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg><span>Thiệp viết tay theo yêu cầu</span></div>
+    </div>
+    <div class="reveal">
+      <span class="deco-line">Quà tặng</span>
+      <h2 class="mt-1">Trao đi một mảnh ký ức</h2>
+      <p class="lead mt-2">Gift Set của Nhành được thiết kế như một trải nghiệm cảm xúc hoàn chỉnh: các sản phẩm cùng concept mùi hương, đóng gói tối giản lấy cảm hứng từ thiên nhiên Việt Nam.</p>
+      <p class="mt-2">Dịch vụ đóng gói cao cấp kèm thiệp viết tay theo yêu cầu — món quà ấm áp, tinh tế cho người thương trong mọi dịp lễ.</p>
+      <a class="btn btn-primary mt-3" href="pages/gifts.html">Xem các bộ quà</a>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="deco-line">Góc nhành cây</span>
+      <h2 class="mt-1">Câu chuyện &amp; chăm sóc bản thân</h2>
+    </div>
+    <div class="blog-grid" id="blogGrid"></div>
+  </div>
+</section>
+
+<!-- PRESS -->
+<section class="section-sm bg-cream">
+  <div class="wrap center">
+    <p class="muted reveal" style="font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:26px">Được nhắc đến trên</p>
+    <div class="press-row reveal" id="pressRow"></div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="deco-line">@nhanh.vietnam</span>
+      <h2 class="mt-1">Theo dõi Nhành trên Instagram</h2>
+      <p class="lead mt-1">Cùng chúng tôi sống chậm lại với những khoảnh khắc chữa lành mỗi ngày.</p>
+    </div>
+    <div class="ig-grid reveal" id="igGrid"></div>
+  </div>
+</section>
+
+
+<!-- NEWSLETTER -->
+<section class="section newsletter light">
+  <div class="narrow">
+    <span class="eyebrow">Bản tin của Nhành</span>
+    <h2>Nhận hương yêu thương mỗi tuần</h2>
+    <p>Đăng ký để là người đầu tiên biết về bộ sưu tập mới, workshop và những câu chuyện mùi hương Việt.</p>
+    <form class="nl-form" id="homeNl">
+      <input type="email" placeholder="Email của bạn" required>
+      <button class="btn btn-gold" type="submit">Đăng ký</button>
+    </form>
+  </div>
+</section>
+
+<script src="assets/js/data.js?v=68"></script>
+<script src="assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var D = window.NHANH, NH = window.NH;
+
+  /* ---- SCROLL HERO: sản phẩm to → thu nhỏ + đổi panel ---- */
+  (function () {
+    var hero = NH.qs('#scrollhero'), product = NH.qs('#shProduct'),
+        hand = NH.qs('#shHand'), only = NH.qs('#shOnly'),
+        panels = NH.qsa('.sh-panel'), hint = NH.qs('#shHint');
+    if (!hero || !product) return;
+    var ticking = false;
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function update() {
+      ticking = false;
+      var rect = hero.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var total = hero.offsetHeight - vh;            // quãng đường cuộn trong section
+      var p = clamp(-rect.top / (total || 1), 0, 1); // tiến trình 0 → 1
+
+      // Sản phẩm: hơi lệch phải → dạt hẳn sang phải, chỉ thu nhỏ tới mức vừa phải
+      var scale = lerp(1, 0.62, p);   // dừng ở 0.62 (không quá nhỏ)
+      var tx = lerp(140, 380, p);     // luôn nằm bên phải, dạt xa dần
+      var ty = lerp(0, -30, p);
+      product.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+
+      // Ban đầu hiện bàn tay+sản phẩm → mờ dần, chỉ còn sản phẩm
+      if (hand) hand.style.opacity = clamp(1 - p / 0.26, 0, 1);
+      if (only) only.style.opacity = clamp((p - 0.12) / 0.22, 0, 1);
+
+      // 4 panel thông tin theo ngưỡng
+      var idx = p < 0.26 ? 0 : (p < 0.5 ? 1 : (p < 0.76 ? 2 : 3));
+      panels.forEach(function (pl) { pl.classList.toggle('active', +pl.getAttribute('data-panel') === idx); });
+
+      // Ẩn gợi ý cuộn khi đã bắt đầu lướt
+      if (hint) hint.style.opacity = p > 0.04 ? '0' : '1';
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  })();
+
+  /* ---- Marquee ---- */
+  var mq = ['🌿 Miễn phí vận chuyển cho đơn từ <strong>399.000đ</strong>', '✍️ Tặng thiệp viết tay cho mọi Gift Set', '🌸 Thuần chay 100% · Không thử nghiệm động vật · Chuẩn IFRA', '🇻🇳 Nguyên liệu thuần Việt — gói trọn bản sắc'];
+  var line = mq.map(function (m) { return '<span>' + m + '</span>'; }).join('');
+  NH.qs('#marquee').innerHTML = line + line; // duplicate for seamless loop
+
+  /* ---- Philosophy 01-04 ---- */
+  var philo = [
+    ['Nguyên liệu thuần Việt', 'Chắt lọc tinh hoa từ hàng trăm nguyên liệu bản địa — cà phê, sen, dừa, thông…'],
+    ['Thuần chay & nhân ái', 'Thuần chay 100%, không thành phần động vật, không thử nghiệm trên động vật.'],
+    ['Đạt chuẩn IFRA', 'Hương liệu an toàn theo tiêu chuẩn quốc tế, lành tính cho da nhạy cảm.'],
+    ['Kiểm định chất lượng', 'Mỗi mẻ sản phẩm được kiểm tra kỹ trước khi đến tay bạn.']
+  ];
+  NH.qs('#philoGrid').innerHTML = philo.map(function (p, i) {
+    return '<div class="philo-item"><span class="num">0' + (i + 1) + '</span><h4>' + p[0] + '</h4><p>' + p[1] + '</p></div>';
+  }).join('');
+
+  /* ---- Gallery "Việt Nam trong Hương" (5 vùng đất từ BDM_BST1) ---- */
+  (function () {
+    var grid = NH.qs('#vnGrid'); if (!grid) return;
+    var col = D.collections.find(function (c) { return c.slug === 'viet-nam-trong-huong'; });
+    var bst = D.products.filter(function (p) { return p.collection === 'viet-nam-trong-huong'; });
+    grid.innerHTML = col.regions.map(function (r) {
+      var p = bst.find(function (x) { return x.region === r.slug; });
+      var link = p ? 'pages/product.html?id=' + p.id : 'pages/collections.html';
+      var im = p ? NH.img(p.images[0]) : '';
+      return '<a class="vn-card" href="' + link + '">' +
+        '<span class="vn-tone" style="background:' + r.tone + '"></span>' +
+        '<img src="' + im + '" alt="' + r.name + '" loading="lazy">' +
+        '<div class="vn-body"><span class="vn-scent">' + r.scent + '</span><h3>' + r.name + '</h3>' +
+        '<span class="vn-go">Khám phá →</span></div></a>';
+    }).join('');
+  })();
+
+  /* ---- Best-seller carousel: đa dạng, chỉ 1 chai BST ---- */
+  function pickCat(cat, n, noCollection) {
+    return D.products.filter(function (p) { return p.cat === cat && (!noCollection || !p.collection); }).slice(0, n);
+  }
+  var bs = []
+    .concat(D.products.filter(function (p) { return p.collection === 'viet-nam-trong-huong'; }).slice(0, 1)) // 1 chai BST
+    .concat(pickCat('body-mist', 2, true))   // 2 body mist thường
+    .concat(pickCat('bath-bomb', 2))
+    .concat(D.products.filter(function (p) { return p.cat === 'body-lotion'; }).slice(1, 2)) // Mật Vàng (tránh trùng tên)
+    .concat(pickCat('scrub', 2))
+    .concat(pickCat('gift-set', 1));
+  var BAG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 8h12l-1 11a2 2 0 0 1-2 1.8H9a2 2 0 0 1-2-1.8L6 8z"/><path d="M9 8a3 3 0 0 1 6 0"/><path d="M12 12v5M9.5 14.5h5"/></svg>';
+  function bsCard(p) {
+    var link = 'pages/product.html?id=' + p.id;
+    return '<article class="bs-card">' +
+      '<a class="bsc-img" href="' + link + '"><img src="' + NH.img(p.images[0]) + '" alt="' + p.name + '" loading="lazy"></a>' +
+      '<span class="bsc-cat">' + p.category + '</span>' +
+      '<a href="' + link + '"><h4 class="bsc-name">' + p.name.replace(p.category + ' ', '') + '</h4></a>' +
+      '<p class="bsc-short">' + (p.short || '') + '</p>' +
+      '<div class="bsc-foot"><span class="bsc-price">' + NH.money(p.price) + '</span>' +
+      '<button class="bsc-add" data-add="' + p.id + '" aria-label="Thêm vào giỏ">' + BAG + '</button></div>' +
+      '</article>';
+  }
+  // Vòng lặp vô hạn mượt: render gấp đôi, translateX; tự trượt + next/back
+  var track = NH.qs('#bestseller');
+  var wrap = track.parentElement; // .bs-track-wrap
+  var cardW = 326; // 300 + gap 26
+  var N = bs.length;
+  track.innerHTML = bs.concat(bs).map(bsCard).join(''); // nhân đôi để lặp liền mạch
+  NH.qsa('#bestseller [data-add]').forEach(function (b) {
+    b.addEventListener('click', function (e) { e.preventDefault(); NH.cart.add(b.dataset.add, 1, ''); });
+  });
+  var idx = 0;
+  var EASE = 'cubic-bezier(.22,.61,.36,1)';
+  function apply(animate) {
+    track.style.transition = animate ? ('transform .6s ' + EASE) : 'none';
+    track.style.transform = 'translateX(' + (-idx * cardW) + 'px)';
+  }
+  function next() {
+    idx++; apply(true);
+    if (idx >= N) { setTimeout(function () { idx -= N; apply(false); }, 620); } // reset liền mạch
+  }
+  function prev() {
+    if (idx <= 0) {
+      idx += N; apply(false); // nhảy tới bản sao tức thì
+      requestAnimationFrame(function () { requestAnimationFrame(function () { idx--; apply(true); }); });
+    } else { idx--; apply(true); }
+  }
+  var autoT;
+  function startAuto() { stopAuto(); autoT = setInterval(next, 3000); } // LUÔN tự trượt
+  function stopAuto() { if (autoT) clearInterval(autoT); }
+  NH.qs('#bsNext').addEventListener('click', function () { next(); startAuto(); });
+  NH.qs('#bsPrev').addEventListener('click', function () { prev(); startAuto(); });
+  apply(false);
+  startAuto();
+
+  /* ---- 4-step deck (thẻ xếp chồng, kiểu Radiance) ---- */
+  var ritual = [
+    ['Tẩy tế bào chết', 'Làm sạch sâu với hạt scrub mịn, lấy đi tế bào chết để da mềm mịn.', 'public/products/TBC_Cà Phê Đắk Lắk_1.jpg'],
+    ['Bath Bomb', 'Thư giãn trong làn nước ấm, nuôi dưỡng da và xoa dịu tinh thần.', 'public/products/BB_Sen Trắng_1.jpg'],
+    ['Body Lotion', 'Khóa ẩm, dưỡng da mềm mượt và tạo nền giúp hương bám lâu.', 'public/products/BL_Mật Vàng_1.jpg'],
+    ['Body Mist', 'Hoàn thiện với lớp hương thuần Việt, lưu giữ cảm xúc cả ngày dài.', 'public/products/BDM_Hồng Nhung_1.jpg']
+  ];
+  (function () {
+    var deck = NH.qs('#deck'); if (!deck) return;
+    deck.innerHTML = ritual.map(function (r, i) {
+      return '<article class="deck-card" data-i="' + i + '"><img src="' + NH.img(r[2]) + '" alt="">' +
+        '<div class="sc-overlay"><span class="sc-pill">Bước ' + (i + 1) + '</span><h4>' + r[0] + '</h4><p>' + r[1] + '</p></div></article>';
+    }).join('');
+    var cards = NH.qsa('.deck-card', deck);
+    var N = cards.length;
+    var num = NH.qs('#deckNum');
+    var cur = -1;
+    function drawActive(active) {
+      if (active === cur) return; cur = active;
+      cards.forEach(function (c, i) {
+        var pos = (i - active + N) % N;       // 0 = thẻ đang hiện, rồi xếp chồng phía sau
+        var hidden = pos > 2;
+        c.style.transform = 'translateX(' + (pos * 30) + 'px) translateY(' + (pos * 8) + 'px) scale(' + (1 - pos * 0.05) + ') rotate(' + (pos * 1.2) + 'deg)';
+        c.style.opacity = hidden ? '0' : '1';
+        c.style.zIndex = 10 - pos;
+      });
+      if (num) num.textContent = ('0' + (active + 1)).slice(-2);
+    }
+
+    var isMobile = window.matchMedia('(max-width:900px)').matches;
+    if (isMobile) {
+      // Mobile: section không ghim → tự xoay theo thời gian
+      var a = 0; drawActive(0);
+      setInterval(function () { a = (a + 1) % N; drawActive(a); }, 3000);
+    } else {
+      // Desktop: CUỘN để chuyển bước (section ghim lại)
+      var sec = NH.qs('#deckScroll');
+      var ticking = false;
+      function update() {
+        ticking = false;
+        var rect = sec.getBoundingClientRect();
+        var total = Math.max(1, sec.offsetHeight - window.innerHeight);
+        var p = Math.max(0, Math.min(1, -rect.top / total));
+        drawActive(Math.min(N - 1, Math.floor(p * N)));
+      }
+      window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener('resize', update);
+      drawActive(0);
+      update();
+    }
+  })();
+
+  /* ---- Ingredient stories ---- */
+  var ingredients = [
+    ['Cà phê Đắk Lắk', 'Ấm nồng, sâu lắng', 'public/products/TBC_Cà Phê Đắk Lắk_2.jpg'],
+    ['Sen Tây Hồ', 'Thanh khiết, tịnh tâm', 'public/products/TBC_Sen Trắng Tây Hồ_1.jpg'],
+    ['Dừa Bến Tre', 'Béo ngọt, ôm ấp', 'public/products/TBC_Dừa Sữa Bến Tre_1.jpg'],
+    ['Trà xanh Thái Nguyên', 'Thanh mát, tỉnh thức', 'public/products/TBC_Trà Xanh Thái Nguyên_1.jpg'],
+    ['Muối biển Nha Trang', 'Khoáng đạt, tự do', 'public/products/TBC_Muối Biển Nha Trang_1.jpg'],
+    ['Nghệ vàng Huế', 'Sáng da, khỏe khoắn', 'public/products/TBC_Nghệ Vàng Huế_1.jpg']
+  ];
+  NH.qs('#ingredientGrid').innerHTML = ingredients.map(function (g) {
+    return '<div class="ing-card reveal"><div class="ing-circle"><img src="' + NH.img(g[2]) + '" alt=""></div><h5>' + g[0] + '</h5><p>' + g[1] + '</p></div>';
+  }).join('');
+
+  /* ---- Stats counters ---- */
+  var stats = [['100', '%', 'Thuần chay'], ['5', '', 'Vùng đất trong hương'], ['38', '', 'Sản phẩm'], ['2000', '+', 'Khách hàng yêu thương']];
+  NH.qs('#statsGrid').innerHTML = stats.map(function (s) {
+    return '<div class="stat"><div class="num" data-to="' + s[0] + '" data-suffix="' + s[1] + '">0' + s[1] + '</div><div class="lbl">' + s[2] + '</div></div>';
+  }).join('');
+  var counted = false;
+  function runCounters() {
+    if (counted) return; counted = true;
+    NH.qsa('#statsGrid .num').forEach(function (el) {
+      var to = +el.dataset.to, suf = el.dataset.suffix, start = null, dur = 1400;
+      function step(t) { if (!start) start = t; var p = Math.min((t - start) / dur, 1); el.textContent = Math.floor(p * to) + suf; if (p < 1) requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var so = new IntersectionObserver(function (e) { e.forEach(function (x) { if (x.isIntersecting) { runCounters(); so.disconnect(); } }); }, { threshold: .4 });
+    so.observe(NH.qs('#statsGrid'));
+  } else runCounters();
+
+  /* ---- Testimonials auto carousel ---- */
+  var tw = NH.qs('#testi'), td = NH.qs('#testiDots');
+  tw.innerHTML = D.reviews.map(function (r, i) {
+    return '<div class="testi-slide' + (i === 0 ? ' active' : '') + '"><div class="stars">★★★★★</div><p class="quote">“' + r.text + '”</p><div class="who"><strong>' + r.name + '</strong> · <span>' + r.loc + '</span></div></div>';
+  }).join('');
+  td.innerHTML = D.reviews.map(function (_, i) { return '<button class="' + (i === 0 ? 'active' : '') + '" data-i="' + i + '"></button>'; }).join('');
+  var slides = NH.qsa('.testi-slide', tw), dots = NH.qsa('button', td), cur = 0, timer;
+  function go(n) {
+    slides[cur].classList.remove('active'); dots[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active'); dots[cur].classList.add('active');
+  }
+  function auto() { timer = setInterval(function () { go(cur + 1); }, 5000); }
+  dots.forEach(function (d) { d.addEventListener('click', function () { clearInterval(timer); go(+d.dataset.i); auto(); }); });
+  auto();
+
+  /* ---- Blog ---- */
+  NH.qs('#blogGrid').innerHTML = D.posts.slice(0, 3).map(function (p) {
+    return '<a class="blog-card reveal" href="pages/post.html?slug=' + p.slug + '">' +
+      '<div class="bc-media"><img src="' + NH.img(p.cover) + '" alt=""></div>' +
+      '<div class="bc-body"><div class="blog-meta"><span>' + p.cat + '</span><span>' + p.read + '</span></div>' +
+      '<h3>' + p.title + '</h3><p>' + p.excerpt + '</p><span class="link-underline" style="margin-top:auto">Đọc tiếp →</span></div></a>';
+  }).join('');
+
+  /* ---- Press ---- */
+  var press = [['ELLE', 'Việt Nam'], ['Harper’s BAZAAR', 'Làm đẹp'], ['Đẹp', 'Tạp chí'], ['Kênh14', 'Lifestyle'], ['VnExpress', 'iOne']];
+  NH.qs('#pressRow').innerHTML = press.map(function (p) {
+    return '<div class="press-item"><div class="pname">' + p[0] + '</div><div class="pdesc">' + p[1] + '</div></div>';
+  }).join('');
+
+  /* ---- Instagram feed ---- */
+  var igImgs = ['public/products/BDM_BST1_Tây Hồ Sen Trắng_1.jpg', 'public/products/BB_Sen Trắng_1.jpg', 'public/products/BDM_Đào Hương_1.jpg', 'public/products/TBC_Trà Xanh Thái Nguyên_1.jpg', 'public/products/BL_Hồng Nhung_1.jpg', 'public/products/BDM_BST1_Nha Trang Gió Biển_1.jpg'];
+  NH.qs('#igGrid').innerHTML = igImgs.map(function (im) {
+    return '<a class="ig-cell" href="' + D.brand.social.instagram + '" target="_blank" rel="noopener"><img src="' + NH.img(im) + '" alt=""><span class="ig-ic">' + NH.icon.ig + '</span></a>';
+  }).join('');
+
+  NH.observeReveal(document);
+  NH.qs('#homeNl').addEventListener('submit', function (e) { e.preventDefault(); NH.toast('Cảm ơn bạn đã đăng ký nhận tin!'); e.target.reset(); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Chi tiết sản phẩm — Nhành</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+<style>
+  #related{grid-template-columns:repeat(4,1fr);gap:22px;max-width:1120px;margin:0 auto}
+  #related .pc-media{aspect-ratio:1/1}
+  @media(max-width:980px){#related{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){#related{grid-template-columns:1fr 1fr;gap:14px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="breadcrumb" id="crumb"></nav>
+</div>
+
+<!-- TOP: gallery + info -->
+<section class="section-sm" style="padding-top:0">
+  <div class="wrap">
+    <div class="pdp" id="pdp"></div>
+  </div>
+</section>
+
+<!-- NỘI DUNG CHI TIẾT -->
+<section class="section-sm" style="padding-top:0">
+  <div class="wrap pdp-content" id="pdpContent"></div>
+</section>
+
+<!-- SẢN PHẨM LIÊN QUAN -->
+<section class="section bg-cream">
+  <div class="wrap">
+    <div class="section-head center"><span class="eyebrow">Có thể bạn thích</span><h2>Sản phẩm liên quan</h2></div>
+    <div class="product-grid" id="related"></div>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var D = window.NHANH, NH = window.NH;
+  var p = NH.byId(NH.getParam('id')) || D.products[0];
+  document.title = p.name + ' — Nhành';
+  var nReviews = 18 + (p.name.length % 40);
+
+  NH.qs('#crumb').innerHTML = '<a href="../index.html">Trang chủ</a><span class="sep">/</span>' +
+    '<a href="products.html?cat=' + p.cat + '">' + p.category + '</a><span class="sep">/</span><span>' + p.name + '</span>';
+
+  /* ---------- Dữ liệu phụ theo danh mục ---------- */
+  var benefitsByCat = {
+    'body-mist': ['Kết cấu mỏng nhẹ, thấm nhanh, không bết dính', 'Lưu hương vừa đủ — đồng hành cùng bạn nhiều giờ', 'Thuần chay, lành tính, hương liệu đạt chuẩn IFRA', 'Phối tầng cùng Body Lotion cùng mùi để giữ hương lâu hơn'],
+    'bath-bomb': ['Sủi bọt nhẹ nhàng, giải phóng hương theo hơi nước ấm', 'Muối khoáng & tinh dầu làm mềm da, thư giãn cơ bắp', 'Trải nghiệm ASMR healing cho cơ thể lẫn tinh thần', 'Lành tính, dịu nhẹ với làn da nhạy cảm'],
+    'body-lotion': ['Chất kem mỏng nhẹ, thấm nhanh, không gây bí da', 'Dưỡng ẩm sâu, nuôi làn da mềm mượt cả ngày', 'Đồng nhất mùi hương với Body Mist cùng series', 'Tạo nền giúp hương thơm bám lâu và lan tỏa tự nhiên'],
+    'scrub': ['Hạt tẩy tế bào chết mịn, làm sạch da dịu nhẹ', 'Không gây khô rát hay kích ứng cho da', 'Thành phần dưỡng ẩm tự nhiên — da mềm mịn sau khi dùng', 'Chuẩn bị làn da tốt nhất trước bước dưỡng tiếp theo'],
+    'gift-set': ['Các sản phẩm cùng concept mùi hương — trải nghiệm trọn vẹn', 'Đóng gói cao cấp kèm thiệp viết tay theo yêu cầu', 'Phù hợp làm quà cho mọi dịp lễ, sinh nhật, kỷ niệm', 'Giao hàng cẩn thận, chống sốc — freeship đơn từ 399.000đ']
+  };
+  var suitByCat = {
+    'body-mist': 'Mọi loại da · Dùng hằng ngày', 'bath-bomb': 'Mọi loại da · Thư giãn cuối ngày',
+    'body-lotion': 'Mọi loại da · Khí hậu nhiệt đới', 'scrub': 'Mọi loại da · 2–3 lần/tuần',
+    'gift-set': 'Mọi lứa tuổi · Quà tặng'
+  };
+  var idealByFam = { 'ngot': 'người yêu mùi hương ngọt ngào, nữ tính và ấm áp', 'tuoi-mat': 'người yêu sự tươi mát, trong lành và năng động', 'go-dat': 'người yêu mùi trầm ấm, mộc mạc và có chiều sâu', 'am': 'người yêu mùi ấm áp, ngọt ngào và gần gũi' };
+  var idealText = p.family ? ('Dành cho ' + idealByFam[p.family] + '; lý tưởng cho những khoảnh khắc cần một mảnh ký ức bình yên.')
+    : (p.cat === 'gift-set' ? 'Lý tưởng làm quà tặng dịp lễ, Tết, sinh nhật, kỷ niệm — hoặc món quà yêu thương dành cho chính bạn.'
+    : 'Dành cho người yêu nghi thức chăm sóc cơ thể nhẹ nhàng, thuần lành và mang bản sắc Việt.');
+
+  /* ---------- TOP: gallery + info ---------- */
+  var thumbs = p.images.map(function (im, i) {
+    return '<button class="' + (i === 0 ? 'active' : '') + '" data-i="' + i + '"><img src="' + NH.img(im) + '" alt=""></button>';
+  }).join('');
+  var claims = ['Thuần chay 100%', 'Không thử nghiệm động vật', 'Đạt chuẩn IFRA', 'Không paraben'];
+
+  NH.qs('#pdp').innerHTML =
+    '<div class="gallery">' +
+      '<div class="thumbs" id="thumbs">' + thumbs + '</div>' +
+      '<div class="g-main">' +
+        (p.images.length > 1 ? '<button class="g-arrow g-prev" id="gPrev" aria-label="Ảnh trước"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg></button>' : '') +
+        '<img id="mainImg" src="' + NH.img(p.images[0]) + '" alt="' + p.name + '">' +
+        (p.images.length > 1 ? '<button class="g-arrow g-next" id="gNext" aria-label="Ảnh sau"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg></button>' : '') +
+        (p.images.length > 1 ? '<span class="g-counter" id="gCounter">1 / ' + p.images.length + '</span>' : '') +
+      '</div>' +
+    '</div>' +
+    '<div class="pdp-info">' +
+      '<span class="pc-cat">' + p.category + (p.badge ? ' · ' + p.badge : '') + '</span>' +
+      '<h1>' + p.name.replace(p.category + ' ', '') + '</h1>' +
+      '<div class="rating-stars">★★★★★ <span style="color:var(--muted);font-size:.8rem;font-family:var(--sans)">(' + nReviews + ' đánh giá)</span></div>' +
+      '<div class="pdp-price">' + NH.money(p.price) + '</div>' +
+      '<div class="pdp-suit"><b>Phù hợp:</b> ' + (suitByCat[p.cat] || '') + (p.size ? ' · ' + p.size : '') + '</div>' +
+      '<div class="pdp-claims">' + claims.map(function (c) { return '<span>' + c + '</span>'; }).join('') + '</div>' +
+      '<p class="pdp-desc" style="margin-top:18px">' + (p.short || '') + '</p>' +
+      (p.cat === 'gift-set' ?
+        '<div class="gift-opt">' +
+          '<div class="vlabel">🎁 Tùy chọn quà tặng</div>' +
+          '<label class="g-check"><input type="checkbox" id="optWrap" checked> Gói quà cao cấp (ruy băng + giấy lót)</label>' +
+          '<label class="g-check"><input type="checkbox" id="optCard" checked> Viết thiệp tay theo lời nhắn</label>' +
+          '<textarea id="cardMsg" placeholder="Lời nhắn trên thiệp — vd: Chúc mừng sinh nhật, gửi người mình thương…"></textarea>' +
+          '<input type="text" id="recip" placeholder="Tên người nhận (tuỳ chọn)">' +
+        '</div>' : '') +
+      '<div class="qty-add">' +
+        '<div class="qty"><button id="qDec">−</button><input id="qInput" type="number" value="1" min="1"><button id="qInc">+</button></div>' +
+        '<button class="btn btn-primary" id="addBtn" style="flex:1">Thêm vào giỏ</button>' +
+      '</div>' +
+      '<button class="btn btn-gold btn-block" id="buyNow">Mua ngay · ' + NH.money(p.price) + '</button>' +
+      '<div class="pdp-meta">' +
+        '<div class="mrow">' + NH.icon.truck + '<span>Miễn phí vận chuyển cho đơn từ 399.000đ toàn quốc</span></div>' +
+        '<div class="mrow">' + NH.icon.leaf + '<span>Nguyên liệu thuần Việt, thuần chay, lành tính</span></div>' +
+        '<div class="mrow">' + NH.icon.refresh + '<span>Đổi trả trong 7 ngày nếu sản phẩm lỗi từ nhà sản xuất</span></div>' +
+      '</div>' +
+    '</div>';
+
+  /* ---------- NỘI DUNG CHI TIẾT (kiểu Cocoon) ---------- */
+  function block(title, inner) { return '<div class="pdp-block"><h3>' + title + '</h3>' + inner + '</div>'; }
+  var html = '';
+  html += block('Về sản phẩm', '<p>' + p.desc + '</p>');
+  html += block('Lý tưởng cho', '<div class="ideal-box">' + idealText + '</div>');
+  var benefits = benefitsByCat[p.cat] || [];
+  html += block('Công dụng', '<ul class="benefit-list">' + benefits.map(function (b) {
+    return '<li>' + NH.icon.check + '<span>' + b + '</span></li>';
+  }).join('') + '</ul>');
+  if (p.notes) {
+    html += block('Tầng hương', '<div class="notes-pyramid">' +
+      '<div><strong>Hương đầu</strong><span>' + p.notes.top + '</span></div>' +
+      '<div><strong>Hương giữa</strong><span>' + p.notes.heart + '</span></div>' +
+      '<div><strong>Hương cuối</strong><span>' + p.notes.base + '</span></div></div>');
+  } else if (p.items) {
+    html += block('Bộ quà bao gồm', '<ul class="benefit-list">' + p.items.map(function (i) {
+      return '<li>' + NH.icon.gift + '<span>' + i + '</span></li>';
+    }).join('') + '</ul>');
+  }
+  html += block('Thành phần', '<p class="ingredient-full">' + p.ingredients + '</p>');
+  html += block('Cách sử dụng', '<p>' + p.usage + '</p>');
+  var revs = D.reviews.slice(0, 3);
+  var reviewsHtml = '<div class="pdp-rating-sum"><span class="big">5.0</span><span><span class="rs-stars">★★★★★</span><br><span class="rs-count">' + nReviews + ' đánh giá</span></span></div>' +
+    revs.map(function (r) {
+      return '<div class="pdp-review"><div class="rv-head"><span class="rv-av">' + r.name.charAt(0) + '</span>' +
+        '<span><span class="rv-name">' + r.name + '</span><br><span class="rv-loc">' + r.loc + '</span></span>' +
+        '<span class="rv-stars">★★★★★</span></div><p>“' + r.text + '”</p></div>';
+    }).join('');
+  html += block('Đánh giá từ khách hàng', reviewsHtml);
+
+  NH.qs('#pdpContent').innerHTML = html;
+
+  /* ---------- Gallery: chuyển ảnh + tự động chuyển ---------- */
+  var cur = 0, N = p.images.length;
+  var mImg = NH.qs('#mainImg'), gMain = NH.qs('.g-main');
+  function setImg(i) {
+    cur = (i + N) % N;
+    mImg.src = NH.img(p.images[cur]);
+    mImg.style.animation = 'none'; void mImg.offsetWidth; mImg.style.animation = 'gFade .5s var(--ease)'; // hiệu ứng mờ chuyển
+    NH.qsa('#thumbs button').forEach(function (x, k) { x.classList.toggle('active', k === cur); });
+    var c = NH.qs('#gCounter'); if (c) c.textContent = (cur + 1) + ' / ' + N;
+  }
+  var autoT;
+  function startAuto() { if (N <= 1) return; stopAuto(); autoT = setInterval(function () { setImg(cur + 1); }, 2000); }
+  function stopAuto() { if (autoT) clearInterval(autoT); }
+  NH.qsa('#thumbs button').forEach(function (b) { b.addEventListener('click', function () { setImg(+b.dataset.i); startAuto(); }); });
+  var gp = NH.qs('#gPrev'), gn = NH.qs('#gNext');
+  if (gp) gp.addEventListener('click', function () { setImg(cur - 1); startAuto(); });
+  if (gn) gn.addEventListener('click', function () { setImg(cur + 1); startAuto(); });
+  // Dừng khi rê chuột vào ảnh, chạy tiếp khi rời ra
+  gMain.addEventListener('mouseenter', stopAuto);
+  gMain.addEventListener('mouseleave', startAuto);
+  startAuto();
+  var qInput = NH.qs('#qInput');
+  NH.qs('#qDec').addEventListener('click', function () { qInput.value = Math.max(1, (+qInput.value || 1) - 1); });
+  NH.qs('#qInc').addEventListener('click', function () { qInput.value = (+qInput.value || 1) + 1; });
+  // Tùy chọn quà tặng (chỉ Gift Set): bật/tắt ô lời nhắn
+  var optCard = NH.qs('#optCard'), cardMsg = NH.qs('#cardMsg');
+  if (optCard && cardMsg) {
+    function syncCard() { cardMsg.classList.toggle('hide', !optCard.checked); }
+    optCard.addEventListener('change', syncCard); syncCard();
+  }
+  function giftNote() {
+    if (p.cat !== 'gift-set') return '';
+    var parts = [];
+    if (NH.qs('#optWrap') && NH.qs('#optWrap').checked) parts.push('🎀 Gói quà cao cấp');
+    if (optCard && optCard.checked) {
+      var m = (cardMsg.value || '').trim();
+      parts.push('✍️ Thiệp tay' + (m ? ': “' + m + '”' : ''));
+    }
+    var r = NH.qs('#recip') ? NH.qs('#recip').value.trim() : '';
+    if (r) parts.push('Gửi: ' + r);
+    return parts.join(' · ');
+  }
+  var variant = p.family ? NH.famName(p.family) : '';
+  NH.qs('#addBtn').addEventListener('click', function () { NH.cart.add(p.id, +qInput.value || 1, variant, giftNote()); });
+  NH.qs('#buyNow').addEventListener('click', function () { NH.cart.add(p.id, +qInput.value || 1, variant, giftNote()); location.href = 'cart.html'; });
+
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  var others = D.products.filter(function (x) { return x.id !== p.id; });
+  // các tầng liên quan, ưu tiên giảm dần — random trong từng tầng để không cố định
+  var tiers = [
+    p.family ? others.filter(function (x) { return x.family === p.family; }) : [],        // cùng nhóm mùi hương
+    p.collection ? others.filter(function (x) { return x.collection === p.collection; }) : [], // cùng bộ sưu tập
+    others.filter(function (x) { return x.cat === p.cat; }),                                // cùng dòng sản phẩm
+    others                                                                                  // còn lại
+  ];
+  var pool = [], seen = {};
+  tiers.forEach(function (t) {
+    shuffle(t).forEach(function (x) { if (!seen[x.id]) { seen[x.id] = 1; pool.push(x); } });
+  });
+  NH.renderProducts(NH.qs('#related'), pool.slice(0, 4));
+
+  window.scrollTo(0, 0);
+});
+</script>
+</body>
+</html>

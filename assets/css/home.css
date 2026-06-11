@@ -1,0 +1,407 @@
+
+.marquee{background:var(--green-900);color:var(--gold-300);overflow:hidden;white-space:nowrap;padding:11px 0;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase}
+.marquee-track{display:inline-block;animation:marquee 28s linear infinite;will-change:transform}
+.marquee-track span{padding:0 26px}
+.marquee-track strong{color:var(--ivory)}
+.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ---------- Hero v2 ---------- */
+.hero2{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;background:var(--green-900)}
+.hero2-bg{position:absolute;inset:0;z-index:0}
+.hero2-bg img{width:100%;height:100%;object-fit:cover;opacity:.5;animation:heroZoom 16s ease-out forwards}
+@keyframes heroZoom{from{transform:scale(1.14)}to{transform:scale(1)}}
+.hero2::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(100deg,rgba(36,58,46,.88) 0%,rgba(36,58,46,.5) 45%,rgba(36,58,46,.12) 100%)}
+.hero2-inner{position:relative;z-index:2;color:var(--ivory);max-width:670px;padding:90px 0}
+.hero2 .rating{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.hero2 .rating .stars{color:var(--gold-300);font-size:1.05rem;letter-spacing:3px}
+.hero2 .rating span{font-size:.86rem;color:#f0ece1;letter-spacing:.04em}
+.hero2 h1{color:var(--ivory);font-size:clamp(2.8rem,6vw,5.4rem);line-height:1.02}
+.hero2 .sub{color:#f0ece1;font-size:1.18rem;margin-top:22px;max-width:48ch}
+.hero2 .ing-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.hero2 .ing-tags span{font-size:.78rem;letter-spacing:.04em;padding:7px 15px;border:1px solid rgba(255,255,255,.3);border-radius:50px;color:#f0ece1}
+.hero2-cta{display:flex;gap:16px;flex-wrap:wrap;margin-top:34px}
+.hero2-scroll{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;color:rgba(255,255,255,.7);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
+.hero2-scroll::after{content:"";width:1px;height:34px;background:rgba(255,255,255,.5);animation:scrollLine 1.8s ease-in-out infinite}
+@keyframes scrollLine{0%,100%{opacity:.3;transform:scaleY(.5)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ---------- Numbered philosophy cards (01-04) ---------- */
+.philo-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.philo-item{padding:40px 32px;border-right:1px solid var(--line);transition:.4s var(--ease)}
+.philo-item:last-child{border-right:0}
+.philo-item:hover{background:var(--cream)}
+.philo-item .num{font-family:var(--serif);font-size:2.4rem;color:var(--gold-500);line-height:1;display:block;margin-bottom:16px}
+.philo-item h4{font-family:var(--serif);font-size:1.4rem;margin-bottom:10px}
+.philo-item p{font-size:.88rem;color:var(--muted);margin:0}
+
+/* ---------- Carousel ---------- */
+.carousel{position:relative}
+.carousel-track{display:flex;gap:26px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:6px 2px 12px;-ms-overflow-style:none;scrollbar-width:none}
+.carousel-track::-webkit-scrollbar{display:none}
+.carousel-track > *{flex:0 0 300px;scroll-snap-align:start}
+.carousel-nav{display:flex;gap:10px;position:absolute;top:-66px;right:0}
+.carousel-btn{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--paper);color:var(--green-800);display:flex;align-items:center;justify-content:center;transition:.25s}
+.carousel-btn:hover{background:var(--green-800);color:#fff;border-color:var(--green-800)}
+.carousel-btn svg{width:18px;height:18px}
+
+/* ---------- 3-step ritual ---------- */
+.ritual-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.ritual-card{text-align:center}
+.ritual-card .rc-img{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:1/1;background:var(--cream)}
+.ritual-card .rc-img img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease)}
+.ritual-card:hover .rc-img img{transform:scale(1.06)}
+.ritual-card .step-no{position:absolute;top:16px;left:16px;z-index:2;width:46px;height:46px;border-radius:50%;background:var(--ivory);color:var(--green-800);font-family:var(--serif);font-size:1.35rem;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm)}
+.ritual-card h4{font-family:var(--serif);font-size:1.4rem;margin:18px 0 6px}
+.ritual-card p{font-size:.9rem;color:var(--muted);margin:0}
+
+/* ---------- Ingredient stories ---------- */
+.ingredient-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.ing-card{text-align:center}
+.ing-card .ing-circle{aspect-ratio:1/1;border-radius:50%;overflow:hidden;border:1px solid var(--line);background:var(--cream);transition:.4s var(--ease)}
+.ing-card .ing-circle img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease)}
+.ing-card:hover .ing-circle{box-shadow:var(--shadow);transform:translateY(-4px)}
+.ing-card:hover .ing-circle img{transform:scale(1.08)}
+.ing-card h5{font-family:var(--serif);font-size:1.1rem;color:var(--green-900);margin:14px 0 2px}
+.ing-card p{font-size:.76rem;color:var(--muted);margin:0;line-height:1.4}
+
+/* ---------- Stats counters ---------- */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;text-align:center}
+.stat .num{font-family:var(--serif);font-size:clamp(2.6rem,5vw,3.8rem);color:var(--gold-300);line-height:1}
+.stat .lbl{margin-top:8px;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sage-100)}
+
+/* ---------- Testimonial carousel (auto) ---------- */
+.testi{position:relative;max-width:760px;margin:0 auto;text-align:center}
+.testi-slide{display:none}
+.testi-slide.active{display:block;animation:fadeUp .7s var(--ease)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.testi-slide .stars{color:var(--gold-600);font-size:1.1rem;letter-spacing:3px;margin-bottom:18px}
+.testi-slide .quote{font-family:var(--serif);font-size:1.7rem;line-height:1.45;color:var(--green-900)}
+.testi-slide .who{margin-top:22px}
+.testi-slide .who strong{color:var(--green-800)}
+.testi-slide .who span{color:var(--muted);font-size:.86rem}
+.testi-dots{display:flex;gap:10px;justify-content:center;margin-top:30px}
+.testi-dots button{width:9px;height:9px;border-radius:50%;background:var(--sage-300);transition:.3s}
+.testi-dots button.active{background:var(--gold-600);width:26px;border-radius:5px}
+
+/* ---------- Press / media ---------- */
+.press-row{display:flex;gap:50px;justify-content:center;align-items:center;flex-wrap:wrap}
+.press-item{text-align:center;opacity:.65;transition:.3s}
+.press-item:hover{opacity:1}
+.press-item .pname{font-family:var(--serif);font-size:1.5rem;color:var(--green-800);letter-spacing:.04em}
+.press-item .pdesc{font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+
+/* ---------- Instagram feed ---------- */
+.ig-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.ig-cell{position:relative;aspect-ratio:1/1;border-radius:var(--radius);overflow:hidden;display:block}
+.ig-cell img{width:100%;height:100%;object-fit:cover;transition:.5s var(--ease)}
+.ig-cell::after{content:"";position:absolute;inset:0;background:rgba(36,58,46,0);transition:.3s}
+.ig-cell:hover::after{background:rgba(36,58,46,.45)}
+.ig-cell .ig-ic{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;color:#fff;opacity:0;transition:.3s}
+.ig-cell:hover .ig-ic{opacity:1}
+.ig-cell:hover img{transform:scale(1.08)}
+.ig-cell .ig-ic svg{width:30px;height:30px}
+
+/* ---------- Discount code cards ---------- */
+.promo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.promo-card{border:1.5px dashed var(--gold-500);border-radius:var(--radius-lg);padding:26px 22px;background:var(--cream-2);text-align:center}
+.promo-card .pval{font-family:var(--serif);font-size:1.9rem;color:var(--green-800);line-height:1}
+.promo-card .pcond{font-size:.8rem;color:var(--muted);margin:8px 0 16px}
+.promo-card .pcode{display:flex;align-items:center;justify-content:center;gap:10px}
+.promo-card .pcode code{background:var(--paper);border:1px solid var(--line);border-radius:50px;padding:8px 16px;font-family:var(--sans);font-weight:600;color:var(--green-900);letter-spacing:.08em}
+.promo-card .copy-btn{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-700);font-weight:600}
+.promo-card .copy-btn:hover{color:var(--green-800)}
+
+/* ---------- Deco line ---------- */
+.deco-line{display:inline-flex;align-items:center;gap:12px;color:var(--gold-600);font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;font-weight:600}
+.deco-line::before,.deco-line::after{content:"";width:28px;height:1px;background:var(--gold-500)}
+
+/* ---------- Responsive ---------- */
+@media(max-width:1080px){
+  .philo-grid{grid-template-columns:1fr 1fr}
+  .philo-item:nth-child(2){border-right:0}
+  .philo-item:nth-child(1),.philo-item:nth-child(2){border-bottom:1px solid var(--line)}
+  .ingredient-grid{grid-template-columns:repeat(3,1fr)}
+  .ig-grid{grid-template-columns:repeat(4,1fr)}
+  .promo-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  .ritual-grid{grid-template-columns:1fr;gap:22px}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:34px 20px}
+  .hero2-scroll{display:none}
+  .carousel-nav{position:static;justify-content:center;margin-top:18px}
+}
+@media(max-width:560px){
+  .philo-grid{grid-template-columns:1fr}
+  .philo-item{border-right:0;border-bottom:1px solid var(--line)}
+  .ingredient-grid{grid-template-columns:repeat(2,1fr)}
+  .ig-grid{grid-template-columns:repeat(3,1fr)}
+  .promo-grid{grid-template-columns:1fr}
+  .carousel-track > *{flex-basis:80%}
+  .testi-slide .quote{font-size:1.3rem}
+}
+
+/* =========================================================
+   LIGHT / MINIMAL OVERRIDES — "giống Radiance + màu Nhành"
+   (đặt cuối file để override các rule phía trên)
+   ========================================================= */
+
+/* Marquee sáng */
+.marquee{background:var(--cream);color:var(--green-800);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.marquee-track strong{color:var(--gold-700)}
+
+/* Hero sáng, căn giữa kiểu Radiance */
+.hero2{min-height:88vh;background:var(--cream-2);text-align:center;justify-content:center}
+.hero2-bg img{opacity:1;filter:saturate(1.02)}
+.hero2::after{background:linear-gradient(180deg,rgba(251,247,240,.62) 0%,rgba(251,247,240,.78) 60%,rgba(251,247,240,.95) 100%)}
+.hero2-inner{max-width:840px;margin:0 auto;text-align:center;color:var(--green-900)}
+.hero2 .rating{justify-content:center}
+.hero2 .rating .stars{color:var(--gold-600)}
+.hero2 .rating span{color:var(--ink-soft)}
+.hero2 h1{color:var(--green-900);text-shadow:0 1px 16px rgba(251,247,240,.7)}
+.hero2 .sub{color:var(--ink-soft);margin-left:auto;margin-right:auto}
+.hero2 .ing-tags{justify-content:center}
+.hero2 .ing-tags span{border-color:var(--gold-300);color:var(--green-800);background:rgba(255,255,255,.5)}
+.hero2-cta{justify-content:center}
+.hero2-scroll{color:var(--green-700)}
+.hero2-scroll::after{background:var(--green-600)}
+
+/* Hero CTA: nút sáng có viền cho tông minimal */
+.hero2-cta .btn-light{border-color:var(--green-800);color:var(--green-800)}
+.hero2-cta .btn-light:hover{background:var(--green-800);color:var(--ivory)}
+
+/* Dải thống kê sáng (thay cho nền xanh đậm) */
+.stats-section{background:var(--cream)}
+.stats-section .stat .num{color:var(--green-800)}
+.stats-section .stat .lbl{color:var(--muted)}
+.stats-section .stat{padding:10px 0;border-right:1px solid var(--line)}
+.stats-section .stat:last-child{border-right:0}
+@media(max-width:900px){.stats-section .stat{border-right:0}}
+
+/* Newsletter sáng */
+.newsletter.light{background:var(--cream);color:var(--ink)}
+.newsletter.light h2{color:var(--green-900)}
+.newsletter.light .eyebrow{color:var(--gold-700)}
+.newsletter.light p{color:var(--ink-soft)}
+.newsletter.light .nl-form input{background:var(--paper);border-color:var(--line);color:var(--ink)}
+.newsletter.light .nl-form input::placeholder{color:var(--muted)}
+
+/* Banner BST: bo góc + tông nhẹ hơn cho hợp minimal */
+.section .banner::after{background:linear-gradient(90deg,rgba(36,58,46,.74),rgba(36,58,46,.12))}
+
+/* =========================================================
+   SCROLL HERO — sản phẩm to → thu nhỏ khi lướt (kiểu Radiance)
+   ========================================================= */
+.scrollhero{position:relative;height:340vh;background:var(--cream-2)}
+.sh-stage{position:sticky;top:0;height:100vh;min-height:620px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.sh-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--serif);font-weight:700;font-size:40vw;line-height:1;color:rgba(47,74,60,.055);white-space:nowrap;z-index:0;pointer-events:none;user-select:none;letter-spacing:-.02em}
+.sh-product{position:absolute;z-index:2;top:50%;left:50%;width:340px;height:440px;margin:-220px 0 0 -170px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg);will-change:transform;transform-origin:center center}
+.sh-product img{width:100%;height:100%;object-fit:cover}
+.sh-panels{position:absolute;inset:0;z-index:3}
+.sh-panel{position:absolute;inset:0;display:flex;align-items:center;opacity:0;transition:opacity .55s var(--ease),transform .55s var(--ease);pointer-events:none;transform:translateY(18px)}
+.sh-panel.active{opacity:1;transform:none;pointer-events:auto}
+.sh-panel .wrap{width:100%;position:relative;z-index:3}
+
+/* Panel 0 — slogan: chữ trái + phụ đề phải */
+.shp0 .p0-grid{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px}
+.shp0 .p0-left{position:relative;z-index:4}
+.shp0 h1{font-size:clamp(2.6rem,5.6vw,4.8rem);color:var(--green-900);line-height:1.03}
+.shp0 .rating{display:flex;align-items:center;gap:12px;margin-top:24px}
+.shp0 .rating .stars{color:var(--gold-600);letter-spacing:3px;font-size:1.05rem}
+.shp0 .rating span{font-size:.86rem;color:var(--ink-soft)}
+.shp0 .p0-right{text-align:right;color:var(--ink-soft);font-size:1.18rem;line-height:1.5;position:relative;z-index:4}
+.shp0 .hero2-cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+
+/* Panel 1 — thành phần: chữ căn giữa */
+.shp1{justify-content:center;text-align:center}
+.shp1 h2{font-size:clamp(2rem,4.4vw,3.4rem);color:var(--green-900);line-height:1.12;max-width:16ch;margin:0 auto}
+
+/* Panel 2 — triết lý: số 01 + chữ trái */
+.shp2 .p2-left{max-width:46%;position:relative;z-index:4}
+.shp2 .p2-num{display:inline-block;background:var(--gold-100);color:var(--gold-700);font-family:var(--serif);font-size:1.1rem;padding:4px 14px;border-radius:50px;margin-bottom:18px}
+.shp2 h2{font-size:clamp(2rem,4vw,3rem);color:var(--green-900);line-height:1.08;margin-bottom:18px}
+.shp2 p{color:var(--ink-soft);line-height:1.7}
+
+.sh-hint{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);z-index:5;color:var(--green-700);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px;transition:opacity .4s}
+.sh-hint::after{content:"";width:1px;height:30px;background:var(--green-600);animation:scrollLine 1.8s ease-in-out infinite}
+
+@media(max-width:900px){
+  .scrollhero{height:300vh}
+  .sh-product{width:230px;height:300px;margin:-150px 0 0 -115px}
+  .sh-watermark{font-size:62vw}
+  .shp0 .p0-grid{grid-template-columns:1fr;gap:18px;text-align:center}
+  .shp0 .p0-right{text-align:center}
+  .shp0 .rating,.shp0 .hero2-cta{justify-content:center}
+  .shp2 .p2-left{max-width:100%;text-align:center}
+}
+
+/* =========================================================
+   HOMEPAGE v3 — tinh gọn sản phẩm, đẹp hơn (Cocoon + Radiance)
+   ========================================================= */
+
+/* Best-seller kiểu Cocoon: tiêu đề serif lớn trái + carousel phải */
+.bs-layout{display:grid;grid-template-columns:310px 1fr;gap:48px;align-items:center}
+.bs-intro .bs-title{font-family:var(--serif);font-size:clamp(2.4rem,4vw,3.6rem);color:var(--green-900);line-height:1.04;margin:10px 0 14px}
+.bs-intro p{color:var(--muted);font-size:.96rem;max-width:34ch}
+.bs-controls{display:flex;align-items:center;gap:22px;margin-top:28px}
+.bs-track-wrap{overflow:hidden;min-width:0}
+@media(max-width:900px){.bs-layout{grid-template-columns:1fr;gap:24px}}
+
+/* Thẻ "bước" có ảnh + overlay (kiểu Radiance) */
+.step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.step-card .sc-img{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4;background:var(--cream)}
+.step-card .sc-img img{width:100%;height:100%;object-fit:cover;transition:.7s var(--ease)}
+.step-card:hover .sc-img img{transform:scale(1.06)}
+.step-card .sc-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(36,58,46,0) 38%,rgba(36,58,46,.82))}
+.step-card .sc-overlay{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:22px;color:#fff}
+.step-card .sc-pill{display:inline-block;background:var(--ivory);color:var(--green-800);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:5px 12px;border-radius:50px;margin-bottom:10px}
+.step-card .sc-overlay h4{font-family:var(--serif);color:#fff;font-size:1.35rem;line-height:1.1;margin-bottom:6px}
+.step-card .sc-overlay p{color:rgba(255,255,255,.86);font-size:.82rem;margin:0;line-height:1.45}
+@media(max-width:900px){.step-grid{grid-template-columns:1fr 1fr;gap:16px}}
+@media(max-width:560px){.step-grid{grid-template-columns:1fr}}
+
+/* Khối editorial xen kẽ chữ/ảnh */
+.edi-row{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:64px}
+.edi-row:last-child{margin-bottom:0}
+.edi-row.reverse .edi-media{order:-1}
+.edi-media{display:flex;justify-content:center}
+.edi-media img{width:auto;max-width:100%;height:auto;max-height:520px;aspect-ratio:auto;object-fit:contain;border-radius:16px;box-shadow:var(--shadow)}
+.edi-text h2{font-size:clamp(1.9rem,3.2vw,2.7rem);color:var(--green-900);line-height:1.1;margin:8px 0 14px}
+.edi-text p{color:var(--ink-soft);font-size:1.05rem;line-height:1.7}
+@media(max-width:900px){
+  .edi-row{grid-template-columns:1fr;gap:26px;margin-bottom:44px}
+  .edi-row.reverse .edi-media{order:0}
+}
+
+/* =========================================================
+   HOMEPAGE v4 — hero ảnh cut-out + deck 4 bước (Radiance)
+   ========================================================= */
+
+/* Hero cao hơn cho 4 panel */
+.scrollhero{height:420vh}
+@media(max-width:900px){.scrollhero{height:340vh}}
+
+/* Sản phẩm hero = ảnh cut-out trong suốt (bỏ card/shadow) */
+.sh-product{width:470px;height:610px;margin:-305px 0 0 -235px;border-radius:0;overflow:visible;box-shadow:none;background:none;filter:drop-shadow(0 30px 50px rgba(36,58,46,.22))}
+.sh-product .sh-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .45s ease}
+.sh-product .sh-only{opacity:0}
+@media(max-width:900px){.sh-product{width:300px;height:390px;margin:-195px 0 0 -150px}}
+
+/* Panel slogan: chỉ chữ trái (bỏ cột phải để không đè sản phẩm) */
+.shp0 .p0-grid{grid-template-columns:1fr}
+.shp0 .p0-left{max-width:54%}
+@media(max-width:900px){.shp0 .p0-left{max-width:100%}}
+
+/* ---------- DECK 4 bước (thẻ xếp chồng kiểu Radiance) ---------- */
+.deck-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.deck-intro h2{font-size:clamp(2rem,3.6vw,2.9rem);color:var(--green-900);line-height:1.08;margin:10px 0 14px}
+.deck-counter{font-family:var(--serif);font-size:1.5rem;color:var(--muted);margin:26px 0 16px}
+.deck-counter b{color:var(--green-900)}
+.deck-nav{display:flex;gap:12px}
+.deck{position:relative;height:560px}
+.deck-card{position:absolute;top:0;left:0;width:78%;height:100%;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);transition:transform .6s var(--ease),opacity .6s var(--ease);transform-origin:center left;will-change:transform}
+.deck-card img{width:100%;height:100%;object-fit:cover}
+.deck-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(36,58,46,0) 42%,rgba(36,58,46,.82))}
+.deck-card .sc-overlay{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:30px;color:#fff}
+.deck-card .sc-pill{display:inline-block;background:var(--ivory);color:var(--green-800);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:6px 14px;border-radius:50px;margin-bottom:12px}
+.deck-card .sc-overlay h4{font-family:var(--serif);color:#fff;font-size:1.7rem;line-height:1.1;margin-bottom:8px}
+.deck-card .sc-overlay p{color:rgba(255,255,255,.88);font-size:.92rem;margin:0;line-height:1.5;max-width:34ch}
+@media(max-width:900px){
+  .deck-layout{grid-template-columns:1fr;gap:34px}
+  .deck{height:440px}
+  .deck-card{width:88%}
+}
+
+/* ---------- Testimonials: chữ mờ lớn phía sau ---------- */
+.testi-section{position:relative;overflow:hidden}
+.testi-bgword{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--serif);font-weight:700;font-size:22vw;line-height:1;color:rgba(47,74,60,.05);white-space:nowrap;pointer-events:none;user-select:none;z-index:0}
+.testi-section .wrap{position:relative;z-index:2}
+
+/* =========================================================
+   v5 — panel chữ canh trái (không đè sản phẩm bên phải)
+   ========================================================= */
+.shp1{justify-content:flex-start;text-align:left}
+.shp1 h2{max-width:50%;margin:0}
+.shp0 .p0-left{max-width:50%}
+.shp2 .p2-left{max-width:50%}
+@media(max-width:900px){
+  .shp1 h2,.shp0 .p0-left,.shp2 .p2-left{max-width:100%}
+}
+
+/* =========================================================
+   v6 — best-seller: link + cụm mũi tên gọn gàng
+   ========================================================= */
+.bs-all{display:inline-flex;margin-top:26px}
+.bs-arrows{display:flex;gap:12px;margin-top:24px}
+.bs-arrows .carousel-btn{width:50px;height:50px}
+
+/* =========================================================
+   v7 — Best-seller card kiểu Cocoon + mũi tên overlay
+   ========================================================= */
+/* Bỏ snap để auto-scroll mượt; cụm mũi tên cũ ở intro ẩn đi */
+#bestseller{scroll-snap-type:none}
+.bs-arrows{display:none}
+
+.bs-track-wrap{position:relative}
+.bs-arrow{position:absolute;top:33%;transform:translateY(-50%);z-index:6;width:52px;height:52px;border-radius:12px;background:rgba(36,58,46,.92);color:#fff;display:flex;align-items:center;justify-content:center;transition:.25s;box-shadow:var(--shadow)}
+.bs-arrow:hover{background:var(--green-900);transform:translateY(-50%) scale(1.06)}
+.bs-arrow svg{width:20px;height:20px}
+.bs-arrow-prev{left:8px}
+.bs-arrow-next{right:8px}
+
+/* Thẻ Cocoon-style */
+.bs-card{background:transparent;display:flex;flex-direction:column}
+.bs-card .bsc-img{display:block;aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:var(--cream-2)}
+.bs-card .bsc-img img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease)}
+.bs-card:hover .bsc-img img{transform:scale(1.05)}
+.bsc-cat{display:block;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:18px}
+.bsc-name{font-family:var(--serif);font-size:1.35rem;color:var(--green-900);line-height:1.15;margin:6px 0 7px}
+.bsc-short{font-size:.85rem;color:var(--muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.5em}
+.bsc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.bsc-price{font-weight:700;color:var(--green-800);font-size:1.08rem}
+.bsc-add{width:50px;height:50px;border-radius:12px;background:var(--cream);color:var(--green-800);display:flex;align-items:center;justify-content:center;transition:.3s;flex:none}
+.bsc-add:hover{background:var(--green-800);color:#fff}
+.bsc-add svg{width:22px;height:22px}
+@media(max-width:560px){.bs-arrow{display:none}}
+
+/* =========================================================
+   v8 — best-seller dùng TRANSFORM (auto-trượt chạy mọi nơi)
+   ========================================================= */
+#bestseller{overflow:visible;scroll-snap-type:none;transition:transform .6s var(--ease);will-change:transform}
+
+/* =========================================================
+   v9 — Deck 4 bước: cuộn để chuyển bước (pinned kiểu Radiance)
+   ========================================================= */
+.deck-scroll{position:relative;height:300vh}
+.deck-stage{position:sticky;top:0;min-height:100vh;display:flex;align-items:center}
+@media(max-width:900px){
+  .deck-scroll{height:auto}
+  .deck-stage{position:static;min-height:0;padding:60px 0}
+}
+
+/* =========================================================
+   v10 — Gallery "Việt Nam trong Hương" (tôn vinh bộ sưu tập)
+   ========================================================= */
+.collection-feature{background:var(--green-900);color:var(--cream)}
+.collection-feature .deco-line{color:var(--gold-300)}
+.collection-feature h2{color:var(--ivory)}
+.collection-feature .lead{color:var(--sage-100);max-width:60ch}
+.vn-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:46px}
+.vn-card{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4.3;display:block;background:var(--green-800);box-shadow:var(--shadow)}
+.vn-card img{width:100%;height:100%;object-fit:cover;transition:.7s var(--ease)}
+.vn-card:hover img{transform:scale(1.07)}
+.vn-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,32,26,0) 38%,rgba(20,32,26,.82))}
+.vn-tone{position:absolute;top:16px;left:50%;transform:translateX(-50%);width:32px;height:5px;border-radius:3px;z-index:3}
+.vn-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:22px 16px;text-align:center}
+.vn-scent{display:block;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-300);margin-bottom:5px}
+.vn-card h3{color:#fff;font-family:var(--serif);font-size:1.35rem;line-height:1.1}
+.vn-card .vn-go{display:inline-block;margin-top:10px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.85);border-bottom:1px solid var(--gold-500);padding-bottom:3px;opacity:0;transform:translateY(8px);transition:.35s var(--ease)}
+.vn-card:hover .vn-go{opacity:1;transform:none}
+@media(max-width:1080px){.vn-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:620px){.vn-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+
+/* ===== GIFT SET SPLIT (trang chủ) — ảnh gọn + nhãn thiệp viết tay ===== */
+.gift-media{position:relative;display:flex;justify-content:center;align-items:flex-start}
+.split-media.gift-media img{max-width:420px;width:100%;height:auto;aspect-ratio:auto;object-fit:contain;margin:0 auto;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)}
+.gift-tag{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:9px;background:var(--green-800);color:#fff;padding:11px 22px;border-radius:50px;box-shadow:var(--shadow);font-size:.78rem;letter-spacing:.06em;font-weight:600;white-space:nowrap}
+.gift-tag svg{width:17px;height:17px;color:var(--gold-300);flex:none}
+@media(max-width:620px){.split-media.gift-media img{max-width:320px}.gift-tag{font-size:.72rem;padding:9px 16px}}

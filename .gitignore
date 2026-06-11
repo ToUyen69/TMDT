@@ -1,0 +1,15 @@
+# Claude Code local config (không đẩy lên)
+.claude/
+
+# Ảnh gốc PNG (bản lưu nội bộ — web dùng bản .jpg đã tối ưu)
+public/_originals_png/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# Temp
+*.tmp
+_*.py

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Trách nhiệm cộng đồng — Nhành</title>
+<meta name="description" content="Trách nhiệm cộng đồng của Nhành: trồng cây, thu hồi vỏ chai, đồng hành cùng vùng nguyên liệu và minh bạch gây quỹ Hương Sẻ Chia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+<style>
+  /* số liệu */
+  .pledge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+  .pledge .num{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.2rem);color:var(--gold-700);line-height:1}
+  .pledge .lbl{margin-top:8px;font-size:.84rem;color:var(--muted);letter-spacing:.04em}
+  /* các bước */
+  .steps-list{counter-reset:s;margin-top:18px;display:flex;flex-direction:column;gap:14px}
+  .steps-list li{counter-increment:s;display:flex;gap:14px;align-items:flex-start}
+  .steps-list li::before{content:counter(s);flex:none;width:32px;height:32px;border-radius:50%;background:var(--green-800);color:#fff;font-family:var(--serif);display:flex;align-items:center;justify-content:center;font-size:1rem}
+  /* nguồn cội */
+  .root-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .root-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column}
+  .root-card img{width:100%;height:210px;object-fit:cover;display:block}
+  .root-card .rc-body{padding:24px 26px}
+  .root-card .rc-tag{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-700);font-weight:600}
+  .root-card h4{font-family:var(--serif);font-size:1.5rem;color:var(--green-900);margin:6px 0 8px}
+  .root-card p{color:var(--ink-soft);font-size:.94rem;line-height:1.7}
+  /* lộ trình */
+  .roadmap{max-width:840px;margin:0 auto}
+  .rm-item{display:grid;grid-template-columns:128px 1fr;gap:28px;padding:22px 0;border-bottom:1px solid var(--line-soft);align-items:start}
+  .rm-item:last-child{border-bottom:0}
+  .rm-year{font-family:var(--serif);font-size:2rem;color:var(--gold-700);line-height:1}
+  .rm-item p{color:var(--ink-soft);line-height:1.7}
+  /* minh bạch gây quỹ */
+  .fund-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:30px 34px}
+  .fund-how{list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:14px}
+  .fund-how li{display:flex;gap:13px;align-items:flex-start;color:var(--ink-soft);line-height:1.65}
+  .fund-how li svg{flex:none;width:20px;height:20px;color:var(--green-700);margin-top:3px}
+  .fund-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;text-align:center}
+  .alloc{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+  .alloc .al-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;flex-wrap:wrap;gap:4px}
+  .alloc .al-name{font-weight:600;color:var(--green-900)}
+  .alloc .al-amt{color:var(--gold-700);font-weight:700;white-space:nowrap}
+  .al-bar{height:12px;background:var(--cream-2);border-radius:50px;overflow:hidden;border:1px solid var(--line-soft)}
+  .al-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--green-700),var(--green-600,#3a5a48))}
+  .al-fill.gold{background:linear-gradient(90deg,var(--gold-600),var(--gold-500,#d4b46a))}
+  /* sổ chi tiết */
+  .ledger{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+  .ledger-item{background:var(--paper);border:1px solid var(--line-soft);border-left:4px solid var(--green-700);border-radius:var(--radius-lg);padding:28px 32px}
+  .ledger-item.pending{border-left-color:var(--gold-600)}
+  .ledger-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+  .ledger-head h4{font-family:var(--serif);font-size:1.45rem;color:var(--green-900)}
+  .status-badge{font-size:.72rem;letter-spacing:.06em;padding:5px 13px;border-radius:50px;font-weight:600;white-space:nowrap}
+  .status-done{background:rgba(47,74,60,.12);color:var(--green-800)}
+  .status-pending{background:rgba(193,154,77,.18);color:var(--gold-700)}
+  .ledger-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;margin-bottom:16px}
+  .ledger-meta div{font-size:.92rem;color:var(--ink-soft)}
+  .ledger-meta b{color:var(--green-900);font-weight:600}
+  .ledger-sub{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-700);font-weight:600;margin-bottom:8px}
+  .ledger-use{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+  .ledger-use li{display:flex;justify-content:space-between;gap:16px;font-size:.92rem;color:var(--ink-soft);padding:7px 0;border-bottom:1px dashed var(--line-soft)}
+  .ledger-use li span:last-child{color:var(--green-800);font-weight:600;white-space:nowrap}
+  .ledger-proof{font-size:.88rem;color:var(--muted);font-style:italic;line-height:1.6;background:var(--cream);border-radius:var(--radius);padding:12px 16px}
+  /* poster chiến dịch — khung nhỏ, bo tròn, đổ bóng */
+  .campaign-media{display:flex;justify-content:center}
+  .campaign-media img{max-width:480px;width:100%;height:auto;aspect-ratio:auto;object-fit:contain;border-radius:18px;box-shadow:0 26px 60px -20px rgba(36,58,46,.5);border:1px solid var(--line-soft);transition:transform .55s cubic-bezier(.22,1,.36,1),box-shadow .55s}
+  .campaign-media img:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 38px 78px -18px rgba(36,58,46,.6)}
+  /* hover zoom ảnh vùng nguyên liệu */
+  .root-card img{transition:transform .6s cubic-bezier(.22,1,.36,1)}
+  .root-card:hover img{transform:scale(1.06)}
+  /* thanh phân bổ chạy fill */
+  .al-fill{width:0;transition:width 1.5s cubic-bezier(.22,1,.36,1)}
+  @media(max-width:860px){.pledge-grid{grid-template-columns:1fr 1fr;gap:28px 16px}.fund-stats{grid-template-columns:1fr 1fr 1fr}.root-grid{grid-template-columns:1fr}.ledger-meta{grid-template-columns:1fr}.rm-item{grid-template-columns:80px 1fr;gap:18px}.rm-year{font-size:1.6rem}.campaign-media img{max-width:300px}}
+</style>
+</head>
+<body>
+
+<!-- KHU VỰC 1 — HERO -->
+<section class="page-hero" style="background:var(--green-900)">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--gold-300)">Trách nhiệm cộng đồng</span>
+    <h1 style="color:var(--ivory)">Sống xanh, sẻ chia yêu thương</h1>
+    <p style="color:var(--sage-100)">Với Nhành, kinh doanh không tách rời trách nhiệm với thiên nhiên và cộng đồng. Chúng tôi cam kết trồng cây, giảm rác thải bao bì và đóng góp một phần doanh thu cho các hoạt động vì môi trường Việt Nam.</p>
+  </div>
+</section>
+
+<!-- số liệu -->
+<section class="section-sm bg-cream">
+  <div class="wrap">
+    <div class="pledge-grid">
+      <div class="pledge reveal"><div class="num">1.200+</div><div class="lbl">Cây xanh đã trồng</div></div>
+      <div class="pledge reveal"><div class="num">5.000+</div><div class="lbl">Vỏ chai được thu hồi</div></div>
+      <div class="pledge reveal"><div class="num">83,7tr</div><div class="lbl">Đồng đã gây quỹ</div></div>
+      <div class="pledge reveal"><div class="num">100%</div><div class="lbl">Bao bì có thể tái chế</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KHU VỰC 2 — TRIẾT LÝ -->
+<section class="section">
+  <div class="narrow center reveal">
+    <span class="eyebrow">Triết lý</span>
+    <h2 class="mt-1">Hương thơm bắt đầu từ đất</h2>
+    <p class="lead mt-2">Mỗi chai Body Mist của Nhành mang trong mình một miền ký ức Việt — sương Đà Lạt, sen Tây Hồ, cà phê Đắk Lắk. Nhưng những vùng đất ấy chỉ tiếp tục trao cho ta mùi hương khi chúng còn được gìn giữ. Vì thế, với Nhành, chăm sóc thiên nhiên không phải một chiến dịch — đó là cách chúng tôi giữ lấy chính nguồn cội của mình.</p>
+  </div>
+</section>
+
+<!-- KHU VỰC 3 — CHƯƠNG TRÌNH -->
+<section class="section bg-cream">
+  <div class="wrap">
+    <div class="section-head center reveal"><span class="eyebrow">Chương trình</span><h2>Cùng Nhành sống xanh mỗi ngày</h2><p class="lead mt-1">Những hành động nhỏ, lặp lại mỗi ngày — để thiên nhiên Việt Nam mãi xanh.</p></div>
+    <div class="icon-cards" id="programs"></div>
+  </div>
+</section>
+
+<!-- KHU VỰC 4 — CHIẾN DỊCH NỔI BẬT -->
+<section class="section">
+  <div class="wrap split">
+    <div class="split-media campaign-media reveal"><img src="../public/logo/thu hồi.png" alt="Thu hồi vỏ chai Nhành"></div>
+    <div class="reveal">
+      <span class="eyebrow">Chiến dịch nổi bật</span>
+      <h2>Thu hồi vỏ chai — Gửi lại mầm xanh</h2>
+      <p class="lead mt-2">Mang 5 vỏ chai/hũ Nhành đã dùng hết đến cửa hàng, bạn nhận ưu đãi cho lần mua kế tiếp — đồng thời góp một cây xanh được trồng tại rừng đầu nguồn.</p>
+      <ul class="steps-list">
+        <li>Gom đủ 5 vỏ chai/hũ Nhành đã qua sử dụng.</li>
+        <li>Mang đến điểm chiến dịch hoặc gửi kèm đơn hàng kế tiếp.</li>
+        <li>Nhận voucher ưu đãi &amp; chứng nhận “một mầm xanh” mang tên bạn.</li>
+      </ul>
+      <a class="btn btn-primary mt-3" href="contact.html">Tham gia ngay</a>
+    </div>
+  </div>
+</section>
+
+<!-- KHU VỰC 5 — NGUỒN CỘI -->
+<section class="section bg-cream">
+  <div class="wrap">
+    <div class="section-head center reveal"><span class="eyebrow">Nguồn cội</span><h2>Từ nơi hương bắt đầu</h2><p class="lead mt-1">Nguyên liệu của Nhành đến từ chính những vùng đất Việt Nam. Chúng tôi thu mua với giá công bằng và đồng hành dài lâu cùng người trồng — bởi giữ gìn vùng nguyên liệu cũng là giữ gìn mùi hương.</p></div>
+    <div class="root-grid">
+      <div class="root-card reveal">
+        <img src="../public/logo/dalat.jpg" alt="Đà Lạt">
+        <div class="rc-body"><span class="rc-tag">Đà Lạt · Tinh dầu thông &amp; hoa</span><h4>Sương phố núi</h4><p>Hợp tác cùng nông hộ canh tác theo hướng hữu cơ, hạn chế hoá chất để giữ rừng thông đầu nguồn luôn xanh.</p></div>
+      </div>
+      <div class="root-card reveal">
+        <img src="../public/logo/Đắk Lắk.jpg" alt="Đắk Lắk">
+        <div class="rc-body"><span class="rc-tag">Đắk Lắk · Cà phê</span><h4>Hương đất bazan</h4><p>Thu mua từ hợp tác xã địa phương và trao học bổng cho con em người trồng cà phê mỗi mùa thu hoạch.</p></div>
+      </div>
+      <div class="root-card reveal">
+        <img src="../public/logo/sen.png" alt="Tây Hồ">
+        <div class="rc-body"><span class="rc-tag">Tây Hồ · Sen</span><h4>Nghề ướp sen</h4><p>Đồng hành cùng làng nghề ướp sen truyền thống, hỗ trợ phụ nữ địa phương duy trì nghề và nguồn thu ổn định.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KHU VỰC 6 — CAM KẾT SẢN PHẨM -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head center reveal"><span class="eyebrow">Cam kết sản phẩm</span><h2>Lành với da, lành với muôn loài</h2><p class="lead mt-1">Sự tử tế của Nhành bắt đầu ngay trong từng công thức — an toàn cho người dùng và không gây hại cho bất kỳ sinh vật nào.</p></div>
+    <div class="icon-cards" id="commit"></div>
+  </div>
+</section>
+
+<!-- KHU VỰC 7 — ĐỊNH HƯỚNG / LỘ TRÌNH -->
+<section class="section bg-cream">
+  <div class="wrap">
+    <div class="section-head center reveal"><span class="eyebrow">Định hướng</span><h2>Những mầm xanh kế tiếp</h2><p class="lead mt-1">Cam kết của Nhành không dừng ở hôm nay. Đây là lộ trình chúng tôi đặt ra cho hành trình xanh phía trước.</p></div>
+    <div class="roadmap">
+      <div class="rm-item reveal"><div class="rm-year">2026</div><p>Phủ xanh <strong>5.000 cây</strong> tại rừng đầu nguồn và đưa 100% bao bì giấy sang vật liệu tái chế.</p></div>
+      <div class="rm-item reveal"><div class="rm-year">2027</div><p>Loại bỏ hoàn toàn nhựa nguyên sinh khỏi bao bì; thử nghiệm <strong>3 trạm refill Body Mist</strong> tại TP.HCM.</p></div>
+      <div class="rm-item reveal"><div class="rm-year">2028</div><p>Trung hoà carbon cho toàn bộ khâu vận chuyển; Quỹ Hương Sẻ Chia chạm mốc <strong>1 tỷ đồng</strong>.</p></div>
+      <div class="rm-item reveal"><div class="rm-year">2030</div><p>Đồng hành cùng <strong>1.000 hộ nông dân</strong> tại các vùng nguyên liệu trên cả nước.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- KHU VỰC 8 — MINH CHỨNG GÂY QUỸ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head center reveal"><span class="eyebrow">Minh bạch</span><h2>Bản tin minh chứng gây quỹ</h2><p class="lead mt-1">Quỹ <em>Hương Sẻ Chia</em> trích 1% doanh thu thuần mỗi quý cho cộng đồng. Mỗi đồng vào quỹ đều được công khai số tiền, nơi đến và minh chứng cụ thể.</p></div>
+
+    <!-- Khối 1 — Cách quỹ hoạt động -->
+    <div class="narrow" style="margin-bottom:46px">
+      <div class="fund-card reveal">
+        <h3 style="font-family:var(--serif);font-size:1.5rem;color:var(--green-900);margin-bottom:6px">Quỹ vận hành thế nào?</h3>
+        <ul class="fund-how" id="fundHow"></ul>
+      </div>
+    </div>
+
+    <!-- Khối 2 — Tổng quan lũy kế -->
+    <div class="section-head center reveal" style="margin-bottom:26px"><span class="eyebrow">Lũy kế đến hết Quý II/2026</span><h3 style="font-family:var(--serif);font-size:1.7rem;color:var(--green-900)">Đến hôm nay, chúng ta đã cùng nhau làm được</h3></div>
+    <div class="fund-stats reveal" style="margin-bottom:56px">
+      <div class="pledge"><div class="num">83,7tr</div><div class="lbl">Tổng đã trích vào quỹ</div></div>
+      <div class="pledge"><div class="num">100%</div><div class="lbl">Đã giải ngân</div></div>
+      <div class="pledge"><div class="num">2</div><div class="lbl">Dự án đã hoàn thành</div></div>
+      <div class="pledge"><div class="num">1.200</div><div class="lbl">Cây xanh đã trồng</div></div>
+      <div class="pledge"><div class="num">30</div><div class="lbl">Trẻ em được hỗ trợ</div></div>
+    </div>
+
+    <!-- Khối 3 — Phân bổ -->
+    <div class="section-head center reveal" style="margin-bottom:26px"><span class="eyebrow">Phân bổ theo mục đích</span><h3 style="font-family:var(--serif);font-size:1.7rem;color:var(--green-900)">Quỹ được dùng cho</h3></div>
+    <div class="alloc reveal" style="margin-bottom:56px">
+      <div>
+        <div class="al-top"><span class="al-name">🌳 Phủ xanh &amp; bảo vệ môi trường</span><span class="al-amt">38.500.000đ · 46%</span></div>
+        <div class="al-bar"><div class="al-fill" data-w="46%"></div></div>
+      </div>
+      <div>
+        <div class="al-top"><span class="al-name">📚 Giáo dục &amp; trẻ em vùng nguyên liệu</span><span class="al-amt">45.200.000đ · 54%</span></div>
+        <div class="al-bar"><div class="al-fill gold" data-w="54%"></div></div>
+      </div>
+    </div>
+
+    <!-- Khối 4 — Sổ chi tiết từng quý -->
+    <div class="section-head center reveal" style="margin-bottom:26px"><span class="eyebrow">Sổ chi tiết</span><h3 style="font-family:var(--serif);font-size:1.7rem;color:var(--green-900)">Từng đồng, từng dự án</h3></div>
+    <div class="ledger" style="margin-bottom:56px">
+
+      <div class="ledger-item reveal">
+        <div class="ledger-head"><h4>Quý I/2026 — Phủ xanh rừng đầu nguồn Lâm Đồng</h4><span class="status-badge status-done">✓ Đã hoàn thành &amp; nghiệm thu</span></div>
+        <div class="ledger-meta">
+          <div><b>Địa điểm:</b> Rừng đầu nguồn, tỉnh Lâm Đồng</div>
+          <div><b>Đối tác thực hiện:</b> (vườn ươm/tổ chức trồng rừng — đang cập nhật)</div>
+          <div><b>Đối tượng hưởng lợi:</b> Hệ sinh thái rừng đầu nguồn &amp; cộng đồng hạ nguồn</div>
+          <div><b>Số tiền giải ngân:</b> <span style="color:var(--green-800);font-weight:700">38.500.000đ</span></div>
+        </div>
+        <div class="ledger-sub">Chi tiết sử dụng</div>
+        <ul class="ledger-use">
+          <li><span>Cây giống bản địa (1.200 cây)</span><span>14.400.000đ</span></li>
+          <li><span>Công trồng &amp; chăm sóc năm đầu</span><span>18.100.000đ</span></li>
+          <li><span>Giám sát, định vị GPS &amp; nghiệm thu</span><span>6.000.000đ</span></li>
+        </ul>
+        <div class="ledger-proof">Minh chứng: biên bản nghiệm thu trồng rừng; bộ ảnh hiện trường trước/sau; tọa độ GPS khu vực trồng. <em>(Hồ sơ đính kèm — đang cập nhật)</em></div>
+      </div>
+
+      <div class="ledger-item reveal">
+        <div class="ledger-head"><h4>Quý II/2026 — Học bổng cho trẻ em vùng cà phê Đắk Lắk</h4><span class="status-badge status-done">✓ Đã hoàn thành &amp; trao tận tay</span></div>
+        <div class="ledger-meta">
+          <div><b>Địa điểm:</b> Vùng trồng cà phê, tỉnh Đắk Lắk</div>
+          <div><b>Đối tác thực hiện:</b> (trường học/hội phụ nữ địa phương — đang cập nhật)</div>
+          <div><b>Đối tượng hưởng lợi:</b> 30 em nhỏ là con em người trồng cà phê</div>
+          <div><b>Số tiền giải ngân:</b> <span style="color:var(--green-800);font-weight:700">45.200.000đ</span></div>
+        </div>
+        <div class="ledger-sub">Chi tiết sử dụng</div>
+        <ul class="ledger-use">
+          <li><span>30 suất học bổng (1.200.000đ/suất)</span><span>36.000.000đ</span></li>
+          <li><span>Góc học tập &amp; dụng cụ (30 phần)</span><span>6.200.000đ</span></li>
+          <li><span>Chi phí tổ chức trao &amp; vận chuyển</span><span>3.000.000đ</span></li>
+        </ul>
+        <div class="ledger-proof">Minh chứng: danh sách học sinh nhận học bổng (đã ẩn thông tin cá nhân nhạy cảm); biên bản trao; bộ ảnh &amp; video buổi trao. <em>(Hồ sơ đính kèm — đang cập nhật)</em></div>
+      </div>
+
+      <div class="ledger-item pending reveal">
+        <div class="ledger-head"><h4>Quý III/2026 — Hỗ trợ phụ nữ làng nghề sen Tây Hồ</h4><span class="status-badge status-pending">● Đang trích lập</span></div>
+        <div class="ledger-meta">
+          <div><b>Địa điểm:</b> Làng nghề ướp sen, Tây Hồ</div>
+          <div><b>Đối tượng dự kiến:</b> Phụ nữ làm nghề ướp sen truyền thống</div>
+          <div><b>Số tiền:</b> Đang cập nhật — dự kiến công bố trước cuối Quý III</div>
+          <div><b>Định hướng sử dụng:</b> Hỗ trợ vốn nguyên liệu mùa sen &amp; giữ gìn nghề truyền thống</div>
+        </div>
+        <div class="ledger-proof">Báo cáo chi tiết kèm minh chứng sẽ được công bố trong vòng 30 ngày sau khi kết thúc quý.</div>
+      </div>
+
+    </div>
+
+    <!-- Khối 5 — Cam kết minh bạch -->
+    <div class="narrow">
+      <div class="fund-card reveal" style="background:var(--cream-2)">
+        <h3 style="font-family:var(--serif);font-size:1.5rem;color:var(--green-900);margin-bottom:6px">Bạn luôn có thể kiểm tra</h3>
+        <ul class="fund-how" id="fundTrust"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KHU VỰC 9 — CAM KẾT (nền xanh) -->
+<section class="section bg-green">
+  <div class="narrow center">
+    <span class="eyebrow">Cam kết</span>
+    <h2>Vì một Việt Nam xanh hơn</h2>
+    <p class="lead mt-2">Mỗi sản phẩm bán ra là một đóng góp nhỏ cho thiên nhiên và cộng đồng. Từ bao bì tái chế, mực in gốc thực vật đến đồng hành cùng người nông dân vùng nguyên liệu — Nhành tin rằng kinh doanh tử tế phải đi cùng trách nhiệm với nơi mình thuộc về.</p>
+    <a class="btn btn-gold mt-3" href="about.html#values">Tìm hiểu giá trị cốt lõi</a>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var NH = window.NH;
+
+  var programs = [
+    ['tree', 'Trồng lại nhành xanh', 'Với mỗi chai Body Mist BST bán ra, Nhành đóng góp trồng 1 cây xanh tại các khu rừng đầu nguồn Việt Nam.'],
+    ['recycle', 'Thu hồi vỏ chai', 'Mang 5 vỏ chai/hũ Nhành đã dùng hết đến cửa hàng để nhận ưu đãi cho lần mua kế tiếp, góp phần giảm rác thải nhựa.'],
+    ['box', 'Bao bì tối giản', 'Hộp giấy có thể tái chế, mực in gốc thực vật, hạn chế tối đa nhựa trong đóng gói.'],
+    ['heart', 'Quỹ Hương Sẻ Chia', '1% doanh thu mỗi quý được trích cho các chương trình hỗ trợ phụ nữ và trẻ em vùng nguyên liệu.']
+  ];
+  NH.qs('#programs').innerHTML = programs.map(function (p) {
+    return '<div class="icon-card reveal"><span class="ic">' + NH.icon[p[0]] + '</span><h4>' + p[1] + '</h4><p>' + p[2] + '</p></div>';
+  }).join('');
+
+  var commit = [
+    ['leaf', '100% Thuần chay', 'Không sử dụng bất kỳ thành phần nào có nguồn gốc từ động vật.'],
+    ['rabbit', 'Không thử nghiệm', 'Không bao giờ thử nghiệm trên động vật, ở mọi công đoạn.'],
+    ['tree', 'Thành phần thiên nhiên', 'Tinh dầu và chiết xuất thực vật, dịu nhẹ cho cả làn da nhạy cảm.'],
+    ['shield', 'Đạt chuẩn IFRA', 'Hương liệu tuân thủ tiêu chuẩn an toàn quốc tế IFRA.']
+  ];
+  NH.qs('#commit').innerHTML = commit.map(function (p) {
+    return '<div class="icon-card reveal"><span class="ic">' + NH.icon[p[0]] + '</span><h4>' + p[1] + '</h4><p>' + p[2] + '</p></div>';
+  }).join('');
+
+  var how = [
+    '<strong>Nguồn quỹ:</strong> 1% doanh thu thuần mỗi quý, được trích tự động.',
+    '<strong>Thời điểm trích lập:</strong> trong vòng 15 ngày sau khi chốt doanh thu quý.',
+    '<strong>Nguyên tắc 100%:</strong> toàn bộ số tiền trích lập đi thẳng đến cộng đồng. Chi phí vận hành quỹ do Nhành tự chi trả, không trừ vào quỹ.',
+    '<strong>Hai trụ cột ưu tiên:</strong> môi trường (phủ xanh, giảm rác thải) và con người (phụ nữ, trẻ em tại các vùng nguyên liệu của Nhành).',
+    '<strong>Công khai:</strong> báo cáo chi tiết kèm minh chứng được đăng trong vòng 30 ngày sau khi kết thúc mỗi quý.'
+  ];
+  NH.qs('#fundHow').innerHTML = how.map(function (h) { return '<li>' + NH.icon.check + '<span>' + h + '</span></li>'; }).join('');
+
+  var trust = [
+    'Mỗi báo cáo quý đều đính kèm minh chứng gốc: biên bản nghiệm thu/trao, hình ảnh, danh sách hưởng lợi (đã ẩn dữ liệu cá nhân).',
+    'Bản tin được lưu lại theo từng quý để bạn đối chiếu xuyên suốt.',
+    'Mọi thắc mắc về cách sử dụng quỹ, bạn có thể gửi yêu cầu xem hồ sơ qua email <strong>nhanhvietnam88@gmail.com</strong>.',
+    'Nhành cam kết: nếu một quý chưa giải ngân hết, số dư được chuyển tiếp sang quý sau và ghi rõ trong báo cáo, không giữ lại cho mục đích khác.'
+  ];
+  NH.qs('#fundTrust').innerHTML = trust.map(function (h) { return '<li>' + NH.icon.check + '<span>' + h + '</span></li>'; }).join('');
+
+  /* ----- Đếm số tăng dần ----- */
+  function animateNum(el) {
+    var raw = el.getAttribute('data-val');
+    var m = raw.match(/^(\D*)([\d.,]+)(.*)$/);
+    if (!m) { el.textContent = raw; return; }
+    var pre = m[1], numStr = m[2], suf = m[3];
+    var hasDec = numStr.indexOf(',') > -1;
+    var clean = numStr.replace(/\./g, '').replace(',', '.');
+    var target = parseFloat(clean);
+    var dec = hasDec ? ((clean.split('.')[1] || '').length) : 0;
+    var dur = 1400, start = 0;
+    function fmt(v) { return v.toLocaleString('vi-VN', { minimumFractionDigits: dec, maximumFractionDigits: dec }); }
+    if (document.hidden) { el.textContent = pre + fmt(target) + suf; return; }
+    function step(t) {
+      if (!start) start = t;
+      var p = Math.min((t - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = pre + fmt(target * eased) + suf;
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = pre + fmt(target) + suf;
+    }
+    requestAnimationFrame(step);
+  }
+
+  var nums = NH.qsa('.pledge .num');
+  nums.forEach(function (el) { el.setAttribute('data-val', el.textContent.trim()); el.textContent = '0'; });
+  var bars = NH.qsa('.al-fill');
+
+  function inView(el) {
+    var r = el.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    return r.top < vh - 30 && r.bottom > 0;
+  }
+  function check() {
+    nums.forEach(function (el) { if (!el._done && inView(el)) { el._done = 1; animateNum(el); } });
+    bars.forEach(function (el) { if (!el._done && inView(el)) { el._done = 1; el.style.width = el.getAttribute('data-w'); } });
+  }
+  window.addEventListener('scroll', check, { passive: true });
+  window.addEventListener('resize', check);
+  check();
+  setTimeout(check, 250);
+  // fallback an toàn: nếu vì lý do nào đó chưa chạy, hoàn tất sau 2.5s
+  setTimeout(function () {
+    nums.forEach(function (el) { if (!el._done) { el._done = 1; el.textContent = el.getAttribute('data-val'); } });
+    bars.forEach(function (el) { if (!el._done) { el._done = 1; el.style.width = el.getAttribute('data-w'); } });
+  }, 2500);
+
+  NH.observeReveal(document);
+});
+</script>
+</body>
+</html>

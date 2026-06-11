@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sản phẩm — Nhành</title>
+<meta name="description" content="Tất cả sản phẩm của Nhành: Body Mist, Bath Bomb, Body Lotion, Tẩy tế bào chết và Gift Set.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Cửa hàng</span>
+    <h1 id="shopTitle">Tất cả sản phẩm</h1>
+    <p id="shopDesc">Khám phá toàn bộ thế giới mùi hương của Nhành — từ Body Mist, Bath Bomb đến những bộ quà tặng cảm xúc.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <nav class="breadcrumb"><a href="../index.html">Trang chủ</a><span class="sep">/</span><span id="crumb">Sản phẩm</span></nav>
+</div>
+
+<section class="section-sm">
+  <div class="wrap">
+    <div class="chips" id="catChips"></div>
+    <div class="shop-layout">
+      <aside class="filters">
+        <div class="filter-group">
+          <h4>Nhóm mùi hương</h4>
+          <div id="familyFilters"></div>
+        </div>
+        <div class="filter-group">
+          <h4>Mức giá</h4>
+          <div id="priceFilters"></div>
+        </div>
+        <div class="filter-group" style="border-bottom:0">
+          <button class="btn btn-outline btn-sm btn-block" id="clearFilters">Xóa bộ lọc</button>
+        </div>
+      </aside>
+
+      <div>
+        <div class="shop-toolbar">
+          <span class="result-count" id="resultCount"></span>
+          <select class="sort-select" id="sortSelect">
+            <option value="featured">Nổi bật</option>
+            <option value="price-asc">Giá: Thấp → Cao</option>
+            <option value="price-desc">Giá: Cao → Thấp</option>
+            <option value="name">Tên A → Z</option>
+          </select>
+        </div>
+        <div class="product-grid" id="grid"></div>
+        <div class="empty-state" id="empty" style="display:none">
+          <p style="font-family:var(--serif);font-size:1.5rem;color:var(--green-900)">Không tìm thấy sản phẩm</p>
+          <p>Hãy thử điều chỉnh bộ lọc của bạn.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var D = window.NHANH, NH = window.NH;
+  var state = { cat: NH.getParam('cat') || 'all', collection: NH.getParam('collection') || '', families: [], price: '', sort: 'featured' };
+
+  var priceRanges = [
+    { id: 'p1', label: 'Dưới 150.000đ', min: 0, max: 149999 },
+    { id: 'p2', label: '150.000đ – 250.000đ', min: 150000, max: 250000 },
+    { id: 'p3', label: '250.000đ – 400.000đ', min: 250000, max: 400000 },
+    { id: 'p4', label: 'Trên 400.000đ', min: 400001, max: 9999999 }
+  ];
+
+  // category chips
+  function renderChips() {
+    var chips = [{ slug: 'all', name: 'Tất cả' }].concat(D.categories);
+    NH.qs('#catChips').innerHTML = chips.map(function (c) {
+      return '<button class="chip' + (state.cat === c.slug ? ' active' : '') + '" data-cat="' + c.slug + '">' + c.name + '</button>';
+    }).join('');
+    NH.qsa('#catChips .chip').forEach(function (b) {
+      b.addEventListener('click', function () { state.cat = b.dataset.cat; state.collection = ''; sync(); apply(); });
+    });
+  }
+
+  // family filters
+  NH.qs('#familyFilters').innerHTML = D.families.map(function (f) {
+    var n = D.products.filter(function (p) { return p.family === f.slug; }).length;
+    return '<label class="filter-opt"><input type="checkbox" value="' + f.slug + '"> ' + f.name + ' <span class="count">' + n + '</span></label>';
+  }).join('');
+  NH.qsa('#familyFilters input').forEach(function (cb) {
+    cb.addEventListener('change', function () {
+      state.families = NH.qsa('#familyFilters input:checked').map(function (x) { return x.value; });
+      apply();
+    });
+  });
+
+  // price filters
+  NH.qs('#priceFilters').innerHTML = priceRanges.map(function (r) {
+    return '<label class="filter-opt"><input type="radio" name="price" value="' + r.id + '"> ' + r.label + '</label>';
+  }).join('');
+  NH.qsa('#priceFilters input').forEach(function (rb) {
+    rb.addEventListener('change', function () { state.price = rb.value; apply(); });
+  });
+
+  NH.qs('#clearFilters').addEventListener('click', function () {
+    state.families = []; state.price = '';
+    NH.qsa('#familyFilters input').forEach(function (x) { x.checked = false; });
+    NH.qsa('#priceFilters input').forEach(function (x) { x.checked = false; });
+    apply();
+  });
+
+  NH.qs('#sortSelect').addEventListener('change', function (e) { state.sort = e.target.value; apply(); });
+
+  function titleFor() {
+    if (state.collection) { var col = D.collections.find(function (c) { return c.slug === state.collection; }); return col ? col.name : 'Sản phẩm'; }
+    if (state.cat === 'all') return 'Tất cả sản phẩm';
+    var c = D.categories.find(function (x) { return x.slug === state.cat; }); return c ? c.name : 'Sản phẩm';
+  }
+  function descFor() {
+    if (state.collection) { var col = D.collections.find(function (c) { return c.slug === state.collection; }); return col ? col.desc : ''; }
+    if (state.cat === 'all') return 'Khám phá toàn bộ thế giới mùi hương của Nhành — từ Body Mist, Bath Bomb đến những bộ quà tặng cảm xúc.';
+    var c = D.categories.find(function (x) { return x.slug === state.cat; }); return c ? c.desc : '';
+  }
+
+  function sync() {
+    NH.qs('#shopTitle').textContent = titleFor();
+    NH.qs('#shopDesc').textContent = descFor();
+    NH.qs('#crumb').textContent = titleFor();
+    NH.qsa('#catChips .chip').forEach(function (b) { b.classList.toggle('active', b.dataset.cat === state.cat && !state.collection); });
+  }
+
+  function apply() {
+    var list = D.products.slice();
+    if (state.collection) list = list.filter(function (p) { return p.collection === state.collection; });
+    else if (state.cat !== 'all') list = list.filter(function (p) { return p.cat === state.cat; });
+    if (state.families.length) list = list.filter(function (p) { return state.families.indexOf(p.family) > -1; });
+    if (state.price) {
+      var r = priceRanges.find(function (x) { return x.id === state.price; });
+      list = list.filter(function (p) { return p.price >= r.min && p.price <= r.max; });
+    }
+    if (state.sort === 'price-asc') list.sort(function (a, b) { return a.price - b.price; });
+    else if (state.sort === 'price-desc') list.sort(function (a, b) { return b.price - a.price; });
+    else if (state.sort === 'name') list.sort(function (a, b) { return a.name.localeCompare(b.name, 'vi'); });
+
+    NH.qs('#resultCount').textContent = list.length + ' sản phẩm';
+    NH.qs('#empty').style.display = list.length ? 'none' : 'block';
+    NH.renderProducts(NH.qs('#grid'), list);
+    sync();
+  }
+
+  renderChips();
+  if (state.collection) sync();
+  apply();
+});
+</script>
+</body>
+</html>

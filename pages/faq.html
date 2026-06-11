@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Câu hỏi thường gặp — Nhành</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Hỗ trợ</span>
+    <h1>Câu hỏi thường gặp</h1>
+    <p>Những thắc mắc phổ biến về sản phẩm, đặt hàng và cách giữ hương. Không thấy câu trả lời? <a href="contact.html" style="color:var(--green-800);text-decoration:underline">Liên hệ Nhành</a>.</p>
+  </div>
+</section>
+
+<section class="section-sm">
+  <div class="faq-list accordion" id="faqList"></div>
+</section>
+
+<section class="section newsletter">
+  <div class="narrow">
+    <h2>Vẫn còn câu hỏi?</h2>
+    <p>Đội ngũ Nhành luôn sẵn lòng hỗ trợ bạn như một người bạn.</p>
+    <a class="btn btn-gold" href="contact.html">Liên hệ ngay</a>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var D = window.NHANH, NH = window.NH;
+  NH.qs('#faqList').innerHTML = D.faq.map(function (f, i) {
+    return '<div class="acc-item' + (i === 0 ? ' open' : '') + '"><button class="acc-head" style="font-size:1.05rem">' + f.q + '<span class="plus">+</span></button><div class="acc-body"><div style="padding-top:4px">' + f.a + '</div></div></div>';
+  }).join('');
+  NH.qsa('#faqList .acc-head').forEach(function (h) {
+    h.addEventListener('click', function () { h.parentElement.classList.toggle('open'); });
+  });
+});
+</script>
+</body>
+</html>

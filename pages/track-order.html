@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Tra cứu đơn hàng — Nhành</title>
+<meta name="description" content="Tra cứu trạng thái đơn hàng Nhành bằng mã đơn, email hoặc số điện thoại — xem đơn đang ở giai đoạn nào.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+<style>
+  .track-box{max-width:680px;margin:0 auto}
+  .track-form{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+  .track-form input{flex:1;min-width:220px;padding:15px 18px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--paper);color:var(--ink)}
+  .track-hint{font-size:.86rem;color:var(--muted);margin-top:14px}
+  .track-hint code{background:var(--cream-2);border:1px solid var(--line-soft);border-radius:4px;padding:2px 8px;color:var(--green-800);font-weight:600;cursor:pointer}
+  .track-results{max-width:760px;margin:38px auto 0}
+  .track-empty{text-align:center;color:var(--muted);background:var(--cream-2);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:40px 24px}
+</style>
+</head>
+<body>
+
+<section class="page-hero" style="background:var(--cream);padding:48px 0">
+  <div class="wrap center">
+    <span class="eyebrow">Tra cứu đơn hàng</span>
+    <h1>Đơn của bạn đang ở đâu?</h1>
+    <p class="lead mt-1" style="margin-inline:auto">Nhập mã đơn hàng, email hoặc số điện thoại bạn đã dùng khi đặt — Nhành sẽ cho bạn biết đơn đang ở giai đoạn nào.</p>
+  </div>
+</section>
+
+<section class="section-sm">
+  <div class="wrap">
+    <div class="track-box">
+      <form class="track-form" id="trackForm">
+        <input type="text" id="trackInput" placeholder="Mã đơn hàng / Email / Số điện thoại" required autocomplete="off">
+        <button class="btn btn-primary" type="submit">Tra cứu</button>
+      </form>
+    </div>
+    <div class="track-results" id="trackResults"></div>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var NH = window.NH;
+  var input = NH.qs('#trackInput'), results = NH.qs('#trackResults');
+
+  function search(q) {
+    var found = NH.orders.find(q);
+    if (!found.length) {
+      results.innerHTML = '<div class="track-empty"><p style="font-family:var(--serif);font-size:1.4rem;color:var(--green-900);margin-bottom:6px">Không tìm thấy đơn hàng</p><p>Vui lòng kiểm tra lại mã đơn, email hoặc số điện thoại. Nếu cần hỗ trợ, hãy <a href="contact.html" style="color:var(--green-800);text-decoration:underline">liên hệ Nhành</a>.</p></div>';
+      return;
+    }
+    results.innerHTML = '<p class="muted" style="margin-bottom:16px">Tìm thấy <strong>' + found.length + '</strong> đơn hàng:</p>' +
+      found.map(function (o) { return NH.orders.trackerHTML(o); }).join('');
+    NH.observeReveal(document);
+  }
+
+  NH.qs('#trackForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (q) search(q);
+  });
+
+  NH.qsa('[data-demo]').forEach(function (c) {
+    c.addEventListener('click', function () { input.value = c.dataset.demo; search(c.dataset.demo); });
+  });
+
+  // hỗ trợ tra cứu trực tiếp qua URL ?code=...
+  var pre = NH.getParam('code') || NH.getParam('q');
+  if (pre) { input.value = pre; search(pre); }
+});
+</script>
+</body>
+</html>

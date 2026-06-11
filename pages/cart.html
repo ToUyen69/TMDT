@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giỏ hàng — Nhành</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+<style>
+.cart-table{width:100%;border-collapse:collapse}
+.cart-table th{text-align:left;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 0 16px;border-bottom:1px solid var(--line)}
+.cart-table td{padding:20px 0;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+.cart-prod{display:flex;gap:16px;align-items:center}
+.cart-prod img{width:80px;height:98px;object-fit:cover;border-radius:var(--radius);background:var(--cream-2)}
+.cart-prod .cn{font-family:var(--serif);font-size:1.18rem;color:var(--green-900)}
+.cart-grid{display:grid;grid-template-columns:1fr 380px;gap:46px;align-items:start}
+.summary{background:var(--cream-2);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:30px;position:sticky;top:140px}
+.sum-row{display:flex;justify-content:space-between;padding:10px 0;font-size:.94rem;color:var(--ink-soft)}
+.sum-total{display:flex;justify-content:space-between;padding:16px 0 6px;border-top:1px solid var(--line);margin-top:10px;font-family:var(--serif);font-size:1.5rem;color:var(--green-900)}
+.qtybox{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:50px}
+.qtybox button{width:34px;height:34px;color:var(--green-800);font-size:1.1rem}
+.qtybox span{min-width:30px;text-align:center;font-weight:600}
+@media(max-width:900px){.cart-grid{grid-template-columns:1fr}.summary{position:static}.cart-table thead{display:none}.cart-table td{display:block;border:0;padding:6px 0}.cart-table tr{display:block;border-bottom:1px solid var(--line);padding:16px 0}}
+</style>
+</head>
+<body>
+
+<section class="page-hero" style="background:var(--cream);padding:46px 0">
+  <div class="wrap"><span class="eyebrow">Giỏ hàng</span><h1>Giỏ hàng của bạn</h1></div>
+</section>
+
+<section class="section-sm">
+  <div class="wrap" id="cartWrap"></div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var NH = window.NH;
+  function render() {
+    var items = NH.cart.read();
+    var wrap = NH.qs('#cartWrap');
+    if (!items.length) {
+      wrap.innerHTML = '<div class="empty-state"><p style="font-family:var(--serif);font-size:1.8rem;color:var(--green-900)">Giỏ hàng đang trống</p><p>Hãy để Nhành đồng hành cùng nghi thức chăm sóc của bạn.</p><a class="btn btn-primary mt-2" href="products.html">Khám phá sản phẩm</a></div>';
+      return;
+    }
+    var rows = items.map(function (i) {
+      return '<tr>' +
+        '<td><div class="cart-prod"><img src="' + NH.img(i.img) + '"><div><div class="cn">' + i.name + '</div>' + (i.variant ? '<div class="muted" style="font-size:.82rem">' + i.variant + '</div>' : '') + (i.note ? '<div style="font-size:.78rem;color:var(--gold-700);line-height:1.4;margin-top:3px;white-space:pre-line">' + i.note.replace(/[&<>]/g, function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}) + '</div>' : '') + '<a class="cl-remove" data-rm="' + i.key + '" style="font-size:.78rem">Xóa</a></div></div></td>' +
+        '<td>' + NH.money(i.price) + '</td>' +
+        '<td><div class="qtybox"><button data-dec="' + i.key + '">−</button><span>' + i.qty + '</span><button data-inc="' + i.key + '">+</button></div></td>' +
+        '<td style="font-weight:700;color:var(--green-800)">' + NH.money(i.price * i.qty) + '</td>' +
+      '</tr>';
+    }).join('');
+    var total = NH.cart.total();
+    var FREE = 399000;
+    var ship = total >= FREE ? 0 : 30000;
+    wrap.innerHTML =
+      '<div class="cart-grid"><div>' +
+        '<table class="cart-table"><thead><tr><th>Sản phẩm</th><th>Giá</th><th>Số lượng</th><th>Tạm tính</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+        '<a class="link-underline" href="products.html" style="margin-top:24px;display:inline-flex">← Tiếp tục mua sắm</a>' +
+      '</div>' +
+      '<aside class="summary"><h3 style="font-size:1.4rem;margin-bottom:10px">Tổng đơn hàng</h3>' +
+        '<div class="sum-row"><span>Tạm tính</span><span>' + NH.money(total) + '</span></div>' +
+        '<div class="sum-row"><span>Phí vận chuyển</span><span>' + (ship === 0 ? 'Miễn phí' : NH.money(ship)) + '</span></div>' +
+        (ship > 0 ? '<div class="muted" style="font-size:.8rem;padding:4px 0">Mua thêm ' + NH.money(FREE - total) + ' để được freeship toàn quốc.</div>' : '') +
+        '<div class="field" style="margin:16px 0 0"><input type="text" placeholder="Mã giảm giá" id="coupon"></div>' +
+        '<button class="btn btn-outline btn-sm btn-block mt-1" id="applyCoupon">Áp dụng</button>' +
+        '<div class="sum-total"><span>Tổng cộng</span><span id="grandTotal">' + NH.money(total + ship) + '</span></div>' +
+        '<button class="btn btn-primary btn-block mt-2" id="checkout">Tiến hành thanh toán</button>' +
+        '<p class="muted center" style="font-size:.76rem;margin-top:12px">Thanh toán an toàn · COD / Momo / VNPay</p>' +
+      '</aside></div>';
+
+    NH.qsa('[data-inc]').forEach(function (b) { b.addEventListener('click', function () { var it = NH.cart.read().find(function (x) { return x.key === b.dataset.inc; }); NH.cart.setQty(b.dataset.inc, it.qty + 1); render(); }); });
+    NH.qsa('[data-dec]').forEach(function (b) { b.addEventListener('click', function () { var it = NH.cart.read().find(function (x) { return x.key === b.dataset.dec; }); NH.cart.setQty(b.dataset.dec, it.qty - 1); render(); }); });
+    NH.qsa('[data-rm]').forEach(function (b) { b.addEventListener('click', function () { NH.cart.remove(b.dataset.rm); render(); }); });
+    NH.qs('#applyCoupon').addEventListener('click', function () {
+      var c = NH.qs('#coupon').value.trim().toUpperCase();
+      if (c === 'NHANH10') { var nt = Math.round((total + ship) * 0.9); NH.qs('#grandTotal').textContent = NH.money(nt); NH.toast('Áp dụng mã NHANH10 — giảm 10%!'); }
+      else if (c) NH.toast('Mã giảm giá không hợp lệ.');
+    });
+    NH.qs('#checkout').addEventListener('click', openCheckout);
+  }
+
+  var lastOrder = null;
+  function finishOrder() {
+    NH.cart.clear();
+    document.dispatchEvent(new CustomEvent('cart:change'));
+    var cc = NH.qs('#cartCount'); if (cc) cc.textContent = '0';
+    var code = lastOrder ? lastOrder.code : '';
+    NH.qs('#cartWrap').innerHTML = '<div class="empty-state" style="max-width:560px;margin:0 auto">' +
+      '<p style="font-family:var(--serif);font-size:2rem;color:var(--green-900)">🌿 Cảm ơn bạn!</p>' +
+      '<p>Đơn hàng của bạn đã được ghi nhận. Nhành sẽ liên hệ xác nhận và giao hàng sớm nhất.</p>' +
+      (code ? '<div style="background:var(--cream-2);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:18px 22px;margin:20px 0">Mã đơn hàng của bạn: <strong style="font-family:var(--serif);font-size:1.35rem;color:var(--green-900);letter-spacing:.04em">' + code + '</strong><div class="muted" style="font-size:.84rem;margin-top:4px">Lưu lại mã này để tra cứu trạng thái đơn bất cứ lúc nào.</div></div>' : '') +
+      '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">' +
+        (code ? '<a class="btn btn-primary" href="track-order.html?code=' + code + '">Tra cứu đơn hàng</a>' : '') +
+        '<a class="btn btn-outline" href="../index.html">Về trang chủ</a>' +
+      '</div></div>';
+    window.scrollTo(0, 0);
+  }
+
+  function openCheckout() {
+    var total = NH.cart.total(); var ship = total >= 399000 ? 0 : 30000; var grand = total + ship;
+    var pop = NH.el('<div class="popup show" id="coPop"><div class="popup-card" style="grid-template-columns:1fr;max-width:560px"><div class="popup-body" id="coBody"></div></div></div>');
+    document.body.appendChild(pop);
+    var body = NH.qs('#coBody', pop);
+    function close() { pop.remove(); }
+    pop.addEventListener('click', function (e) { if (e.target === pop) close(); });
+
+    function showForm() {
+      body.innerHTML =
+        '<button class="popup-close" id="coClose">×</button>' +
+        '<span class="eyebrow">Thanh toán</span><h3>Thông tin giao hàng</h3>' +
+        '<form id="coForm" style="margin-top:18px">' +
+          '<div class="field"><label>Họ và tên</label><input required></div>' +
+          '<div class="form-grid"><div class="field"><label>Số điện thoại</label><input type="tel" required></div><div class="field"><label>Email</label><input type="email"></div></div>' +
+          '<div class="field"><label>Địa chỉ nhận hàng</label><input required></div>' +
+          '<div class="field"><label>Phương thức thanh toán</label><select id="coMethod"><option value="COD">Thanh toán khi nhận hàng (COD)</option><option value="Ví Momo">Ví Momo (quét QR)</option><option value="VNPay">VNPay (quét QR)</option><option value="Chuyển khoản">Chuyển khoản ngân hàng (quét QR)</option></select></div>' +
+          '<div class="sum-total" style="font-size:1.2rem"><span>Tổng cộng</span><span>' + NH.money(grand) + '</span></div>' +
+          '<button class="btn btn-primary btn-block mt-1" type="submit">Đặt hàng</button>' +
+        '</form>';
+      NH.qs('#coClose', body).addEventListener('click', close);
+      NH.qs('#coForm', body).addEventListener('submit', function (e) {
+        e.preventDefault();
+        var f = e.target, ins = f.querySelectorAll('input');
+        var method = NH.qs('#coMethod', body).value;
+        var items = NH.cart.read().map(function (i) { return { name: i.name + (i.variant ? ' (' + i.variant + ')' : ''), qty: i.qty, price: i.price }; });
+        var u = null; try { u = JSON.parse(localStorage.getItem('nhanh_user')); } catch (er) {}
+        lastOrder = NH.orders.save({
+          name: ins[0].value, phone: ins[1].value, email: ins[2].value || (u && u.email) || '',
+          address: ins[3].value, method: method, items: items, total: grand
+        });
+        if (method === 'COD') { finishOrder(); close(); }
+        else showQR(method);
+      });
+    }
+
+    function showQR(method) {
+      var data = encodeURIComponent('NHANH PAYMENT|' + method + '|' + grand + 'd|' + Date.now());
+      body.innerHTML =
+        '<div class="qr-pay">' +
+          '<span class="eyebrow">' + method + '</span>' +
+          '<h3>Quét mã để thanh toán</h3>' +
+          '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&qzone=1&data=' + data + '" alt="Mã QR thanh toán" onerror="this.style.opacity=.25">' +
+          '<div class="qr-amount">Số tiền cần thanh toán: <b>' + NH.money(grand) + '</b></div>' +
+          '<div class="qr-wait"><span class="spinner"></span> Đang chờ xác nhận thanh toán…</div>' +
+        '</div>';
+      setTimeout(function () { showSuccess(method); finishOrder(); }, 3000);
+    }
+
+    function showSuccess(method) {
+      var code = lastOrder ? lastOrder.code : '';
+      body.innerHTML =
+        '<div class="qr-done"><div class="qr-check">' + NH.icon.check + '</div>' +
+          '<h3>Thanh toán thành công!</h3>' +
+          '<p class="muted" style="margin:10px 0 16px">Cảm ơn bạn đã mua sắm tại Nhành. Đơn hàng (' + method + ') đã được ghi nhận — chúng tôi sẽ liên hệ xác nhận và giao hàng sớm nhất.</p>' +
+          (code ? '<div style="background:var(--cream-2);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:18px">Mã đơn: <strong style="font-family:var(--serif);font-size:1.2rem;color:var(--green-900)">' + code + '</strong></div>' : '') +
+          '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
+            (code ? '<a class="btn btn-primary btn-sm" href="track-order.html?code=' + code + '">Tra cứu đơn hàng</a>' : '') +
+            '<a class="btn btn-outline btn-sm" href="../index.html">Về trang chủ</a>' +
+          '</div>' +
+        '</div>';
+    }
+
+    showForm();
+  }
+
+  render();
+  document.addEventListener('cart:change', function(){ var c=NH.qs('#cartCount'); if(c) c.textContent = NH.cart.count(); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tài khoản — Nhành</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+</head>
+<body>
+
+<section class="page-hero" style="background:var(--cream);padding:46px 0">
+  <div class="wrap"><span class="eyebrow">Tài khoản</span><h1 id="accTitle">Đăng nhập / Đăng ký</h1></div>
+</section>
+
+<section class="section-sm">
+  <div class="wrap">
+
+    <!-- Logged out -->
+    <div id="authView">
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="active" data-tab="login">Đăng nhập</button>
+          <button data-tab="register">Đăng ký</button>
+        </div>
+        <div class="auth-pane active" id="pane-login">
+          <form id="loginForm">
+            <div class="field"><label>Email</label><input type="email" required></div>
+            <div class="field"><label>Mật khẩu</label><input type="password" required></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+              <label class="filter-opt" style="padding:0"><input type="checkbox"> Ghi nhớ tôi</label>
+              <a href="#" class="muted" style="font-size:.84rem">Quên mật khẩu?</a>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Đăng nhập</button>
+          </form>
+        </div>
+        <div class="auth-pane" id="pane-register">
+          <form id="registerForm">
+            <div class="field"><label>Họ và tên</label><input type="text" required></div>
+            <div class="field"><label>Email</label><input type="email" required></div>
+            <div class="field"><label>Mật khẩu</label><input type="password" required></div>
+            <label class="filter-opt" style="padding:0;margin-bottom:18px"><input type="checkbox" required> Tôi đồng ý với <a href="policy.html?p=dieu-khoan-dich-vu" style="color:var(--green-800);text-decoration:underline">điều khoản dịch vụ</a></label>
+            <button class="btn btn-primary btn-block" type="submit">Tạo tài khoản</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logged in -->
+    <div id="memberView" style="display:none">
+      <div class="shop-layout">
+        <aside>
+          <div style="background:var(--cream-2);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:24px">
+            <div style="display:flex;gap:14px;align-items:center;margin-bottom:18px">
+              <span class="ravatar" style="width:52px;height:52px;border-radius:50%;background:var(--green-700);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.4rem" id="avatar">N</span>
+              <div><strong id="memberName" style="color:var(--green-900)"></strong><br><span class="muted" style="font-size:.84rem" id="memberEmail"></span></div>
+            </div>
+            <nav id="accNav" style="display:flex;flex-direction:column;gap:4px"></nav>
+            <button class="btn btn-outline btn-sm btn-block mt-2" id="logoutBtn">Đăng xuất</button>
+          </div>
+        </aside>
+        <div id="accPanel"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var NH = window.NH;
+  var KEY = 'nhanh_user';
+  var ACCKEY = 'nhanh_accounts';
+
+  function getUser() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
+  function getAccounts() { try { return JSON.parse(localStorage.getItem(ACCKEY)) || []; } catch (e) { return []; } }
+  function saveAccounts(a) { localStorage.setItem(ACCKEY, JSON.stringify(a)); }
+  function setUser(u) { localStorage.setItem(KEY, JSON.stringify(u)); if (NH.cart && NH.cart.refreshUI) NH.cart.refreshUI(); refresh(); }
+
+  // tabs
+  NH.qsa('.auth-tabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      NH.qsa('.auth-tabs button').forEach(function (x) { x.classList.remove('active'); });
+      NH.qsa('.auth-pane').forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active'); NH.qs('#pane-' + b.dataset.tab).classList.add('active');
+    });
+  });
+
+  NH.qs('#loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = e.target.querySelector('input[type=email]').value.trim();
+    var pw = e.target.querySelector('input[type=password]').value;
+    var acc = getAccounts().find(function (a) { return a.email.toLowerCase() === email.toLowerCase() && a.password === pw; });
+    if (!acc) { NH.toast('Email hoặc mật khẩu không đúng — hoặc tài khoản chưa được đăng ký.'); return; }
+    setUser({ name: acc.name, email: acc.email });
+    NH.toast('Đăng nhập thành công! Xin chào ' + acc.name + '.');
+  });
+  NH.qs('#registerForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var inputs = e.target.querySelectorAll('input');
+    var name = inputs[0].value.trim(), email = inputs[1].value.trim(), pw = inputs[2].value;
+    var accs = getAccounts();
+    if (accs.some(function (a) { return a.email.toLowerCase() === email.toLowerCase(); })) {
+      NH.toast('Email này đã được đăng ký. Vui lòng đăng nhập.');
+      return;
+    }
+    accs.push({ name: name, email: email, password: pw });
+    saveAccounts(accs);
+    setUser({ name: name, email: email });
+    NH.toast('Tạo tài khoản thành công! Chào mừng ' + name + '.');
+  });
+  NH.qs('#logoutBtn').addEventListener('click', function () { localStorage.removeItem(KEY); if (NH.cart && NH.cart.refreshUI) NH.cart.refreshUI(); refresh(); NH.toast('Đã đăng xuất.'); });
+
+  var panels = {
+    profile: function (u) {
+      return '<h2>Thông tin cá nhân</h2><form id="profileForm" class="mt-2" style="max-width:520px"><div class="form-grid"><div class="field"><label>Họ và tên</label><input value="' + u.name + '"></div><div class="field"><label>Số điện thoại</label><input placeholder="Chưa cập nhật"></div></div><div class="field"><label>Email</label><input value="' + u.email + '"></div><div class="field"><label>Địa chỉ</label><input placeholder="Thêm địa chỉ nhận hàng"></div><button class="btn btn-primary" type="submit">Lưu thay đổi</button></form>';
+    },
+    orders: function (u) {
+      var mine = NH.orders.all().filter(function (o) { return (o.email || '').toLowerCase() === (u.email || '').toLowerCase(); });
+      if (!mine.length) {
+        return '<h2>Đơn hàng của tôi</h2><div class="empty-state" style="text-align:left;padding:34px 0"><p class="muted">Chưa có đơn hàng nào gắn với email <strong>' + u.email + '</strong>. Hãy khám phá <a href="products.html" style="color:var(--green-800);text-decoration:underline">sản phẩm của Nhành</a>, hoặc <a href="track-order.html" style="color:var(--green-800);text-decoration:underline">tra cứu đơn bằng mã / SĐT</a>.</p></div>';
+      }
+      return '<h2>Đơn hàng của tôi</h2><p class="muted" style="margin:6px 0 22px">' + mine.length + ' đơn hàng · trạng thái được cập nhật theo tiến trình giao hàng.</p>' + mine.map(function (o) { return NH.orders.trackerHTML(o); }).join('');
+    },
+    notify: function () {
+      return '<h2>Thông báo</h2><div class="mt-2" style="display:flex;flex-direction:column;gap:12px"><div style="padding:18px;background:var(--cream-2);border-radius:var(--radius-lg);border:1px solid var(--line-soft)"><strong style="color:var(--green-900)">🌿 Chào mừng đến Nhành!</strong><p class="muted" style="font-size:.9rem;margin-top:4px">Dùng mã <strong>NHANH10</strong> để được giảm 10% cho đơn hàng đầu tiên.</p></div><div style="padding:18px;background:var(--cream-2);border-radius:var(--radius-lg);border:1px solid var(--line-soft)"><strong style="color:var(--green-900)">Workshop sắp tới</strong><p class="muted" style="font-size:.9rem;margin-top:4px">Tự pha Body Mist mang dấu ấn riêng — 22/06. <a href="workshop.html" style="color:var(--green-800);text-decoration:underline">Đăng ký ngay</a>.</p></div></div>';
+    }
+  };
+
+  function showPanel(key, u) {
+    NH.qs('#accPanel').innerHTML = panels[key](u);
+    NH.qsa('#accNav a').forEach(function (a) { a.classList.toggle('active-nav', a.dataset.p === key); });
+    var f = NH.qs('#profileForm'); if (f) f.addEventListener('submit', function (e) { e.preventDefault(); NH.toast('Đã lưu thông tin.'); });
+  }
+
+  function refresh() {
+    var u = getUser();
+    NH.qs('#authView').style.display = u ? 'none' : 'block';
+    NH.qs('#memberView').style.display = u ? 'block' : 'none';
+    NH.qs('#accTitle').textContent = u ? 'Xin chào, ' + u.name : 'Đăng nhập / Đăng ký';
+    if (!u) return;
+    NH.qs('#avatar').textContent = u.name.charAt(0).toUpperCase();
+    NH.qs('#memberName').textContent = u.name;
+    NH.qs('#memberEmail').textContent = u.email;
+    var nav = [['profile', 'Thông tin cá nhân'], ['orders', 'Đơn hàng của tôi'], ['notify', 'Thông báo']];
+    NH.qs('#accNav').innerHTML = nav.map(function (n) {
+      return '<a href="#" data-p="' + n[0] + '" style="padding:10px 14px;border-radius:var(--radius);font-size:.92rem">' + n[1] + '</a>';
+    }).join('');
+    NH.qsa('#accNav a').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); showPanel(a.dataset.p, u); }); });
+    showPanel('profile', u);
+  }
+
+  // active nav style
+  var st = document.createElement('style');
+  st.textContent = '#accNav a{color:var(--ink-soft);transition:.2s}#accNav a:hover{background:var(--cream);color:var(--green-800)}#accNav a.active-nav{background:var(--green-800);color:#fff}';
+  document.head.appendChild(st);
+
+  refresh();
+});
+</script>
+</body>
+</html>

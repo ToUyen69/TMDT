@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Bộ sưu tập — Nhành</title>
+<meta name="description" content="Hai bộ sưu tập của Nhành: Việt Nam trong Hương (5 vùng đất) và Hồi (hương ngọt gợi nhớ tuổi thơ).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+</head>
+<body>
+
+<!-- HERO -->
+<section class="page-hero" style="background:var(--green-900)">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--gold-300)">Bộ sưu tập</span>
+    <h1 style="color:var(--ivory)">Hai bộ sưu tập, hai miền ký ức</h1>
+    <p style="color:var(--sage-100)">Nhành kể chuyện bằng mùi hương qua hai bộ sưu tập: <strong style="color:var(--ivory)">Việt Nam trong Hương</strong> — năm vùng đất thân thương, và <strong style="color:var(--ivory)">Hồi</strong> — những hương ngọt gợi nhớ tuổi thơ.</p>
+  </div>
+</section>
+
+<!-- OVERVIEW 2 BỘ -->
+<section class="section-sm">
+  <div class="wrap">
+    <div class="col-overview">
+      <a class="col-ov-card reveal" href="#col-vn">
+        <img src="../public/products/BDM_BST1_Tây Hồ Sen Trắng_1.jpg" alt="Việt Nam trong Hương">
+        <div class="col-ov-body">
+          <span class="ov-eyebrow">Bộ sưu tập 01</span>
+          <h3>Việt Nam trong Hương</h3>
+          <p>Năm chai thủy tinh khắc tên năm vùng đất — Đà Lạt, Tây Hồ, Đắk Lắk, Nha Trang, Bến Tre.</p>
+          <span class="btn btn-light btn-sm">Khám phá ↓</span>
+        </div>
+      </a>
+      <a class="col-ov-card reveal" href="#col-hoi">
+        <img src="../public/products/BDM_BST2_Một Que Kem_1.jpg" alt="Hồi">
+        <div class="col-ov-body">
+          <span class="ov-eyebrow">Bộ sưu tập 02</span>
+          <h3>Hồi</h3>
+          <p>Tuyến hương ngọt gợi nhớ tuổi thơ: kẹo bông, bánh flan, que kem và bắp rang bơ.</p>
+          <span class="btn btn-light btn-sm">Khám phá ↓</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- BỘ SƯU TẬP 01 -->
+<section class="section bg-cream" id="col-vn">
+  <div class="wrap">
+    <div class="col-header reveal">
+      <span class="col-no">Bộ sưu tập 01</span>
+      <h2>Việt Nam trong Hương</h2>
+      <p class="lead mt-1" style="margin-inline:auto" id="vnDesc"></p>
+    </div>
+    <div class="scent-row reveal" id="vnGallery"></div>
+    <div class="product-grid" id="vnGrid" style="margin-top:46px"></div>
+  </div>
+</section>
+
+<!-- BỘ SƯU TẬP 02 -->
+<section class="section" id="col-hoi">
+  <div class="wrap">
+    <div class="col-header reveal">
+      <span class="col-no">Bộ sưu tập 02</span>
+      <h2 id="hoiName">Hồi</h2>
+      <p class="lead mt-1" style="margin-inline:auto" id="hoiDesc"></p>
+    </div>
+    <div class="scent-row reveal" id="hoiGallery"></div>
+    <div class="product-grid cols-3" id="hoiGrid" style="margin-top:46px"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-sm bg-green">
+  <div class="narrow center">
+    <h2>Tìm mùi hương dành cho bạn</h2>
+    <p class="lead mt-2">Khám phá toàn bộ thế giới mùi hương của Nhành — từ Body Mist, Bath Bomb đến Gift Set.</p>
+    <a class="btn btn-gold mt-3" href="products.html">Xem tất cả sản phẩm</a>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var D = window.NHANH, NH = window.NH;
+  var vn = D.collections.find(function (c) { return c.slug === 'viet-nam-trong-huong'; });
+  var hoi = D.collections.find(function (c) { return c.slug === 'huong-ngot'; });
+  var vnProds = D.products.filter(function (p) { return p.collection === 'viet-nam-trong-huong'; });
+  var hoiProds = D.products.filter(function (p) { return p.collection === 'huong-ngot'; });
+
+  function findByRegion(slug) { return vnProds.find(function (p) { return p.region === slug; }); }
+  function card(link, img, scent, name, tone) {
+    return '<a class="region-card" href="' + link + '">' +
+      (tone ? '<span class="region-tag" style="position:absolute;top:14px;left:14px;z-index:3;width:28px;height:5px;border-radius:3px;background:' + tone + '"></span>' : '') +
+      '<img src="' + img + '" alt="' + name + '">' +
+      '<div class="rc-body"><span class="scent">' + scent + '</span><h3>' + name + '</h3></div></a>';
+  }
+
+  // Collection 01 — Việt Nam trong Hương
+  NH.qs('#vnDesc').textContent = vn.desc;
+  NH.qs('#vnGallery').innerHTML = vn.regions.map(function (r) {
+    var p = findByRegion(r.slug);
+    var link = p ? 'product.html?id=' + p.id : '#';
+    return card(link, NH.img(p ? p.images[0] : ''), r.scent, r.name, r.tone);
+  }).join('');
+  NH.renderProducts(NH.qs('#vnGrid'), vnProds);
+
+  // Collection 02 — Hồi
+  NH.qs('#hoiName').textContent = hoi.name;
+  NH.qs('#hoiDesc').textContent = hoi.desc;
+  NH.qs('#hoiGallery').innerHTML = hoiProds.map(function (p) {
+    return card('product.html?id=' + p.id, NH.img(p.images[0]), NH.famName(p.family) || 'Hương ngọt', p.name.replace('Body Mist ', ''));
+  }).join('');
+  NH.renderProducts(NH.qs('#hoiGrid'), hoiProds);
+
+  NH.observeReveal(document);
+});
+</script>
+</body>
+</html>

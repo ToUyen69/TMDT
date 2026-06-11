@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workshop — Nhành</title>
+<meta name="description" content="Workshop trải nghiệm hương & thiên nhiên cùng Nhành: tự pha Body Mist, làm Bath Bomb, kể chuyện bằng mùi hương.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+<style>
+  .ws-success svg{width:18px;height:18px}
+  .ws-check svg{width:30px;height:30px}
+  .ws-irow{display:flex;align-items:flex-start;gap:11px;color:var(--ink-soft);font-size:.96rem;line-height:1.5}
+  .ws-irow svg{color:var(--gold-700);flex:none;margin-top:2px}
+  .ws-irow b{color:var(--green-900);font-weight:600}
+</style>
+</head>
+<body>
+
+<section class="page-hero" style="background:var(--cream)">
+  <div class="wrap">
+    <span class="eyebrow">Workshop</span>
+    <h1>Trải nghiệm hương &amp; thiên nhiên</h1>
+    <p>Những buổi workshop nhỏ, ấm cúng để bạn tự tay tạo nên mùi hương của riêng mình và tìm lại khoảng lặng giữa nhịp sống bận rộn.</p>
+  </div>
+</section>
+
+<section class="section-sm">
+  <div class="wrap" id="wsList"></div>
+</section>
+
+<!-- Form đăng ký -->
+<section class="section bg-cream">
+  <div class="narrow">
+    <div class="section-head center"><span class="eyebrow">Đăng ký tham gia</span><h2>Giữ chỗ cho buổi workshop sắp tới</h2></div>
+    <form id="wsForm" style="max-width:620px;margin:0 auto;background:var(--paper);padding:36px;border-radius:var(--radius-lg);border:1px solid var(--line-soft)">
+      <div class="form-grid">
+        <div class="field"><label>Họ và tên</label><input type="text" required></div>
+        <div class="field"><label>Số điện thoại</label><input type="tel" required></div>
+      </div>
+      <div class="field"><label>Email</label><input type="email" required></div>
+      <div class="field"><label>Chọn workshop</label><select id="wsSelect"></select></div>
+      <div class="field"><label>Lời nhắn (tuỳ chọn)</label><textarea placeholder="Bạn muốn Nhành chuẩn bị điều gì cho buổi workshop?"></textarea></div>
+      <button class="btn btn-primary btn-block" type="submit">Gửi đăng ký</button>
+    </form>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var D = window.NHANH, NH = window.NH;
+  NH.qs('#wsList').innerHTML = D.workshops.map(function (w) {
+    return '<div class="ws-card reveal"><div class="ws-media"><img src="' + NH.img(w.cover) + '" alt=""></div>' +
+      '<div class="ws-body"><span class="eyebrow">Sự kiện sắp tới</span><h3>' + w.title + '</h3>' +
+      '<div class="ws-tags">' +
+        '<span>' + NH.icon.clock + ' ' + w.date + ' · ' + w.time + '</span>' +
+        '<span>' + NH.icon.pin + ' ' + w.loc + '</span>' +
+        '<span>' + NH.icon.seat + ' ' + w.seats + '</span>' +
+        '<span>' + NH.icon.tag + ' ' + w.price + '</span>' +
+      '</div>' +
+      '<p>' + w.desc + '</p>' +
+      '<a class="btn btn-outline btn-sm mt-2" href="#wsForm" data-ws="' + w.title + '">Đăng ký tham gia</a></div></div>';
+  }).join('');
+
+  var sel = NH.qs('#wsSelect');
+  sel.innerHTML = D.workshops.map(function (w) { return '<option>' + w.title + '</option>'; }).join('');
+  NH.qsa('[data-ws]').forEach(function (a) {
+    a.addEventListener('click', function () { sel.value = a.dataset.ws; });
+  });
+  // Tự điền thông tin nếu đã đăng nhập
+  var wsForm = NH.qs('#wsForm');
+  var loggedUser = null; try { loggedUser = JSON.parse(localStorage.getItem('nhanh_user')); } catch (er) {}
+  if (loggedUser) {
+    wsForm.querySelector('input[type=text]').value = loggedUser.name || '';
+    wsForm.querySelector('input[type=email]').value = loggedUser.email || '';
+    if (loggedUser.phone) wsForm.querySelector('input[type=tel]').value = loggedUser.phone;
+    var hint = NH.el('<p class="muted" style="font-size:.84rem;margin:-8px 0 18px">🌿 Đã tự điền thông tin từ tài khoản <strong>' + (loggedUser.email || '') + '</strong>. Bạn có thể chỉnh lại nếu cần.</p>');
+    wsForm.insertBefore(hint, wsForm.firstChild);
+  }
+
+  function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  NH.qs('#wsForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var form = e.target;
+    var name = esc((form.querySelector('input[type=text]').value || 'bạn').trim());
+    var phone = esc(form.querySelector('input[type=tel]').value.trim());
+    var email = form.querySelector('input[type=email]').value.trim();
+    var msg = esc(form.querySelector('textarea').value.trim());
+    var title = sel.value;
+    var w = D.workshops.find(function (x) { return x.title === title; }) || {};
+    function row(icon, label) { return '<div class="ws-irow"><span>' + label + '</span></div>'; }
+    form.outerHTML =
+      '<div class="ws-success" style="max-width:620px;margin:0 auto;background:var(--paper);padding:40px 36px;border-radius:var(--radius-lg);border:1px solid var(--line-soft);text-align:center;box-shadow:var(--shadow)">' +
+        '<div class="ws-check" style="width:64px;height:64px;border-radius:50%;background:var(--green-700);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">' + NH.icon.check + '</div>' +
+        '<h3 style="font-family:var(--serif);font-size:1.8rem;color:var(--green-900)">Đăng ký thành công!</h3>' +
+        '<p class="muted" style="margin:8px 0 24px">Cảm ơn <strong>' + name + '</strong> đã đăng ký. Nhành sẽ liên hệ qua điện thoại' + (email ? ' / email' : '') + ' để xác nhận chỗ trước buổi học.</p>' +
+        '<div style="text-align:left;background:var(--cream-2);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:24px 26px;display:flex;flex-direction:column;gap:13px">' +
+          '<div style="font-family:var(--serif);font-size:1.4rem;color:var(--green-900);margin-bottom:2px">' + esc(w.title || title) + '</div>' +
+          (w.date ? row(NH.icon.clock, '<b>Thời gian:</b> ' + esc(w.date) + ' · ' + esc(w.time)) : '') +
+          (w.loc ? row(NH.icon.pin, '<b>Địa điểm:</b> ' + esc(w.loc)) : '') +
+          (w.seats ? row(NH.icon.seat, '<b>Chỗ:</b> ' + esc(w.seats)) : '') +
+          (w.price ? row(NH.icon.tag, '<b>Học phí:</b> ' + esc(w.price)) : '') +
+          row(NH.icon.user, '<b>Người đăng ký:</b> ' + name + (phone ? ' · ' + phone : '')) +
+        '</div>' +
+        (msg ? '<p class="muted" style="font-size:.9rem;margin-top:16px">Lời nhắn của bạn: “' + msg + '”</p>' : '') +
+        '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px">' +
+          '<button class="btn btn-outline" type="button" id="wsAgain">Đăng ký buổi khác</button>' +
+          '<a class="btn btn-primary" href="../index.html">Về trang chủ</a>' +
+        '</div>' +
+      '</div>';
+    NH.toast('Đã nhận đăng ký! Nhành sẽ liên hệ xác nhận sớm.');
+    var again = NH.qs('#wsAgain'); if (again) again.addEventListener('click', function () { location.reload(); });
+    var card = NH.qs('.ws-success'); if (card) window.scrollTo({ top: card.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' });
+  });
+  NH.observeReveal(document);
+});
+</script>
+</body>
+</html>

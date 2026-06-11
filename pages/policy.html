@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chính sách — Nhành</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+</head>
+<body>
+
+<section class="page-hero" style="background:var(--cream);padding:46px 0">
+  <div class="wrap"><span class="eyebrow">Hỗ trợ khách hàng</span><h1 id="policyTitle">Chính sách</h1></div>
+</section>
+
+<section class="section-sm">
+  <div class="wrap shop-layout">
+    <aside class="filters" style="position:sticky">
+      <div class="filter-group" style="padding-top:0">
+        <h4>Chính sách &amp; hỗ trợ</h4>
+        <nav id="policyNav" style="display:flex;flex-direction:column;gap:2px"></nav>
+      </div>
+    </aside>
+    <div class="post-body" style="margin:0" id="policyBody"></div>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var D = window.NHANH, NH = window.NH;
+  var keys = Object.keys(D.policies);
+  var current = NH.getParam('p');
+  if (!D.policies[current]) current = keys[0];
+
+  function navHtml() {
+    var items = keys.map(function (k) {
+      return '<a href="policy.html?p=' + k + '" data-k="' + k + '" style="padding:10px 14px;border-radius:var(--radius);font-size:.9rem;color:var(--ink-soft)' + (k === current ? ';background:var(--green-800);color:#fff' : '') + '">' + D.policies[k].title + '</a>';
+    });
+    items.push('<a href="faq.html" style="padding:10px 14px;border-radius:var(--radius);font-size:.9rem;color:var(--ink-soft)">Câu hỏi thường gặp</a>');
+    return items.join('');
+  }
+
+  function render() {
+    var pol = D.policies[current];
+    document.title = pol.title + ' — Nhành';
+    NH.qs('#policyTitle').textContent = pol.title;
+    NH.qs('#policyNav').innerHTML = navHtml();
+    NH.qs('#policyBody').innerHTML = pol.body.map(function (b) {
+      if (b.indexOf('<h3>') === 0) {
+        var idx = b.indexOf('</h3>') + 5;
+        return b.slice(0, idx) + (b.slice(idx).trim() ? '<p>' + b.slice(idx) + '</p>' : '');
+      }
+      return '<p>' + b + '</p>';
+    }).join('');
+    NH.qsa('#policyNav a[data-k]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault(); current = a.dataset.k;
+        history.replaceState(null, '', 'policy.html?p=' + current);
+        render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  }
+  render();
+});
+</script>
+</body>
+</html>

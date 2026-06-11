@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài viết — Góc nhành cây — Nhành</title>
+<meta name="description" content="Blog của Nhành: câu chuyện mùi hương, chăm sóc bản thân, lifestyle và lối sống xanh.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Bài viết</span>
+    <h1>Góc nhành cây</h1>
+    <p>Câu chuyện mùi hương, nghi thức chăm sóc bản thân và lối sống xanh — nơi Nhành chia sẻ những điều nhỏ bé mà ấm áp.</p>
+  </div>
+</section>
+
+<section class="section-sm">
+  <div class="wrap">
+    <div class="chips" id="catChips"></div>
+    <div class="field" style="max-width:340px;margin-left:auto;margin-bottom:24px">
+      <input type="text" id="blogSearch" placeholder="🔍 Tìm bài viết...">
+    </div>
+    <div class="blog-grid" id="blogGrid"></div>
+    <div class="empty-state" id="empty" style="display:none"><p>Không tìm thấy bài viết phù hợp.</p></div>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var D = window.NHANH, NH = window.NH;
+  var cats = ['Tất cả'].concat(D.posts.map(function (p) { return p.cat; }).filter(function (v, i, a) { return a.indexOf(v) === i; }));
+  var state = { cat: 'Tất cả', q: '' };
+
+  NH.qs('#catChips').innerHTML = cats.map(function (c, i) {
+    return '<button class="chip' + (i === 0 ? ' active' : '') + '" data-c="' + c + '">' + c + '</button>';
+  }).join('');
+  NH.qsa('#catChips .chip').forEach(function (b) {
+    b.addEventListener('click', function () {
+      NH.qsa('#catChips .chip').forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active'); state.cat = b.dataset.c; render();
+    });
+  });
+  NH.qs('#blogSearch').addEventListener('input', function (e) { state.q = e.target.value.toLowerCase(); render(); });
+
+  function render() {
+    var list = D.posts.filter(function (p) {
+      var okCat = state.cat === 'Tất cả' || p.cat === state.cat;
+      var okQ = !state.q || (p.title + p.excerpt).toLowerCase().indexOf(state.q) > -1;
+      return okCat && okQ;
+    });
+    NH.qs('#empty').style.display = list.length ? 'none' : 'block';
+    NH.qs('#blogGrid').innerHTML = list.map(function (p) {
+      return '<a class="blog-card reveal" href="post.html?slug=' + p.slug + '">' +
+        '<div class="bc-media"><img src="' + NH.img(p.cover) + '" alt=""></div>' +
+        '<div class="bc-body"><div class="blog-meta"><span>' + p.cat + '</span><span>' + p.date + '</span><span>' + p.read + '</span></div>' +
+        '<h3>' + p.title + '</h3><p>' + p.excerpt + '</p>' +
+        '<span class="link-underline" style="margin-top:auto">Đọc tiếp →</span></div></a>';
+    }).join('');
+    NH.observeReveal(document);
+  }
+  render();
+});
+</script>
+</body>
+</html>

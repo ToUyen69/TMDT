@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Về chúng tôi — Nhành</title>
+<meta name="description" content="Câu chuyện thương hiệu Nhành: mỗi mùi hương là một mảnh ký ức Việt. Tầm nhìn, sứ mệnh và giá trị cốt lõi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../public/logo/logo TMĐT.jpg">
+<link rel="stylesheet" href="../assets/css/style.css?v=68">
+<style>
+  .val-badge{display:inline-flex;align-items:center;justify-content:center;width:96px;height:96px;border-radius:50%;background:#fff;box-shadow:0 8px 22px rgba(0,0,0,.20);margin:0 auto 4px}
+  .val-badge img{width:70px;height:70px;object-fit:contain}
+</style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Về chúng tôi</span>
+    <h1>Câu chuyện thương hiệu</h1>
+    <p>“Mỗi mùi hương là một mảnh ký ức Việt” — đó là triết lý Nhành theo đuổi ngay từ những ngày đầu.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap split">
+    <div class="split-media reveal">
+      <img src="../public/products/BDM_BST1_Bến Tre Sữa Dừa_1.jpg" alt="Nhành">
+      <div class="badge-float"><span>n.h</span><small>Nhành · Hương</small></div>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">Khởi nguồn</span>
+      <h2>Một nhành cây vươn lên<br>từ gốc rễ Việt Nam</h2>
+      <p class="lead mt-2">Nhành ra đời từ một niềm tin giản dị: thiên nhiên Việt Nam đủ giàu có để chăm sóc và chữa lành cho chính con người Việt.</p>
+      <p class="mt-2">Giữa nhịp sống đô thị hối hả — những ngày dài trong văn phòng máy lạnh, mắt mỏi vì màn hình, tinh thần căng như dây đàn — chúng tôi tin mùi hương có thể trở thành một khoảng nghỉ. Một hơi thở. Một mảnh ký ức dịu dàng kéo ta về với thiên nhiên.</p>
+      <p class="mt-2">Vì thế, Nhành chắt lọc tinh hoa từ hàng trăm nguyên liệu Việt Nam — cà phê Đắk Lắk, sen Tây Hồ, dừa Bến Tre, thông Đà Lạt — giữ lại những gì thật sự thuần lành, để gói trọn bản sắc và nở rộ yêu thương trong từng sản phẩm.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Ý NGHĨA LOGO -->
+<section class="section bg-cream">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Bộ nhận diện</span>
+      <h2>Ý nghĩa của logo</h2>
+      <p class="lead mt-1">Logo lấy ý tưởng từ hình ảnh nhành cây vươn lên — biểu tượng cho sự kiên định phát triển từ gốc rễ Việt Nam.</p>
+    </div>
+    <div class="logo-meaning" id="logoMeaning"></div>
+  </div>
+</section>
+
+<!-- TẦM NHÌN SỨ MỆNH -->
+<section class="section">
+  <div class="narrow center">
+    <span class="eyebrow">Định hướng</span>
+    <h2>Tầm nhìn &amp; Sứ mệnh</h2>
+  </div>
+  <div class="wrap" style="margin-top:40px">
+    <div class="split" style="gap:40px">
+      <div class="icon-card reveal" style="text-align:left;padding:40px">
+        <h3 style="color:var(--gold-700)">Tầm nhìn</h3>
+        <p class="mt-1" id="vision" style="font-size:1.02rem;color:var(--ink-soft)"></p>
+      </div>
+      <div class="icon-card reveal" style="text-align:left;padding:40px">
+        <h3 style="color:var(--gold-700)">Sứ mệnh</h3>
+        <p class="mt-1" id="mission" style="font-size:1.02rem;color:var(--ink-soft)"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GIÁ TRỊ CỐT LÕI -->
+<section class="section bg-green" id="values">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Cam kết</span>
+      <h2>Giá trị cốt lõi</h2>
+      <p class="lead mt-1">Bốn cam kết không thỏa hiệp, có mặt trong mọi sản phẩm của Nhành.</p>
+    </div>
+    <div class="icon-cards" id="valueCards"></div>
+  </div>
+</section>
+
+<section class="section-sm">
+  <div class="narrow center">
+    <h2>Cùng Nhành sống chậm lại</h2>
+    <p class="lead mt-2">Khám phá những mùi hương được tạo nên từ tình yêu thiên nhiên và bản sắc Việt.</p>
+    <a class="btn btn-primary mt-3" href="products.html">Khám phá sản phẩm</a>
+  </div>
+</section>
+
+<script src="../assets/js/data.js?v=68"></script>
+<script src="../assets/js/app.js?v=68"></script>
+<script>
+document.addEventListener('nhanh:ready', function () {
+  var D = window.NHANH, NH = window.NH;
+  NH.qs('#vision').textContent = D.brand.vision;
+  NH.qs('#mission').textContent = D.brand.mission;
+  NH.qs('#logoMeaning').innerHTML = D.brand.logoMeaning.map(function (m) {
+    return '<div class="lm-item reveal"><strong>' + m[0] + '</strong><p>' + m[1] + '</p></div>';
+  }).join('');
+  var valImg = { leaf: 'public/logo/natural.png', rabbit: 'public/logo/animal.png', shield: 'public/logo/IFRA.png', map: 'public/logo/vietnam.png' };
+  NH.qs('#valueCards').innerHTML = D.brand.values.map(function (v) {
+    var badge = valImg[v[2]]
+      ? '<span class="val-badge"><img src="' + NH.img(valImg[v[2]]) + '" alt="' + v[0] + '"></span>'
+      : '<span class="ic" style="color:var(--gold-300)">' + NH.icon[v[2]] + '</span>';
+    return '<div class="icon-card reveal" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">' + badge + '<h4 style="color:var(--ivory)">' + v[0] + '</h4><p style="color:var(--sage-100)">' + v[1] + '</p></div>';
+  }).join('');
+  NH.observeReveal(document);
+  if (location.hash === '#values') setTimeout(function(){ NH.qs('#values').scrollIntoView({behavior:'smooth'}); }, 200);
+});
+</script>
+</body>
+</html>
