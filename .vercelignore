@@ -1,0 +1,5 @@
+.claude
+public/_originals_png
+*.log
+_*.py
+.git
