@@ -8,7 +8,7 @@ window.NHANH = {
   "intro": "Nhành tin rằng mỗi mùi hương là một mảnh ký ức Việt. Chúng tôi chắt lọc tinh hoa từ hàng trăm nguyên liệu thiên nhiên trên dải đất hình chữ S, giữ lại những gì thật sự thuần lành — để mỗi sản phẩm là một khoảng lặng chữa lành giữa nhịp sống hiện đại.",
   "email": "nhanhvietnam88@gmail.com",
   "hotline": "0900 123 456",
-  "address": "669 Đỗ Mười, Khu phố 13, Phường Linh Xuân, TP. Hồ Chí Minh, Việt Nam",
+  "address": "Trường ĐH Kinh tế - Luật, Khu phố 6, Linh Xuân, TP. Thủ Đức, Hồ Chí Minh",
   "social": {
    "facebook": "https://www.facebook.com/nhanh.vietnam/",
    "instagram": "https://www.instagram.com/nhanh.vietnam/",
@@ -1228,7 +1228,7 @@ window.NHANH = {
    "title": "Workshop: Tự pha Body Mist mang dấu ấn riêng",
    "date": "2026-06-22",
    "time": "14:00 – 16:30",
-   "loc": "Studio Nhành, 669 Đỗ Mười, Linh Xuân, TP.HCM",
+   "loc": "Studio Nhành, ĐH Kinh tế - Luật, Linh Xuân, TP.HCM",
    "seats": "20 chỗ",
    "price": "450.000đ / người",
    "cover": "public/products/BDM_Phong Lan Rừng_1.jpg",
@@ -1238,7 +1238,7 @@ window.NHANH = {
    "title": "Workshop: Nghi thức chăm sóc bản thân & làm Bath Bomb",
    "date": "2026-07-06",
    "time": "09:30 – 11:30",
-   "loc": "Studio Nhành, 669 Đỗ Mười, Linh Xuân, TP.HCM",
+   "loc": "Studio Nhành, ĐH Kinh tế - Luật, Linh Xuân, TP.HCM",
    "seats": "15 chỗ",
    "price": "390.000đ / người",
    "cover": "public/products/BB_Dừa Non_1.jpg",
@@ -1248,7 +1248,7 @@ window.NHANH = {
    "title": "Workshop: Hương & Ký ức — kể chuyện bằng mùi hương",
    "date": "2026-07-20",
    "time": "15:00 – 17:00",
-   "loc": "Studio Nhành, 669 Đỗ Mười, Linh Xuân, TP.HCM",
+   "loc": "Studio Nhành, ĐH Kinh tế - Luật, Linh Xuân, TP.HCM",
    "seats": "18 chỗ",
    "price": "420.000đ / người",
    "cover": "public/products/BDM_BST1_Đà Lạt Sương Thông_1.jpg",
@@ -1357,7 +1357,7 @@ window.NHANH = {
     "<h3>6. Cam kết của khách hàng</h3>Bạn đồng ý không sử dụng website cho mục đích bất hợp pháp, không can thiệp vào hệ thống và không đăng tải nội dung vi phạm pháp luật hoặc thuần phong mỹ tục.",
     "<h3>7. Giới hạn trách nhiệm</h3>Nhành nỗ lực đảm bảo thông tin sản phẩm chính xác. Tuy nhiên, màu sắc hiển thị có thể chênh lệch nhẹ do thiết bị; cảm nhận mùi hương mang tính cá nhân. Nhành không chịu trách nhiệm với thiệt hại phát sinh do sử dụng sản phẩm sai hướng dẫn hoặc do dị ứng với thành phần đã được công bố (vui lòng đọc kỹ bảng thành phần và thử trên vùng da nhỏ trước khi dùng).",
     "<h3>8. Giải quyết tranh chấp</h3>Mọi khiếu nại, tranh chấp được ưu tiên giải quyết bằng thương lượng, hòa giải trên tinh thần thiện chí. Trường hợp không đạt thỏa thuận, vụ việc được giải quyết theo quy định pháp luật Việt Nam tại cơ quan có thẩm quyền.",
-    "<h3>9. Liên hệ</h3>Hotline: <strong>0900 123 456</strong> · Email: <strong>nhanhvietnam88@gmail.com</strong> · Fanpage: facebook.com/nhanh.vietnam · Địa chỉ: 669 Đỗ Mười, Khu phố 13, Phường Linh Xuân, TP. Hồ Chí Minh, Việt Nam."
+    "<h3>9. Liên hệ</h3>Hotline: <strong>0900 123 456</strong> · Email: <strong>nhanhvietnam88@gmail.com</strong> · Fanpage: facebook.com/nhanh.vietnam · Địa chỉ: Trường ĐH Kinh tế - Luật, Khu phố 6, Linh Xuân, TP. Thủ Đức, Hồ Chí Minh."
    ]
   }
  },

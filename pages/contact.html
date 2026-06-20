@@ -9,7 +9,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="../public/logo/logo TMĐT.jpg">
-<link rel="stylesheet" href="../assets/css/style.css?v=68">
+<link rel="stylesheet" href="../assets/css/style.css?v=69">
+<style>
+  /* ── Info cards ── */
+  .ct-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:28px}
+  .ct-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:20px 22px;display:flex;align-items:flex-start;gap:14px}
+  .ct-card-ic{width:40px;height:40px;border-radius:50%;background:var(--green-50,#eaf1ec);display:flex;align-items:center;justify-content:center;flex:none;color:var(--green-700)}
+  .ct-card h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 3px;font-weight:600}
+  .ct-card p{margin:0;font-size:.94rem;color:var(--ink);line-height:1.4}
+  .ct-social{display:flex;align-items:center;gap:12px;margin-top:22px;padding-top:22px;border-top:1px solid var(--line-soft)}
+  .ct-social a{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:background .18s,color .18s,border-color .18s}
+  .ct-social a:hover{background:var(--green-800);color:#fff;border-color:var(--green-800)}
+  /* ── Form ── */
+  .ct-form-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:36px 32px;box-shadow:var(--shadow)}
+  @media(max-width:760px){
+    .ct-cards{grid-template-columns:1fr}
+    .wrap[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+  }
+</style>
 </head>
 <body>
 
@@ -21,61 +38,92 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap contact-layout">
-    <div>
+<!-- Form + Info -->
+<section class="section bg-cream">
+  <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+
+    <!-- Form -->
+    <div style="display:flex;flex-direction:column">
       <span class="eyebrow">Gửi lời nhắn</span>
-      <h2>Chúng tôi sẽ phản hồi sớm nhất</h2>
-      <form id="contactForm" class="mt-3">
-        <div class="form-grid">
-          <div class="field"><label>Họ và tên</label><input type="text" required></div>
-          <div class="field"><label>Email</label><input type="email" required></div>
-        </div>
-        <div class="field"><label>Chủ đề</label><select><option>Tư vấn sản phẩm</option><option>Đặt quà theo yêu cầu</option><option>Hợp tác / B2B</option><option>Khác</option></select></div>
-        <div class="field"><label>Lời nhắn</label><textarea required placeholder="Nhành có thể giúp gì cho bạn?"></textarea></div>
-        <button class="btn btn-primary" type="submit">Gửi lời nhắn</button>
-      </form>
+      <h2 style="margin-bottom:4px">Chúng tôi sẽ phản hồi sớm nhất</h2>
+      <p class="muted" style="margin-bottom:24px">Thường trong vòng 2–4 giờ trong giờ làm việc.</p>
+      <div class="ct-form-card" style="flex:1">
+        <form id="contactForm">
+          <div class="form-grid">
+            <div class="field"><label>Họ và tên</label><input type="text" required></div>
+            <div class="field"><label>Email</label><input type="email" required></div>
+          </div>
+          <div class="field"><label>Chủ đề</label>
+            <select>
+              <option>Tư vấn sản phẩm</option>
+              <option>Đặt quà theo yêu cầu</option>
+              <option>Hợp tác / B2B</option>
+              <option>Khác</option>
+            </select>
+          </div>
+          <div class="field"><label>Lời nhắn</label><textarea required placeholder="Nhành có thể giúp gì cho bạn?"></textarea></div>
+          <button class="btn btn-primary btn-block" type="submit">Gửi lời nhắn</button>
+        </form>
+      </div>
     </div>
-    <div class="contact-info">
+
+    <!-- Info + Map -->
+    <div style="display:flex;flex-direction:column;gap:0">
       <span class="eyebrow">Thông tin liên hệ</span>
       <h2>Nhành Vietnam</h2>
-      <div class="mt-2" id="ciRows"></div>
-      <div class="social-row" id="ciSocial" style="margin-top:22px"></div>
-      <div style="margin-top:26px;position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)">
+      <div class="ct-cards" id="ciCards"></div>
+      <div class="ct-social" id="ciSocial"></div>
+
+      <!-- Bản đồ -->
+      <div style="margin-top:24px;position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line-soft);box-shadow:var(--shadow)">
         <iframe
-          title="Bản đồ Nhành"
-          src="https://maps.google.com/maps?q=669+%C4%90%E1%BB%97+M%C6%B0%E1%BB%9Di%2C+Linh+Xu%C3%A2n%2C+Th%E1%BB%A7+%C4%90%E1%BB%A9c%2C+TP.HCM&hl=vi&z=17&output=embed"
-          style="width:100%;height:340px;border:0;display:block"
+          title="Bản đồ Nhành — Trường ĐH Kinh tế - Luật"
+          src="https://maps.google.com/maps?q=Tr%C6%B0%E1%BB%9Dng+%C4%90%E1%BA%A1i+h%E1%BB%8Dc+Kinh+t%E1%BA%BF-Lu%E1%BA%ADt+%C4%90HQG-HCM&hl=vi&z=16&output=embed"
+          style="width:100%;height:320px;border:0;display:block"
           allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
-        <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);white-space:nowrap">
-          <a href="https://maps.google.com/?q=669+%C4%90%E1%BB%97+M%C6%B0%E1%BB%9Di,+Linh+Xu%C3%A2n,+Th%E1%BB%A7+%C4%90%E1%BB%A9c,+TP.HCM"
-             target="_blank" rel="noopener"
-             style="display:inline-flex;align-items:center;gap:7px;background:var(--green-800);color:#fff;padding:9px 20px;border-radius:50px;font-size:.84rem;font-weight:600;text-decoration:none;box-shadow:0 2px 14px rgba(0,0,0,.28)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div style="position:absolute;bottom:12px;right:12px">
+          <a href="https://maps.google.com/?q=Trường+Đại+học+Kinh+tế-Luật+ĐHQG-HCM" target="_blank" rel="noopener"
+             style="display:inline-flex;align-items:center;gap:6px;background:var(--green-800);color:#fff;padding:8px 16px;border-radius:50px;font-size:.82rem;font-weight:600;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.25)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
             Mở Google Maps
           </a>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
-<script src="../assets/js/data.js?v=68"></script>
-<script src="../assets/js/app.js?v=68"></script>
+<script src="../assets/js/data.js?v=69"></script>
+<script src="../assets/js/app.js?v=69"></script>
 <script>
 document.addEventListener('nhanh:ready', function () {
   var D = window.NHANH, NH = window.NH, b = D.brand;
-  NH.qs('#ciRows').innerHTML =
-    '<div class="ci-row">' + NH.icon.pin + '<div><h4>Địa chỉ</h4><p>' + b.address + '</p></div></div>' +
-    '<div class="ci-row">' + NH.icon.phone + '<div><h4>Hotline</h4><p>' + b.hotline + '</p></div></div>' +
-    '<div class="ci-row">' + NH.icon.mail + '<div><h4>Email</h4><p>' + b.email + '</p></div></div>' +
-    '<div class="ci-row">' + NH.icon.clock + '<div><h4>Giờ làm việc</h4><p>8:00 – 21:00, tất cả các ngày</p></div></div>';
+  var pin = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+  var phone = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 5.18 2 2 0 015 3h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 10.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17z"/></svg>';
+  var mail = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  var clock = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>';
+  function card(ic, title, val) {
+    return '<div class="ct-card"><div class="ct-card-ic">' + ic + '</div><div><h4>' + title + '</h4><p>' + val + '</p></div></div>';
+  }
+  NH.qs('#ciCards').innerHTML =
+    card(pin, 'Địa chỉ', b.address) +
+    card(phone, 'Hotline', b.hotline) +
+    card(mail, 'Email', b.email) +
+    card(clock, 'Giờ làm việc', '8:00 – 21:00, tất cả các ngày');
+
   NH.qs('#ciSocial').innerHTML =
+    '<span class="muted" style="font-size:.84rem;margin-right:4px">Theo dõi Nhành</span>' +
     '<a href="' + b.social.facebook + '" target="_blank" rel="noopener">' + NH.icon.fb + '</a>' +
     '<a href="' + b.social.instagram + '" target="_blank" rel="noopener">' + NH.icon.ig + '</a>' +
     '<a href="' + b.social.tiktok + '" target="_blank" rel="noopener">' + NH.icon.tt + '</a>';
-  NH.qs('#contactForm').addEventListener('submit', function (e) { e.preventDefault(); NH.toast('Cảm ơn bạn! Nhành đã nhận được lời nhắn.'); e.target.reset(); });
+
+  NH.qs('#contactForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    NH.toast('Cảm ơn bạn! Nhành đã nhận được lời nhắn.');
+    e.target.reset();
+  });
 });
 </script>
 </body>
