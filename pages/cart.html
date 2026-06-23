@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="../public/logo/logo TMĐT.jpg">
-<link rel="stylesheet" href="../assets/css/style.css?v=68">
+<link rel="stylesheet" href="../assets/css/style.css?v=70">
 <style>
 .cart-table{width:100%;border-collapse:collapse}
 .cart-table th{text-align:left;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 0 16px;border-bottom:1px solid var(--line)}
@@ -36,8 +36,8 @@
   <div class="wrap" id="cartWrap"></div>
 </section>
 
-<script src="../assets/js/data.js?v=68"></script>
-<script src="../assets/js/app.js?v=68"></script>
+<script src="../assets/js/data.js?v=70"></script>
+<script src="../assets/js/app.js?v=70"></script>
 <script>
 document.addEventListener('nhanh:ready', function () {
   var NH = window.NH;
@@ -119,7 +119,14 @@ document.addEventListener('nhanh:ready', function () {
           '<div class="field"><label>Họ và tên</label><input required></div>' +
           '<div class="form-grid"><div class="field"><label>Số điện thoại</label><input type="tel" required></div><div class="field"><label>Email</label><input type="email"></div></div>' +
           '<div class="field"><label>Địa chỉ nhận hàng</label><input required></div>' +
-          '<div class="field"><label>Phương thức thanh toán</label><select id="coMethod"><option value="COD">Thanh toán khi nhận hàng (COD)</option><option value="Ví Momo">Ví Momo (quét QR)</option><option value="VNPay">VNPay (quét QR)</option><option value="Chuyển khoản">Chuyển khoản ngân hàng (quét QR)</option></select></div>' +
+          '<div class="field"><label>Phương thức thanh toán</label>' +
+          '<div class="pay-methods" id="payMethods">' +
+            '<label class="pay-opt" data-val="COD"><input type="radio" name="coMethod" value="COD" checked><img src="../public/logo/cod.jpg" alt="COD"><span>COD</span></label>' +
+            '<label class="pay-opt" data-val="Ví Momo"><input type="radio" name="coMethod" value="Ví Momo"><img src="../public/logo/momo.png" alt="Momo"><span>Momo</span></label>' +
+            '<label class="pay-opt" data-val="VNPay"><input type="radio" name="coMethod" value="VNPay"><img src="../public/logo/vnpay.webp" alt="VNPay"><span>VNPay</span></label>' +
+            '<label class="pay-opt" data-val="ZaloPay"><input type="radio" name="coMethod" value="ZaloPay"><img src="../public/logo/zalopay.png" alt="ZaloPay"><span>ZaloPay</span></label>' +
+            '<label class="pay-opt" data-val="Thẻ Visa"><input type="radio" name="coMethod" value="Thẻ Visa"><img src="../public/logo/visa.jpg" alt="Visa"><span>Visa</span></label>' +
+          '</div></div>' +
           '<div class="sum-total" style="font-size:1.2rem"><span>Tổng cộng</span><span>' + NH.money(grand) + '</span></div>' +
           '<button class="btn btn-primary btn-block mt-1" type="submit">Đặt hàng</button>' +
         '</form>';
@@ -127,7 +134,8 @@ document.addEventListener('nhanh:ready', function () {
       NH.qs('#coForm', body).addEventListener('submit', function (e) {
         e.preventDefault();
         var f = e.target, ins = f.querySelectorAll('input');
-        var method = NH.qs('#coMethod', body).value;
+        var methodEl = body.querySelector('input[name="coMethod"]:checked');
+        var method = methodEl ? methodEl.value : 'COD';
         var items = NH.cart.read().map(function (i) { return { name: i.name + (i.variant ? ' (' + i.variant + ')' : ''), qty: i.qty, price: i.price }; });
         var u = null; try { u = JSON.parse(localStorage.getItem('nhanh_user')); } catch (er) {}
         lastOrder = NH.orders.save({

@@ -94,13 +94,32 @@
   /* ===================== ĐƠN HÀNG (lưu local) ===================== */
   var ORD_KEY = 'nhanh_orders_v1';
   var ORDER_STAGES = [
-    { key: 'placed', short: 'Đã đặt hàng', label: 'Đã đặt hàng', desc: 'Đơn hàng đã được ghi nhận, đang chờ Nhành xác nhận.' },
-    { key: 'confirmed', short: 'Đã xác nhận', label: 'Đã xác nhận', desc: 'Nhành đã xác nhận đơn và bắt đầu chuẩn bị hàng.' },
-    { key: 'packing', short: 'Đóng gói', label: 'Đang đóng gói', desc: 'Sản phẩm đang được đóng gói cẩn thận, kèm thiệp (nếu có).' },
-    { key: 'shipping', short: 'Đang giao', label: 'Đang giao hàng', desc: 'Đơn đã được bàn giao cho đơn vị vận chuyển và đang trên đường đến bạn.' },
-    { key: 'delivered', short: 'Đã giao', label: 'Giao thành công', desc: 'Đơn đã được giao đến bạn. Cảm ơn bạn đã tin chọn Nhành!' }
+    { key: 'placed',    short: 'Đã đặt hàng', label: 'Đã đặt hàng',    desc: 'Đơn hàng đã được ghi nhận, đang chờ Nhành xác nhận.' },
+    { key: 'confirmed', short: 'Đã xác nhận', label: 'Đã xác nhận',    desc: 'Nhành đã xác nhận đơn và bắt đầu chuẩn bị hàng.' },
+    { key: 'packing',   short: 'Đóng gói',    label: 'Đang đóng gói',  desc: 'Sản phẩm đang được đóng gói cẩn thận, kèm thiệp (nếu có).' },
+    { key: 'shipping',  short: 'Đang giao',   label: 'Đang giao hàng', desc: 'Đơn đã được bàn giao cho đơn vị vận chuyển và đang trên đường đến bạn.' },
+    { key: 'delivered', short: 'Đã giao',     label: 'Giao thành công',desc: 'Đơn đã được giao đến bạn. Cảm ơn bạn đã tin chọn Nhành!' }
   ];
-  var STAGE_AT = [0, 30 * 60000, 3 * 3600000, 8 * 3600000, 48 * 3600000]; // mốc thời gian (ms) kể từ lúc đặt
+  var STAGE_AT = [0, 30 * 60000, 3 * 3600000, 8 * 3600000, 48 * 3600000];
+  var CARRIERS = [
+    { id: 'ghn',  name: 'Giao Hàng Nhanh',      short: 'GHN',  color: '#f26522', logo: '../public/logo/ghn.png',        trackUrl: 'https://donhang.ghn.vn/?order_code=' },
+    { id: 'ghtk', name: 'Giao Hàng Tiết Kiệm',  short: 'GHTK', color: '#0068b3', logo: '../public/logo/ghtk.png',       trackUrl: 'https://i.ghtk.vn/' },
+    { id: 'vtp',  name: 'Viettel Post',           short: 'VTP',  color: '#e30019', logo: '../public/logo/viettelpost.png',trackUrl: 'https://viettelpost.vn/tra-cuu-hanh-trinh-don/' },
+    { id: 'jt',   name: 'J&T Express',            short: 'J&T',  color: '#e31837', logo: '../public/logo/jt.png',         trackUrl: 'https://jtexpress.vn/vi/trackyourparcel?type=0&billcode=' }
+  ];
+  function pickCarrier(seed) {
+    return CARRIERS[seed % CARRIERS.length];
+  }
+  function genTrackCode(carrierShort, seed) {
+    var n = String(100000000 + (seed % 900000000));
+    return carrierShort.replace(/[^A-Z0-9]/g, '') + n;
+  }
+  function fmtDelivery(createdAt) {
+    var d = new Date(createdAt + 3 * 86400000);
+    var days = ['CN','T2','T3','T4','T5','T6','T7'];
+    function p(n) { return (n < 10 ? '0' : '') + n; }
+    return days[d.getDay()] + ', ' + p(d.getDate()) + '/' + p(d.getMonth() + 1);
+  }
   function readOrders() { try { return JSON.parse(localStorage.getItem(ORD_KEY)) || []; } catch (e) { return []; } }
   function writeOrders(a) { localStorage.setItem(ORD_KEY, JSON.stringify(a)); }
   function genCode() {
@@ -117,6 +136,12 @@
     var a = readOrders();
     o.code = o.code || genCode();
     o.createdAt = o.createdAt || Date.now();
+    if (!o.carrierId) {
+      var seed = parseInt(o.code.replace(/[^0-9]/g, '') || '0', 10) || (o.createdAt % 1000);
+      var c = pickCarrier(seed);
+      o.carrierId = c.id;
+      o.trackCode = genTrackCode(c.short, seed);
+    }
     a.unshift(o);
     writeOrders(a);
     return o;
@@ -133,11 +158,11 @@
     });
   }
   function seedDemoOrders() {
-    if (localStorage.getItem(ORD_KEY) !== null) return; // chỉ seed một lần
+    if (localStorage.getItem(ORD_KEY) !== null) return;
     var now = Date.now();
     writeOrders([
-      { code: 'NH-DALAT1', createdAt: now - 10 * 3600000, name: 'Khách trải nghiệm', email: 'demo@nhanh.vn', phone: '0901234567', address: 'Quận 1, TP. Hồ Chí Minh', method: 'COD', items: [{ name: 'Body Mist Đà Lạt Sương Thông', qty: 1, price: 225000 }, { name: 'Bath Bomb Khởi Sương', qty: 2, price: 95000 }], total: 415000 },
-      { code: 'NH-SEN888', createdAt: now - 4 * 86400000, name: 'Khách trải nghiệm', email: 'demo@nhanh.vn', phone: '0907654321', address: 'Quận 3, TP. Hồ Chí Minh', method: 'VNPay', items: [{ name: 'Gift Set Một Góc Việt Nam', qty: 1, price: 699000 }], total: 699000 }
+      { code: 'NH-DALAT1', createdAt: now - 10 * 3600000, carrierId: 'ghn',  trackCode: 'GHN340912873', name: 'Khách trải nghiệm', email: 'demo@nhanh.vn', phone: '0901234567', address: 'Quận 1, TP. Hồ Chí Minh', method: 'COD',   items: [{ name: 'Body Mist Đà Lạt Sương Thông', qty: 1, price: 225000 }, { name: 'Bath Bomb Khởi Sương', qty: 2, price: 95000 }], total: 415000 },
+      { code: 'NH-SEN888', createdAt: now - 4 * 86400000, carrierId: 'ghtk', trackCode: 'GHTK820741956', name: 'Khách trải nghiệm', email: 'demo@nhanh.vn', phone: '0907654321', address: 'Quận 3, TP. Hồ Chí Minh', method: 'VNPay', items: [{ name: 'Gift Set Một Góc Việt Nam', qty: 1, price: 699000 }], total: 699000 }
     ]);
   }
   function fmtDate(ms) { var d = new Date(ms); function p(n) { return (n < 10 ? '0' : '') + n; } return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ' · ' + p(d.getHours()) + ':' + p(d.getMinutes()); }
@@ -152,22 +177,45 @@
       return '<li><span>' + escapeHtml(it.name) + ' × ' + it.qty + '</span><span>' + money(it.price * it.qty) + '</span></li>';
     }).join('');
     var cur = ORDER_STAGES[idx] || ORDER_STAGES[0];
+    // Carrier block — hiện ngay từ khi đặt hàng
+    var carrierBlock = '';
+    if (o.carrierId) {
+      var c = CARRIERS.filter(function (x) { return x.id === o.carrierId; })[0] || CARRIERS[0];
+      var logoHTML = '<img src="' + c.logo + '" alt="' + c.name + '" style="height:24px;object-fit:contain">';
+      // Mã vận đơn + link chỉ hiện khi đang giao (idx>=3)
+      var codeLine = idx >= 3
+        ? 'Mã vận đơn: <b>' + escapeHtml(o.trackCode) + '</b> · <a href="' + c.trackUrl + escapeHtml(o.trackCode) + '" target="_blank" rel="noopener" class="ot-track-link">Theo dõi</a>'
+        : idx >= 1
+          ? 'Mã vận đơn: <b>' + escapeHtml(o.trackCode) + '</b>'
+          : 'Đơn vị vận chuyển dự kiến';
+      var eta = idx < 4
+        ? '<span class="ot-eta">Dự kiến giao: <b>' + fmtDelivery(o.createdAt) + '</b></span>'
+        : '<span class="ot-eta ot-eta-done">Đã giao thành công</span>';
+      carrierBlock = '<div class="ot-carrier">' +
+        '<div class="ot-carrier-left">' + logoHTML + '<div class="ot-carrier-info"><span class="ot-carrier-name">' + c.name + '</span><span class="ot-carrier-code">' + codeLine + '</span></div></div>' +
+        eta +
+      '</div>';
+    }
     return '<div class="otrack">' +
       '<div class="ot-top"><div><span class="ot-code">' + escapeHtml(o.code) + '</span><div class="ot-date">Đặt lúc ' + fmtDate(o.createdAt) + '</div></div>' +
         '<span class="ot-badge">' + cur.label + '</span></div>' +
       '<div class="ot-steps" style="--p:' + pct + '%">' + steps + '</div>' +
       '<p class="ot-desc">' + cur.desc + '</p>' +
+      carrierBlock +
       '<div class="ot-detail">' +
-        '<div class="ot-info"><div><b>Người nhận:</b> ' + escapeHtml(o.name || '—') + '</div>' +
+        '<div class="ot-info">' +
+          '<div><b>Người nhận:</b> ' + escapeHtml(o.name || '—') + '</div>' +
           '<div><b>SĐT:</b> ' + escapeHtml(o.phone || '—') + '</div>' +
           '<div><b>Địa chỉ:</b> ' + escapeHtml(o.address || '—') + '</div>' +
-          '<div><b>Thanh toán:</b> ' + escapeHtml(o.method || '—') + '</div></div>' +
+          '<div><b>Thanh toán:</b> ' + escapeHtml(o.method || '—') + '</div>' +
+          '<div><b>Vận chuyển:</b> ' + (o.carrierId ? (CARRIERS.filter(function(x){return x.id===o.carrierId;})[0]||{name:'—'}).name : '—') + '</div>' +
+        '</div>' +
         '<ul class="ot-items">' + items + '<li class="ot-total"><span>Tổng cộng</span><span>' + money(o.total || 0) + '</span></li></ul>' +
       '</div>' +
     '</div>';
   }
   seedDemoOrders();
-  window.NH.orders = { all: readOrders, save: saveOrder, find: findOrders, stages: ORDER_STAGES, stageOf: stageOf, trackerHTML: trackerHTML };
+  window.NH.orders = { all: readOrders, save: saveOrder, find: findOrders, stages: ORDER_STAGES, stageOf: stageOf, trackerHTML: trackerHTML, carriers: CARRIERS };
 
   /* ===================== HEADER ===================== */
   function navHTML() {
@@ -178,7 +226,11 @@
       '<li><a href="' + home() + '">Trang chủ</a></li>' +
       '<li><a href="' + page('products.html') + '">Sản phẩm <i class="caret"></i></a>' +
       '<div class="dropdown"><a href="' + page('products.html') + '">Tất cả sản phẩm</a>' + cats + '</div></li>' +
-      '<li><a href="' + page('collections.html') + '">Bộ sưu tập</a></li>' +
+      '<li><a href="' + page('collections.html') + '">Bộ sưu tập <i class="caret"></i></a>' +
+      '<div class="dropdown">' +
+        '<a href="' + page('collections.html') + '">Tất cả bộ sưu tập</a>' +
+        D.collections.map(function (c) { return '<a href="' + page('collections.html') + '?col=' + c.slug + '">' + c.name + '</a>'; }).join('') +
+      '</div></li>' +
       '<li><a href="' + page('about.html') + '">Về chúng tôi <i class="caret"></i></a>' +
       '<div class="dropdown">' +
         '<a href="' + page('about.html') + '">Câu chuyện thương hiệu</a>' +
@@ -396,7 +448,22 @@
         '</div>' +
         '<div class="footer-bottom">' +
           '<span>© 2026 Nhành Vietnam. Thiết kế với 🌿 tại Việt Nam.</span>' +
-          '<div class="footer-pay"><span>COD</span><span>Momo</span><span>VNPay</span><span>Visa</span><span>ATM</span></div>' +
+          '<div class="footer-logos">' +
+            '<div class="footer-logos-row">' +
+              '<img src="' + img('public/logo/ghn.png') + '" alt="Giao Hàng Nhanh" title="Giao Hàng Nhanh">' +
+              '<img src="' + img('public/logo/ghtk.png') + '" alt="GHTK" title="Giao Hàng Tiết Kiệm">' +
+              '<img src="' + img('public/logo/viettelpost.png') + '" alt="Viettel Post" title="Viettel Post">' +
+              '<img src="' + img('public/logo/jt.png') + '" alt="J&T Express" title="J&T Express">' +
+            '</div>' +
+            '<div class="footer-logos-sep"></div>' +
+            '<div class="footer-logos-row">' +
+              '<img src="' + img('public/logo/cod.jpg') + '" alt="COD" title="Thanh toán khi nhận hàng">' +
+              '<img src="' + img('public/logo/momo.png') + '" alt="Momo" title="Ví Momo">' +
+              '<img src="' + img('public/logo/vnpay.webp') + '" alt="VNPay" title="VNPay">' +
+              '<img src="' + img('public/logo/visa.jpg') + '" alt="Visa" title="Thẻ Visa">' +
+              '<img src="' + img('public/logo/zalopay.png') + '" alt="ZaloPay" title="ZaloPay">' +
+            '</div>' +
+          '</div>' +
         '</div>' +
       '</div></footer>'
     );

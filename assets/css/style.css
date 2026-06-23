@@ -399,6 +399,20 @@ p{color:var(--ink-soft)}
 .footer-pay{display:flex;gap:8px;align-items:center;margin-top:18px;flex-wrap:wrap}
 .footer-pay span{font-size:.7rem;border:1px solid rgba(255,255,255,.2);padding:5px 9px;border-radius:4px;color:var(--sage-100)}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.12);padding:22px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--sage-300)}
+/* footer logo rows */
+.footer-logos{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.footer-logos-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.footer-logos-row img{height:26px;width:auto;object-fit:contain;border-radius:5px;background:#fff;padding:3px 5px;opacity:.92;transition:opacity .18s}
+.footer-logos-row img:hover{opacity:1}
+.footer-logos-sep{width:100%;height:1px;background:rgba(255,255,255,.1)}
+/* payment method cards in checkout */
+.pay-methods{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.pay-opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 12px;border:2px solid var(--line);border-radius:var(--radius-lg);cursor:pointer;transition:border-color .18s,background .18s;background:var(--paper);min-width:68px}
+.pay-opt input[type=radio]{display:none}
+.pay-opt img{height:32px;width:auto;object-fit:contain;border-radius:4px}
+.pay-opt span{font-size:.72rem;color:var(--ink-soft);font-weight:500;white-space:nowrap}
+.pay-opt:has(input:checked){border-color:var(--green-700);background:var(--green-50,#edf4ee)}
+.pay-opt:hover{border-color:var(--green-400,#6aad7a)}
 
 /* ---------- Page hero / generic banner ---------- */
 .page-hero{background:var(--cream);padding:64px 0;text-align:center;border-bottom:1px solid var(--line)}
@@ -751,7 +765,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .ot-items li{display:flex;justify-content:space-between;gap:14px;font-size:.9rem;color:var(--ink-soft);padding-bottom:8px;border-bottom:1px dashed var(--line-soft)}
 .ot-items .ot-total{border-bottom:0;font-family:var(--serif);font-size:1.15rem;color:var(--green-900);padding-top:4px}
 .ot-items .ot-total span:last-child{color:var(--gold-700);font-weight:700}
-@media(max-width:680px){.ot-detail{grid-template-columns:1fr}.ot-lbl{font-size:.68rem;max-width:60px}.ot-dot{width:30px;height:30px;font-size:.8rem}.ot-steps::before,.ot-steps::after{top:14px}}
+/* ── Carrier block ── */
+.ot-carrier{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--cream-2,#f3ede0);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:16px;flex-wrap:wrap}
+.ot-carrier-left{display:flex;align-items:center;gap:12px}
+.ot-carrier-badge{display:inline-block;padding:4px 10px;border-radius:6px;color:#fff;font-size:.78rem;font-weight:700;letter-spacing:.04em}
+.ot-carrier-info{display:flex;flex-direction:column;gap:2px}
+.ot-carrier-name{font-size:.88rem;font-weight:600;color:var(--green-900)}
+.ot-carrier-code{font-size:.82rem;color:var(--ink-soft)}
+.ot-track-link{color:var(--green-700);font-weight:600;text-decoration:underline}
+.ot-eta{font-size:.84rem;color:var(--ink-soft);white-space:nowrap}
+.ot-eta b{color:var(--green-800)}
+.ot-eta-done{color:var(--green-700);font-weight:600}
+@media(max-width:680px){.ot-detail{grid-template-columns:1fr}.ot-lbl{font-size:.68rem;max-width:60px}.ot-dot{width:30px;height:30px;font-size:.8rem}.ot-steps::before,.ot-steps::after{top:14px}.ot-carrier{flex-direction:column;align-items:flex-start}}
 
 /* ===================== NHÀNH BOT (chatbot) ===================== */
 .to-top{bottom:88px!important}              /* nhường chỗ cho nút chat */
