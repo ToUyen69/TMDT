@@ -501,7 +501,7 @@
     var alt = p.images[1] || p.images[0];
     return '<article class="product-card reveal">' +
       '<a class="pc-media" href="' + page('product.html') + '?id=' + p.id + '">' +
-        (p.badge ? '<span class="pc-badge">' + p.badge + '</span>' : '') +
+        (p.badge && p.badge !== 'Sản phẩm phụ' ? '<span class="pc-badge">' + p.badge + '</span>' : '') +
         (p.family ? '<span class="pc-fam">' + famName(p.family) + '</span>' : '') +
         '<img class="main" src="' + img(p.images[0]) + '" alt="' + p.name + '" loading="lazy">' +
         '<img class="alt" src="' + img(alt) + '" alt="" loading="lazy">' +
@@ -545,19 +545,15 @@
   }
   window.NH.observeReveal = observeReveal;
 
-  /* ===================== SCROLL UI (progress + back-to-top) ===================== */
+  /* ===================== SCROLL UI (back-to-top) ===================== */
   function buildScrollUI() {
-    var bar = el('<div class="scroll-progress" id="scrollProgress"></div>');
     var top = el('<button class="to-top" id="toTop" aria-label="Lên đầu trang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>');
-    document.body.appendChild(bar);
     document.body.appendChild(top);
     top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
     var ticking = false;
     function upd() {
       ticking = false;
       var st = window.scrollY || document.documentElement.scrollTop || 0;
-      var h = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.width = (h > 0 ? Math.min(100, st / h * 100) : 0) + '%';
       top.classList.toggle('show', st > 420);
     }
     window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
@@ -609,156 +605,117 @@
       setTimeout(function () { t.remove(); cb(); }, 600 + Math.random() * 400);
     }
 
+    var GROQ_URL = '/api/groq';
+    var GROQ_MODEL = 'llama-3.3-70b-versatile';
+    var chatHistory = [];
+
     var FAM = [
-      { k: ['ngot', 'sweet', 'ngot ngao', 'banh', 'kem', 'duong', 'flan'], slug: 'ngot', name: 'ngọt ngào' },
-      { k: ['tuoi', 'tuoi mat', 'fresh', 'bien', 'cam', 'chanh', 'thanh mat', 'mat me'], slug: 'tuoi-mat', name: 'tươi mát' },
-      { k: ['go', 'tram', 'dat', 'moc', 'khoi', 'rung', 'nam tinh', 'sau lang'], slug: 'go-dat', name: 'gỗ – đất' },
-      { k: ['am', 'vani', 'ca phe', 'cafe', 'que', 'mat ong', 'cacao', 'am ap', 'ngot am'], slug: 'am', name: 'ấm áp' }
+      { k: ['ngot', 'ngot ngao', 'banh', 'kem', 'flan', 'duong'], slug: 'ngot', name: 'ngọt ngào' },
+      { k: ['tuoi', 'tuoi mat', 'fresh', 'bien', 'cam', 'chanh', 'thanh mat'], slug: 'tuoi-mat', name: 'tươi mát' },
+      { k: ['go', 'tram', 'dat', 'moc', 'khoi', 'rung'], slug: 'go-dat', name: 'gỗ – đất' },
+      { k: ['am ap', 'vani', 'ca phe', 'cafe', 'mat ong', 'cacao'], slug: 'am', name: 'ấm áp' }
     ];
     var famByProducts = function (slug) { return D.products.filter(function (p) { return p.family === slug; }); };
     function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
 
     var FAM_CHIPS = [
-      { label: '🌷 Ngọt ngào', q: 'mùi ngọt ngào' }, { label: '🍃 Tươi mát', q: 'mùi tươi mát' },
-      { label: '🪵 Gỗ – Đất', q: 'mùi gỗ đất' }, { label: '🔥 Ấm áp', q: 'mùi ấm áp' }
+      { label: '🌷 Ngọt ngào', q: 'gợi ý mùi ngọt ngào' }, { label: '🍃 Tươi mát', q: 'gợi ý mùi tươi mát' },
+      { label: '🪵 Gỗ – Đất', q: 'gợi ý mùi gỗ đất' }, { label: '🔥 Ấm áp', q: 'gợi ý mùi ấm áp' }
     ];
     var MENU = [
-      { label: '✨ Gợi ý sản phẩm', q: 'gợi ý sản phẩm' }, { label: '🌸 Tìm theo mùi hương', q: 'tìm theo mùi hương' },
-      { label: '🎁 Quà tặng', q: 'quà tặng' }, { label: '🚚 Giao hàng & đổi trả', q: 'chính sách giao hàng' },
+      { label: '✨ Gợi ý sản phẩm', q: 'gợi ý sản phẩm phù hợp cho mình' },
+      { label: '🌸 Tìm theo mùi hương', q: 'tôi muốn tìm sản phẩm theo mùi hương' },
+      { label: '🎁 Quà tặng', q: 'tư vấn quà tặng' },
+      { label: '🚚 Giao hàng & đổi trả', q: 'chính sách giao hàng và đổi trả' },
       { label: '🔎 Tra cứu đơn', q: 'tra cứu đơn hàng' }
     ];
 
-    function respond(q) {
+    function buildSystemPrompt() {
+      var prods = D.products.slice(0, 25).map(function (p) {
+        return '- ' + p.name + ' | ' + p.category + ' | ' + money(p.price) + ' | mùi: ' + (p.family || '');
+      }).join('\n');
+      var workshops = (D.workshops || []).map(function (w) {
+        return '- ' + w.title + ' | ' + w.date + ' ' + w.time + ' | ' + w.loc + ' | ' + w.price;
+      }).join('\n');
+      return 'Bạn là Bé Mầm — trợ lý ảo thân thiện của thương hiệu Nhành Vietnam, chuyên nước hoa & chăm sóc cơ thể thuần Việt. Xưng "Bé Mầm" hoặc "Nhành", gọi khách là "bạn".\n\n' +
+        '## THƯƠNG HIỆU\n' +
+        'Nhành Vietnam — nước hoa & chăm sóc cơ thể thuần Việt, thuần chay 100%, không thử nghiệm động vật, hương liệu đạt chuẩn IFRA.\n' +
+        'Địa chỉ: Trường ĐH Kinh tế - Luật, Linh Xuân, TP. Thủ Đức, TP.HCM\n' +
+        'Hotline: ' + D.brand.hotline + ' | Email: ' + D.brand.email + '\n\n' +
+        '## SẢN PHẨM (tên | loại | giá | nhóm mùi)\n' + prods + '\n\n' +
+        '## NHÓM HƯƠNG\n' +
+        '- Ngọt ngào (ngot): vanilla, bánh, kem — nữ tính dễ chịu\n' +
+        '- Tươi mát (tuoi-mat): cam, chanh, biển, cỏ — năng động sảng khoái\n' +
+        '- Gỗ – Đất (go-dat): trầm, gỗ, khói — mạnh mẽ trầm lắng\n' +
+        '- Ấm áp (am): cà phê, mật ong, vani nâu — ấm cúng quyến rũ\n\n' +
+        '## BỘ SƯU TẬP\n' +
+        '- Việt Nam trong Hương: 5 vùng đất (Đà Lạt, Tây Hồ, Đắk Lắk, Nha Trang)\n' +
+        '- Hồi: ký ức tuổi thơ (kẹo bông, bánh flan, que kem dừa)\n\n' +
+        '## GIFT SET\n' +
+        '- Thanh Tân: 499.000đ\n- Một Góc Việt Nam: 699.000đ\n- Sương Hồng: 949.000đ\nKèm thiệp viết tay, đóng gói cao cấp.\n\n' +
+        '## CHÍNH SÁCH\n' +
+        '- Freeship: đơn ≥299k nội thành, ≥399k toàn quốc\n' +
+        '- Giao hàng: 1–3 ngày nội thành, 3–6 ngày tỉnh thành\n' +
+        '- Đổi trả: 7 ngày nếu lỗi nhà sản xuất / giao sai / hư hỏng\n' +
+        '- Thanh toán: COD, Momo, VNPay, ZaloPay, Visa\n' +
+        '- Voucher: NHANH10 giảm 10% đơn đầu tiên\n\n' +
+        '## WORKSHOP\n' + workshops + '\n\n' +
+        '## HƯỚNG DẪN SỬ DỤNG\n' +
+        '- Body Mist: xịt cách da ~15cm vào mạch đập (cổ tay, cổ, sau tai)\n' +
+        '- Mẹo giữ hương: thoa Body Lotion cùng mùi trước rồi xịt Body Mist\n' +
+        '- Bath Bomb: thả vào bồn nước ấm, ngâm 15–20 phút\n' +
+        '- Body Lotion: thoa khi da còn hơi ẩm sau tắm\n' +
+        '- Scrub: massage nhẹ 2–3 lần/tuần lên da ướt, rửa sạch\n\n' +
+        '## QUY TẮC\n' +
+        '1. Trả lời tiếng Việt, thân thiện, ngắn gọn (tối đa 5 câu)\n' +
+        '2. Chỉ tư vấn về Nhành, body care, mùi hương — từ chối lịch sự nếu hỏi ngoài phạm vi\n' +
+        '3. Dùng 1–2 emoji nhẹ nhàng mỗi câu trả lời\n' +
+        '4. Không bịa thông tin ngoài context trên\n' +
+        '5. Tra cứu đơn → hướng dẫn vào trang /pages/track-order.html';
+    }
+
+    // Phát hiện sản phẩm cần hiện dựa vào câu hỏi
+    function maybeShowProducts(q) {
       var s = ' ' + deaccent(q) + ' ';
-      var has = function () { for (var i = 0; i < arguments.length; i++) { if (s.indexOf(arguments[i]) > -1) return true; } return false; };
+      var fam = FAM.find(function (f) { return f.k.some(function (kw) { return s.indexOf(' ' + kw + ' ') > -1 || s.indexOf(kw) > -1; }); });
+      if (fam) { addProducts(shuffle(famByProducts(fam.slug))); return; }
+      if (s.indexOf('gift') > -1 || (s.indexOf('qua') > -1 && s.indexOf('tang') > -1)) { addProducts(D.products.filter(function (p) { return p.cat === 'gift-set'; })); return; }
+      if (s.indexOf('body mist') > -1 || (s.indexOf('xit') > -1 && s.indexOf('thom') > -1)) { addProducts(shuffle(D.products.filter(function (p) { return p.cat === 'body-mist'; }))); return; }
+      if (s.indexOf('bath') > -1 || s.indexOf('bom') > -1) { addProducts(shuffle(D.products.filter(function (p) { return p.cat === 'bath-bomb'; }))); return; }
+      if (s.indexOf('lotion') > -1 || s.indexOf('duong the') > -1) { addProducts(shuffle(D.products.filter(function (p) { return p.cat === 'body-lotion'; }))); return; }
+      if (s.indexOf('goi y') > -1 || s.indexOf('tu van') > -1 || s.indexOf('nen mua') > -1) { addProducts(shuffle(D.products).slice(0, 3)); }
+    }
 
-      if (has('xin chao', 'hello', ' hi ', ' chao ', 'helu')) {
-        addBot('Chào bạn 🌿 Mình là <b>Bé Mầm</b> — mình có thể gợi ý mùi hương hợp với bạn, tư vấn quà, hay tra cứu đơn. Bạn muốn bắt đầu từ đâu?');
-        addQuick(MENU); return;
-      }
-      if (has('cam on', 'thank', 'tks', 'cam ban')) { addBot('Rất vui được đồng hành cùng bạn 🌸 Cần gì cứ nhắn Nhành nhé!'); return; }
+    function respond(q) {
+      var typingEl = el('<div class="chat-typing"><span></span><span></span><span></span></div>');
+      body.appendChild(typingEl); scrollDown();
 
-      // tìm theo mùi hương
-      if (has('tim theo mui', 'theo mui huong', 'mui huong nao', 'huong nao')) {
-        addBot('Bạn thích cảm giác nào? Chọn một nhóm hương nhé:'); addQuick(FAM_CHIPS); return;
-      }
-      // nhóm hương cụ thể
-      var fam = FAM.find(function (f) { return f.k.some(function (kw) { return s.indexOf(' ' + kw + ' ') > -1; }); });
-      if (fam && has('mui', 'huong', 'thich', 'nhom')) {
-        var lst = shuffle(famByProducts(fam.slug));
-        if (lst.length) { addBot('Gợi ý vài hương <b>' + fam.name + '</b> bạn có thể thích:'); addProducts(lst); addQuick([{ label: 'Xem tất cả sản phẩm', q: 'tất cả sản phẩm' }].concat(FAM_CHIPS.filter(function (c) { return c.q.indexOf(fam.name) < 0; }).slice(0, 2))); }
-        else addBot('Hiện nhóm hương này đang cập nhật thêm sản phẩm bạn nhé.');
-        return;
-      }
-      // theo tâm trạng
-      if (has('thu gian', 'cang thang', 'stress', 'met moi', ' met ', 'kho ngu', 'mat ngu', 'ap luc', 'relax', 'xa stress', 'thu thai', 'binh yen')) {
-        addBot('Để thư giãn, mình gợi ý nghi thức tắm ấm + dưỡng thể dịu nhẹ 🛁');
-        addProducts(shuffle(D.products.filter(function (p) { return p.cat === 'bath-bomb' || p.family === 'am' || p.family === 'ngot'; }))); return;
-      }
-      if (has('nang dong', 'tuoi tre', 'di choi', 'nang luong', 'tich cuc', 'vui ve', 'sang khoai')) {
-        addBot('Năng lượng tươi vui hợp với nhóm hương tươi mát 🍃'); addProducts(shuffle(famByProducts('tuoi-mat'))); return;
-      }
-      if (has('lang man', 'hen ho', ' date ', 'quyen ru', 'goi cam', 'dem hen', 'sang trong')) {
-        addBot('Cho khoảnh khắc lãng mạn, hương ngọt ấm sẽ rất hợp 🌹'); addProducts(shuffle(famByProducts('ngot').concat(famByProducts('am')))); return;
-      }
-      // mua cho ai / giới tính
-      if (has('cho nam', 'con trai', 'nam gioi', 'ban trai', ' chong ', 'phai manh', 'cho anh')) {
-        addBot('Cho phái nam, nhóm hương gỗ – đất / ấm trầm rất nam tính:'); addProducts(shuffle(famByProducts('go-dat').concat(famByProducts('am')))); return;
-      }
-      if (has('cho nu', 'con gai', 'ban gai', 'phai nu', 'phu nu', ' vo ', 'co ay', 'cho chi')) {
-        addBot('Cho phái nữ, hương ngọt ngào & tươi mát rất được yêu thích:'); addProducts(shuffle(famByProducts('ngot').concat(famByProducts('tuoi-mat')))); return;
-      }
-      if (has('cho me', 'tang me', 'cho ba', 'sinh nhat', 'ky niem', 'nguoi yeu', 'tang ban', '20/10', '8/3', 'valentine', ' le ', 'dip le', 'le tet', ' tet ', 'noel', 'giang sinh')) {
-        addBot('Dịp đặc biệt thì Gift Set là lựa chọn trọn vẹn — kèm thiệp viết tay 💝'); addProducts(D.products.filter(function (p) { return p.cat === 'gift-set'; }));
-        addBot('Xem thêm tại <a class="cm-link" href="' + page('gifts.html') + '">trang Quà tặng</a>.'); return;
-      }
-      // da nhạy cảm
-      if (has('nhay cam', 'kich ung', 'di ung', 'da kho', 'da mun', 'an toan cho da', 'da em be')) {
-        addBot('Sản phẩm Nhành đều lành tính, đạt chuẩn IFRA, dịu nhẹ cho cả da nhạy cảm 🌿 Bạn nên ưu tiên Body Lotion & Body Mist gốc thực vật; với da rất nhạy cảm, hãy thử trên vùng da nhỏ trước khi dùng nhé.'); return;
-      }
-      // giữ hương lâu
-      if (has('luu huong', 'giu mui', 'bay mui', 'lau phai', 'mui bay', 'giu huong', 'thom lau', 'lau tan')) {
-        addBot('Mẹo giữ hương lâu 💡 Thoa <b>Body Lotion</b> cùng mùi trước, rồi xịt <b>Body Mist</b> lên — lớp dưỡng ẩm giúp hương bám lâu hơn. Xịt vào mạch đập (cổ tay, sau tai) cũng giữ mùi tốt hơn.'); return;
-      }
-      // cách dùng
-      if (has('cach dung', 'su dung', 'dung the nao', 'dung sao', 'huong dan dung', 'xit sao', 'dung nhu nao', 'lam sao dung')) {
-        addBot('Hướng dẫn nhanh 🌸<br>• <b>Body Mist:</b> xịt cách da ~15cm, tập trung mạch đập.<br>• <b>Bath Bomb:</b> thả vào bồn nước ấm, ngâm 15–20 phút.<br>• <b>Body Lotion:</b> thoa khi da còn hơi ẩm sau tắm.<br>• <b>Tẩy tế bào chết:</b> massage nhẹ lên da ướt 2–3 lần/tuần rồi rửa sạch.'); return;
-      }
-      // khuyến mãi
-      if (has('khuyen mai', 'ma giam', 'giam gia', 'uu dai', 'voucher', 'ma sale', ' sale ', 'coupon', ' code ', 'ma code')) {
-        addBot('🎁 Dùng mã <b>NHANH10</b> để được <b>giảm 10%</b> cho đơn đầu tiên! Ngoài ra freeship cho đơn từ 399.000đ toàn quốc.'); return;
-      }
+      chatHistory.push({ role: 'user', content: q });
+      var messages = [{ role: 'system', content: buildSystemPrompt() }].concat(chatHistory.slice(-12));
 
-      // danh mục
-      var catMap = [
-        { k: ['xit', 'body mist', 'mist'], cat: 'body-mist', n: 'Body Mist' },
-        { k: ['tam', 'bath', 'bom', 'sui'], cat: 'bath-bomb', n: 'Bath Bomb' },
-        { k: ['duong the', 'lotion', 'sua duong'], cat: 'body-lotion', n: 'Body Lotion' },
-        { k: ['tay te bao', 'scrub', 'tay da chet'], cat: 'scrub', n: 'Tẩy tế bào chết' }
-      ];
-      var cm = catMap.find(function (c) { return c.k.some(function (kw) { return s.indexOf(kw) > -1; }); });
-      if (cm) { addBot('Một vài <b>' + cm.n + '</b> được yêu thích:'); addProducts(shuffle(D.products.filter(function (p) { return p.cat === cm.cat; }))); return; }
-
-      // quà tặng
-      if (has('qua', 'gift', 'tang', 'set')) {
-        addBot('Gift Set của Nhành là trải nghiệm cảm xúc trọn vẹn, kèm thiệp viết tay 💝 Vài gợi ý:');
-        addProducts(D.products.filter(function (p) { return p.cat === 'gift-set'; }));
-        addBot('Xem thêm tại <a class="cm-link" href="' + page('gifts.html') + '">trang Quà tặng</a>.'); return;
-      }
-      // bán chạy / gợi ý
-      if (has('ban chay', 'noi bat', 'best', 'goi y', 'tu van', 'nen mua', 'mua gi', 'san pham hot')) {
-        addBot('Vài sản phẩm được khách yêu thích nhất:');
-        var feat = (D.featured && D.featured.length ? D.featured.map(byId).filter(Boolean) : D.products);
-        addProducts(shuffle(feat)); addQuick(FAM_CHIPS); return;
-      }
-      if (has('tat ca san pham', 'xem het', 'cua hang', 'danh muc')) {
-        addBot('Bạn có thể xem toàn bộ tại <a class="cm-link" href="' + page('products.html') + '">trang Sản phẩm</a> 🛍️'); addQuick(FAM_CHIPS); return;
-      }
-      // giao hàng
-      if (has('giao hang', 'ship', 'van chuyen', 'phi ship', 'bao lau', 'freeship')) {
-        addBot('🚚 <b>Giao hàng:</b> miễn phí cho đơn từ <b>299.000đ</b> (nội thành) & <b>399.000đ</b> (toàn quốc). Nội thành 1–3 ngày, tỉnh khác 3–6 ngày. Chi tiết tại <a class="cm-link" href="' + page('policy.html') + '?p=chinh-sach-giao-hang">Chính sách giao hàng</a>.');
-        addQuick([{ label: 'Đổi trả', q: 'chính sách đổi trả' }, { label: 'Thanh toán', q: 'thanh toán' }, { label: 'Tra cứu đơn', q: 'tra cứu đơn hàng' }]); return;
-      }
-      if (has('doi tra', 'hoan tien', 'tra hang', 'bao hanh')) {
-        addBot('🔄 <b>Đổi trả trong 7 ngày</b> nếu lỗi nhà sản xuất, giao sai hoặc hư hại khi vận chuyển (còn nguyên tem, bao bì). Xem <a class="cm-link" href="' + page('policy.html') + '?p=chinh-sach-doi-tra">Chính sách đổi trả</a>.'); return;
-      }
-      if (has('thanh toan', 'tra tien', 'cod', 'momo', 'vnpay', 'chuyen khoan', 'qr')) {
-        addBot('💳 Nhành nhận: <b>COD</b> (nhận hàng trả tiền), <b>Momo</b>, <b>VNPay</b> và <b>chuyển khoản</b> (quét QR ngay khi đặt).'); return;
-      }
-      // tra cứu đơn
-      if (has('tra cuu', 'don hang', 'don cua toi', 'order', 'kiem tra don', 'dang o dau', 'giai doan')) {
-        addBot('🔎 Bạn có thể tra cứu trạng thái đơn bằng mã đơn / email / SĐT tại <a class="cm-link" href="' + page('track-order.html') + '">trang Tra cứu đơn hàng</a>.'); return;
-      }
-      // workshop
-      if (has('workshop', 'lop hoc', 'trai nghiem', 'tu pha')) {
-        addBot('🌿 Nhành có các buổi workshop nhỏ ấm cúng để bạn tự pha mùi hương riêng:');
-        (D.workshops || []).slice(0, 2).forEach(function (w) { addBot('<b>' + w.title + '</b><br>' + w.date + ' · ' + w.time + ' — ' + w.loc); });
-        addBot('Đăng ký tại <a class="cm-link" href="' + page('workshop.html') + '">trang Workshop</a>.'); return;
-      }
-      // cam kết
-      if (has('thuan chay', 'vegan', 'dong vat', 'ifra', 'thanh phan', 'an toan', 'paraben')) {
-        addBot('🌱 Mọi sản phẩm Nhành đều <b>thuần chay</b>, <b>không thử nghiệm trên động vật</b>, hương liệu <b>đạt chuẩn IFRA</b> quốc tế và lành tính với da nhạy cảm.'); return;
-      }
-      // liên hệ
-      if (has('lien he', 'hotline', 'sdt', 'so dien thoai', 'email', 'fanpage', 'facebook', 'dia chi', 'cua hang o dau')) {
-        addBot('📞 Hotline: <b>' + (D.brand.hotline || '0900 123 456') + '</b><br>✉️ Email: <b>' + (D.brand.email || '') + '</b><br>📍 ' + (D.brand.address || '') + '<br>Hoặc nhắn qua <a class="cm-link" href="' + page('contact.html') + '">trang Liên hệ</a>.'); return;
-      }
-
-      // giá (đặt cuối để tránh trùng 'gia' trong 'giao')
-      if (has(' gia ', 'gia ca', 'bao nhieu', 'tam gia', 'khoang gia', ' re ', 'gia re')) {
-        var sorted = D.products.slice().sort(function (a, b) { return a.price - b.price; });
-        addBot('Giá sản phẩm Nhành từ <b>' + money(sorted[0].price) + '</b>. Vài lựa chọn vừa túi tiền:');
-        addProducts(sorted.slice(0, 3)); return;
-      }
-
-      // fallback
-      addBot('Mình chưa chắc đã hiểu đúng ý bạn 🥲 Bạn thử chọn nhanh một mục dưới đây nhé:');
-      addQuick(MENU);
+      fetch(GROQ_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: GROQ_MODEL, messages: messages, max_tokens: 450, temperature: 0.75 })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        typingEl.remove();
+        var reply = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+        if (!reply) { addBot('Bé Mầm đang bận chút, bạn thử lại nhé 🥲'); return; }
+        chatHistory.push({ role: 'assistant', content: reply });
+        addBot(reply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>'));
+        maybeShowProducts(q);
+      })
+      .catch(function () {
+        typingEl.remove();
+        addBot('Kết nối gặp sự cố 🥲 Bạn thử lại hoặc liên hệ Nhành qua hotline <b>' + D.brand.hotline + '</b> nhé!');
+      });
     }
 
     function sendQuery(q, display) {
       addUser(display || q);
-      typing(function () { respond(q); });
+      respond(q);
     }
 
     // lời chào ban đầu

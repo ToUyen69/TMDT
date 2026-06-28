@@ -718,9 +718,6 @@ p{color:var(--ink-soft)}
 body{animation:pageIn .5s var(--ease)}
 @keyframes pageIn{from{opacity:0}to{opacity:1}}
 
-/* Thanh tiến trình cuộn (trên cùng) */
-.scroll-progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:400;background:linear-gradient(90deg,var(--gold-500),var(--green-600));box-shadow:0 0 8px rgba(201,161,74,.4)}
-
 /* Nút lên đầu trang */
 .to-top{position:fixed;right:22px;bottom:22px;width:48px;height:48px;border-radius:50%;background:var(--green-800);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);z-index:250;opacity:0;visibility:hidden;transform:translateY(14px);transition:.35s var(--ease)}
 .to-top.show{opacity:1;visibility:visible;transform:none}
